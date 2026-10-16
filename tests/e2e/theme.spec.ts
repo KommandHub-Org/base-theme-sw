@@ -22,8 +22,34 @@ for (const theme of ['light', 'dark'] as const) {
             });
         }
 
+        // Floating surfaces only exist once opened — sweep them open, since
+        // Bootstrap bakes their colours separately from the page.
+        test('guest: open account menu', async ({ page }, testInfo) => {
+            test.skip(testInfo.project.name === 'mobile', 'phones open the account menu as an off-canvas page');
+            await page.goto(paths.home);
+            await setTheme(page, theme);
+            await page.goto(paths.home);
+            await freezeMotion(page);
+            await page.locator('.account-menu-btn').click();
+            const menu = page.locator('.account-menu-dropdown.show');
+            await expect(menu).toBeVisible();
+            expect(await contrastIssues(page)).toEqual([]);
+        });
+
         test.describe('customer', () => {
             test.use({ storageState: authFile });
+
+            test('customer: open account menu', async ({ page }, testInfo) => {
+                test.skip(testInfo.project.name === 'mobile', 'phones open the account menu as an off-canvas page');
+                await page.goto(paths.home);
+                await setTheme(page, theme);
+                await page.goto(paths.home);
+                await freezeMotion(page);
+                await page.locator('.account-menu-btn').click();
+                const menu = page.locator('.account-menu-dropdown.show');
+                await expect(menu.locator('.account-aside-item').first()).toBeVisible();
+                expect(await contrastIssues(page)).toEqual([]);
+            });
 
             for (const path of customerPages) {
                 test(`customer ${path}`, async ({ page }) => {

@@ -152,9 +152,14 @@ $form-check-input-border:               1px solid $color-border-strong;
 
 // --------------------------------------------------
 // Surfaces / cards / dropdowns / modals
+// Colours point at the CSS tokens, not baked hex: Bootstrap copies these into
+// its --bs-card-*/--bs-dropdown-*/--bs-modal-* custom properties at compile
+// time, and only a var() there follows [data-theme="dark"]. None of them is
+// used in Sass colour math, so var() compiles.
 // --------------------------------------------------
-$card-bg:               $color-surface;
-$card-border-color:     $color-border;
+$card-bg:               var(--color-surface);
+$card-color:            var(--color-text-primary);
+$card-border-color:     var(--color-border);
 $card-border-radius:    $radius-lg;
 $card-cap-bg:           transparent;
 $card-spacer-y:         1.25rem;
@@ -163,8 +168,11 @@ $card-cap-padding-y:    0.875rem;
 $card-cap-padding-x:    1.25rem;
 $card-title-spacer-y:   0.75rem;
 
-$dropdown-bg:                 $color-surface;
-$dropdown-border-color:       $color-border;
+$dropdown-bg:                 var(--color-surface);
+$dropdown-color:              var(--color-text-primary);
+$dropdown-border-color:       var(--color-border);
+$dropdown-divider-bg:         var(--color-border-subtle);
+$dropdown-header-color:       var(--color-text-muted);
 $dropdown-border-radius:      $radius-lg;
 $dropdown-padding-x:          0.375rem;
 $dropdown-padding-y:          0.375rem;
@@ -172,22 +180,35 @@ $dropdown-item-padding-x:     0.625rem;
 $dropdown-item-padding-y:     0.5rem;
 $dropdown-font-size:          0.875rem;
 $dropdown-divider-margin-y:   0.375rem;
-$dropdown-link-color:         $color-text-primary;
-$dropdown-link-hover-color:   $color-text-primary;
-$dropdown-link-hover-bg:      $color-bg-subtle;
-$dropdown-link-active-color:  $color-text-inverse;
-$dropdown-link-active-bg:     $color-selected;
+$dropdown-link-color:         var(--color-text-primary);
+$dropdown-link-hover-color:   var(--color-text-primary);
+$dropdown-link-hover-bg:      var(--color-bg-muted);
+$dropdown-link-active-color:  var(--color-text-primary);
+$dropdown-link-active-bg:     var(--color-bg-muted);
+$dropdown-link-disabled-color: var(--color-disabled-text);
 
-$modal-content-bg:            $color-surface;
-$modal-content-border-color:  $color-border;
+$modal-content-bg:            var(--color-surface);
+$modal-content-color:         var(--color-text-primary);
+$modal-content-border-color:  var(--color-border);
+$modal-header-border-color:   var(--color-border-subtle);
+$modal-footer-border-color:   var(--color-border-subtle);
 $modal-content-border-radius: $radius-xl;
 $modal-inner-padding:         1.5rem;
 $modal-header-padding:        1.25rem 1.5rem;
 $modal-backdrop-bg:           $color-overlay;
 $modal-backdrop-opacity:      1;
 
-$offcanvas-bg-color:          $color-surface;
-$offcanvas-border-color:      $color-border;
+$offcanvas-bg-color:          var(--color-surface);
+$offcanvas-color:             var(--color-text-primary);
+$offcanvas-border-color:      var(--color-border);
+
+$list-group-bg:               var(--color-surface);
+$list-group-color:            var(--color-text-primary);
+$list-group-border-color:     var(--color-border-subtle);
+$list-group-hover-bg:         var(--color-bg-muted);
+$list-group-action-color:     var(--color-text-primary);
+$list-group-action-hover-color: var(--color-text-primary);
+$list-group-action-active-bg: var(--color-bg-muted);
 
 // Badges — compact, medium weight; status tints in component/_alert.scss
 $badge-font-size:      0.75rem;
