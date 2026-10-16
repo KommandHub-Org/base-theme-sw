@@ -71,8 +71,6 @@ tokens. Light-mode output is unchanged — the tokens resolve to the same values
 .footer-column-headline,
 .search-suggest-product-link,
 .line-item-label,
-.base-slider-controls-prev,
-.base-slider-controls-next,
 .header-minimal-back-to-shop-button,
 .header-minimal-contact a,
 .filter-panel-submit,
@@ -92,9 +90,7 @@ tokens. Light-mode output is unchanged — the tokens resolve to the same values
 .search-suggest-container::after,
 .modal.zoom-modal .modal-footer,
 .filter-panel-submit,
-.filter-range-unit,
-.base-slider-controls-prev,
-.base-slider-controls-next {
+.filter-range-unit {
     background-color: var(--color-surface);
 }
 

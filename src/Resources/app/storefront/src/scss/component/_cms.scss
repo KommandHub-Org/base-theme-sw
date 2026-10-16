@@ -308,17 +308,3 @@ Core blocks and elements on the design system. Two rules:
 
     h1, h2, .lead { margin-left: auto; margin-right: auto; }
 }
-
-// Product sliders (CMS and cross-selling): tiny-slider lays items out as
-// inline-blocks, so cards end at different heights. A flex track keeps the
-// same transform-based sliding and lets every card stretch.
-.product-slider-container.tns-horizontal {
-    display: flex;
-
-    > .tns-item {
-        display: flex;
-        flex-shrink: 0;
-
-        > .product-box { width: 100%; }
-    }
-}

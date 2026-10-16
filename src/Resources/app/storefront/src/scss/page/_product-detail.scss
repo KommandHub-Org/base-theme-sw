@@ -256,25 +256,19 @@ stable and rich; this is a token-driven skin.
     opacity: 1;
 }
 
-// Slider controls — monochrome round buttons.
-.base-slider-controls-prev,
-.base-slider-controls-next,
-.gallery-slider-controls,
-.gallery-slider-thumbnails-controls {
-    color: var(--color-text-primary);
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-
-    &:hover {
-        background-color: var(--color-bg-subtle);
-        border-color: var(--color-border-strong);
-    }
-}
+// Slider arrows and dots: component/_slider.scss
 
 // --------------------------------------------------
 // Cross-selling
 // --------------------------------------------------
 .product-detail-cross-selling {
     margin-top: 2rem;
+}
+
+// Core's `.product-detail-cross-selling .card { margin-top: $spacer-lg }` is
+// meant for the tab wrapper but also hits every product card in the slider.
+// With `.product-box { height: 100% }` each card then overflows its slide by
+// that margin and the slider's overflow clips the bottom (button, border).
+.product-detail-cross-selling .product-box.card {
+    margin-top: 0;
 }

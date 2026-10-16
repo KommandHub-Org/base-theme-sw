@@ -592,7 +592,10 @@ indicator.
 // --------------------------------------------------
 .top-bar {
     position: relative;
-    z-index: 0;
+    // Own stacking context for the full-bleed band (::before at -1), layered
+    // above the header row and main nav that follow it in the sticky header —
+    // at 0 the currency/language menus opened underneath them.
+    z-index: 3;
     font-size: var(--font-size-xs);
 
     &::before {

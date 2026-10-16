@@ -205,6 +205,7 @@ theme is responsible for:
 | `checkout.spec.ts` | cart drawer + success tint, cart page title/counter, register-form validation colour; logged-in customer places an order → finish page → order history with status chip; account pages share the page-header pattern |
 | `theme.spec.ts` | WCAG AA text contrast (4.5:1 / 3:1 large) on guest and customer pages and the open account menu, light and dark |
 | `address.spec.ts` | address manager (6.7): rounded address cards, neutral default chip, search row on phones, new-address page spacing; checkout address modal title, segmented shipping/billing switch and contrast, light and dark |
+| `sliders.spec.ts` | every visible slider arrow is a round 40px button with a centred icon, inside the slider's clip (home, PDP gallery, cross-selling); cross-selling cards not clipped; room for the card hover lift; currency menu opens above the header |
 | `product-tabs.spec.ts` | PDP description (measure, unstriped properties) and reviews (score, aligned distribution bars, date beside stars, reply panel, CTA toggles the form) + contrast, light and dark |
 | `cms.spec.ts` | Shopping Experiences homepage: no sideways scroll, circular bubbles, highlight-row elevation, equal product cards, text-on-image scrim, themed video consent, opt-in classes |
 | `plugins.spec.ts` | optional plugin skins (pickup controls + contrast, bank details layout, dial-code field); each skips when its plugin is absent |
@@ -283,6 +284,7 @@ non-link current crumb, product crumb) and the PDP breadcrumb include).
 | Listing + product cards | `component/_product-card.scss` |
 | Product detail (PDP) | `page/_product-detail.scss`, `page/_product-tabs.scss`, `views/…/component/review/review-widget.html.twig` |
 | Shopping Experiences (CMS blocks) | `component/_cms.scss` |
+| Sliders: arrows, dots, product-slider track and clipping | `component/_slider.scss` |
 | Breadcrumb + page headers | `component/_page-header.scss`, `views/…/breadcrumb.html.twig`, `views/…/page/content/product-detail.html.twig` |
 | Filters, pagination, category nav | `component/_listing.scss` |
 | Off-canvas nav + cart, line items | `layout/_offcanvas.scss`, `component/_line-item.scss` |
