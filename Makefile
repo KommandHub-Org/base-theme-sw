@@ -101,6 +101,11 @@ help:
 	@echo "  e2e-report        - Open the HTML report of the last E2E run"
 
 up:
+	@# docker-compose.yml masks node_modules/ and vendor/ with anonymous
+	@# volumes. If those mount points don't exist yet, the Docker daemon creates
+	@# them in this bind-mounted folder as root — on Linux (CI) a later host
+	@# `npm ci` then fails with EACCES. Create them as the current user first.
+	@mkdir -p node_modules vendor
 	docker compose up -d --build
 	$(MAKE) prepare
 
