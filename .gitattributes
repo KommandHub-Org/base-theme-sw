@@ -1,0 +1,22 @@
+# Keep Composer/Packagist installs lean: development tooling, tests and
+# stack files stay in the repository but out of the dist archive.
+/.github                export-ignore
+/tests                  export-ignore
+/.dockerignore          export-ignore
+/.editorconfig          export-ignore
+/.gitattributes         export-ignore
+/.gitignore             export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/.prettierignore        export-ignore
+/.prettierrc.json       export-ignore
+/.shopware-extension.yml export-ignore
+/CLAUDE.md              export-ignore
+/Dockerfile             export-ignore
+/Makefile               export-ignore
+/docker-compose.yml     export-ignore
+/package.json           export-ignore
+/package-lock.json      export-ignore
+/phpcs.dist.xml         export-ignore
+/phpstan.dist.neon      export-ignore
+/phpunit.dist.xml       export-ignore
+/playwright.config.ts   export-ignore

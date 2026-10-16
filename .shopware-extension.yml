@@ -1,0 +1,40 @@
+# shopware-cli settings for `make zip` (extension package). The store zip is
+# built from the working copy, so development files are excluded explicitly.
+compatibility_date: "2026-02-11"
+
+build:
+  zip:
+    pack:
+      excludes:
+        paths:
+          - .github
+          - .phpunit.cache
+          - .php-cs-fixer.cache
+          - .php-cs-fixer.dist.php
+          - .prettierignore
+          - .prettierrc.json
+          - .editorconfig
+          - .dockerignore
+          - .gitattributes
+          - build
+          - coverage
+          - logs
+          - node_modules
+          - tests
+          - vendor
+          - CLAUDE.md
+          - Dockerfile
+          - Makefile
+          - docker-compose.yml
+          - package.json
+          - package-lock.json
+          - composer.lock
+          - phpcs.dist.xml
+          - phpstan.dist.neon
+          - phpunit.dist.xml
+          - playwright.config.ts
+          # superseded, git-ignored leftovers (see .gitignore)
+          - src/Resources/app/storefront/src/main.js
+          - src/Resources/app/storefront/src/scss/base/_fonts.scss
+          - src/Resources/app/storefront/src/assets/fonts
+          - src/Resources/app/storefront/dist

@@ -1,5 +1,5 @@
 <!--
-Thanks for contributing! Please target the `develop` branch.
+Thanks for contributing! Please target the `main` branch.
 See CONTRIBUTING.md before opening this PR.
 -->
 
@@ -22,9 +22,10 @@ See CONTRIBUTING.md before opening this PR.
 ## Checklist
 
 - [ ] Commits are **signed off** (`git commit -s`) per the [DCO](CONTRIBUTING.md#licensing-of-contributions).
-- [ ] `make cs-fix && make analyse && make test` all pass locally.
-- [ ] Tests added or updated for the behaviour change.
-- [ ] Rebuilt and committed admin/storefront assets if I changed `Resources/app/**`.
+- [ ] `make check` passes locally.
+- [ ] `make e2e` passes (or the change cannot affect the storefront).
+- [ ] Playwright/PHPUnit tests added or updated for the behaviour change.
+- [ ] Checked light and dark mode, desktop and phone.
 - [ ] Updated `README.md`, snippets, and `CHANGELOG.md` where relevant.
 - [ ] No secrets, real API keys, or production data are included.
 - [ ] I understand my contribution is licensed under the project's [Apache-2.0](LICENSE) license.

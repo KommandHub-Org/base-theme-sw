@@ -1,4 +1,19 @@
-# KmhBaseTheme
+<p align="center">
+  <a href="https://kommandhub.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/KommandHub-Org/base-theme-sw/main/src/Resources/config/kommandhub.png" alt="Kommandhub Logo">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://packagist.org/packages/kommandhub/base-theme-sw"><img src="https://img.shields.io/packagist/v/kommandhub/base-theme-sw" alt="Packagist version"></a>
+  <a href="https://packagist.org/packages/kommandhub/base-theme-sw"><img src="https://img.shields.io/packagist/dt/kommandhub/base-theme-sw" alt="Packagist downloads"></a>
+  <a href="https://github.com/KommandHub-Org/base-theme-sw/actions/workflows/php.yml"><img src="https://github.com/KommandHub-Org/base-theme-sw/actions/workflows/php.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/Shopware-6.7-189EFF" alt="Shopware 6.7">
+  <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4" alt="PHP 8.2+">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License: Apache 2.0"></a>
+</p>
+
+# Base Theme for Shopware 6
 
 A modern, premium base theme for Shopware 6.7 in a contemporary product-UI
 style (think Linear / Vercel / Stripe) — a reusable foundation for storefront
@@ -6,6 +21,70 @@ projects, not a single-store skin. The interface is **neutral monochrome**:
 hierarchy and interaction come from tone, typography, spacing and hairline
 borders. **Hue is reserved for meaning** — status (success / warning / danger /
 info) and rating stars — so the few coloured things carry information.
+
+Developed by [Kommandhub](https://kommandhub.com). Light and dark mode, desktop
+and phone, WCAG AA text contrast — covered by a Playwright suite.
+
+## Contents
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Design system](#design-system)
+- [Theme configuration](#theme-configuration)
+- [Branding assets](#branding-assets)
+- [Fonts](#fonts)
+- [Kommandhub plugin skins (optional)](#kommandhub-plugin-skins-optional)
+- [Shopping Experiences (CMS)](#shopping-experiences-cms)
+- [End-to-end tests](#end-to-end-tests)
+- [Development](#development)
+- [Coverage](#coverage)
+- [Support](#support)
+- [Contributing](#contributing)
+- [Security](#security)
+- [License](#license)
+
+## Requirements
+
+- Shopware **6.7** (`shopware/core` and `shopware/storefront` `~6.7.0`)
+- PHP **8.2** or newer
+
+## Installation
+
+### Composer (recommended)
+
+The theme is published on [Packagist](https://packagist.org/packages/kommandhub/base-theme-sw):
+
+```bash
+composer require kommandhub/base-theme-sw
+bin/console plugin:refresh
+bin/console plugin:install --activate KmhBaseTheme
+bin/console theme:change --all KmhBaseTheme   # or pick it per sales channel
+bin/console cache:clear
+```
+
+### Zip upload
+
+Download the release zip from
+[GitHub Releases](https://github.com/KommandHub-Org/base-theme-sw/releases) and
+upload it under *Extensions → My extensions → Upload extension*, or extract it
+to `custom/plugins/KmhBaseTheme` and run the `plugin:` commands above.
+
+### Assign the theme
+
+In the Administration open *Sales Channels → (your storefront) → Theme* and
+choose **KmhBaseTheme**, or use `theme:change` as above. After changing theme
+settings or updating the theme, recompile with `bin/console theme:compile`.
+
+### Update
+
+```bash
+composer update kommandhub/base-theme-sw
+bin/console plugin:update KmhBaseTheme
+bin/console theme:compile
+bin/console cache:clear
+```
+
+See [CHANGELOG.md](CHANGELOG.md) for what changed in each release.
 
 ## Design system
 
@@ -107,8 +186,9 @@ Core Shopware bakes some colours in at compile time; `base/_core-colors.scss`
 re-points those elements at the tokens so they follow the flip too. When a new
 core element shows up dark-on-dark, add it there.
 
-Config fields are consumed in SCSS (`$kmh-*`) and, in later phases, in Twig via
-`theme_config('kmh-...')`.
+Config fields are consumed in SCSS (`$kmh-*`); the sticky-header, top-bar,
+breadcrumb and dark-mode switches also gate markup in Twig via
+`theme_config('kmh-...')`. The *Commerce* block adds the rating-star colour.
 
 ## Branding assets
 
@@ -260,15 +340,14 @@ published on `http://localhost:8100` so it can run beside other shops.
 CI (`.github/workflows/php.yml`) runs the PHP checks with coverage, then the
 Playwright suite in the same stack.
 
-## Build
+### Releasing
 
-```bash
-bin/console theme:compile
-# or, for local asset rebuilds:
-./bin/build-storefront.sh
-```
-
-Activate the theme in Admin → Sales Channel → Theme, then assign *KmhBaseTheme*.
+1. Bump `version` in `composer.json` and add the entry to `CHANGELOG.md` and
+   `CHANGELOG_de-DE.md`.
+2. `make check`, `make e2e` and `make validate-plugin` must pass.
+3. `make zip` writes the store-ready archive to `build/`.
+4. Tag the commit (`git tag 1.2.0`) and push the tag; Packagist picks up the
+   new version from the tag, and the zip goes on the GitHub release.
 
 ## Coverage
 
@@ -309,3 +388,27 @@ non-link current crumb, product crumb) and the PDP breadcrumb include).
 
 CMS text/HTML blocks and CMS forms inherit the base typography and form styles —
 no dedicated overrides needed.
+
+## Support
+
+- Bugs and feature requests: [GitHub issues](https://github.com/KommandHub-Org/base-theme-sw/issues)
+- Questions: [GitHub Discussions](https://github.com/KommandHub-Org/base-theme-sw/discussions)
+- Commercial support and custom development: [kommandhub.com/support](https://kommandhub.com/support)
+
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Security
+
+Please report vulnerabilities privately as described in [SECURITY.md](SECURITY.md),
+never in a public issue.
+
+## License
+
+The source code is licensed under the [Apache License 2.0](LICENSE); keep the
+[NOTICE](NOTICE) file in redistributions. The Kommandhub name and logo are not
+covered by the code licence — forks must be rebranded, see
+[TRADEMARKS.md](TRADEMARKS.md). "Shopware" is a registered trademark of
+shopware AG.

@@ -2,7 +2,7 @@
     "name": "kommandhub/base-theme-sw",
     "description": "Modern, premium base theme for Shopware 6.7: neutral monochrome UI with colour reserved for meaning, design tokens, dark mode, accessible navigation and refined checkout.",
     "type": "shopware-platform-plugin",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "license": "Apache-2.0",
     "keywords": [
         "shopware",
@@ -11,7 +11,7 @@
         "shopware-theme",
         "theme"
     ],
-    "homepage": "https://github.com/KommandHub/KmhBaseTheme",
+    "homepage": "https://github.com/KommandHub-Org/base-theme-sw",
     "authors": [
         {
             "name": "Kommandhub",
@@ -22,9 +22,9 @@
     ],
     "support": {
         "email": "info@kommandhub.com",
-        "issues": "https://github.com/KommandHub/KmhBaseTheme/issues",
-        "source": "https://github.com/KommandHub/KmhBaseTheme",
-        "docs": "https://github.com/KommandHub/KmhBaseTheme/blob/main/README.md"
+        "issues": "https://github.com/KommandHub-Org/base-theme-sw/issues",
+        "source": "https://github.com/KommandHub-Org/base-theme-sw",
+        "docs": "https://github.com/KommandHub-Org/base-theme-sw/blob/main/README.md"
     },
     "require": {
         "php": ">=8.2",

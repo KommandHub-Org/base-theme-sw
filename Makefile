@@ -169,7 +169,7 @@ changelog:
 # test-container package is for.
 zip:
 	$(CHECK_READY)
-	$(call EXEC_IN_PLUGIN,shopware-cli extension zip . --release --disable-git --output-directory build)
+	$(call EXEC_IN_PLUGIN,shopware-cli extension package . --release --disable-git --output-directory build)
 
 fixture-load:
 	$(CHECK_READY)
