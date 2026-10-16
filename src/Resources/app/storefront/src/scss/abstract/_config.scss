@@ -9,6 +9,10 @@ SCSS still compiles outside the Shopware pipeline.
 @sw-package framework
 */
 
+/* stylelint-disable scss/no-global-function-names -- Shopware compiles themes
+   with scssphp, which cannot load Sass modules (@use 'sass:…') inside imported
+   partials, so the global functions are the only ones that build. */
+
 @import 'palette';
 
 // Raw config values (fallbacks mirror theme.json defaults) ----------------
@@ -37,7 +41,7 @@ $kmh-image-ratio-map: (
     'landscape': '4 / 3',
 ) !default;
 $image-ratio: map-get($kmh-image-ratio-map, $kmh-product-image-ratio) !default;
-@if $image-ratio == null { $image-ratio: '3 / 4'; }
+@if not $image-ratio { $image-ratio: '3 / 4'; }
 
 // Border radius ------------------------------------------------------------
 // Base = controls (buttons, inputs). Cards/panels step up (lg), dialogs and
@@ -51,7 +55,7 @@ $kmh-radius-map: (
 ) !default;
 
 $radius-base: map-get($kmh-radius-map, $kmh-border-radius) !default;
-@if $radius-base == null { $radius-base: 8px; }
+@if not $radius-base { $radius-base: 8px; }
 
 // Surfaces derive from the base but are capped, so 'pill' controls don't turn
 // cards and dialogs into lozenges. Whole pixels only.
@@ -70,4 +74,4 @@ $kmh-section-spacing-map: (
 ) !default;
 
 $section-spacing-factor: map-get($kmh-section-spacing-map, $kmh-section-spacing) !default;
-@if $section-spacing-factor == null { $section-spacing-factor: 1; }
+@if not $section-spacing-factor { $section-spacing-factor: 1; }

@@ -148,26 +148,51 @@ theme is responsible for:
 | `checkout.spec.ts` | cart drawer + success tint, cart page title/counter, register-form validation colour; logged-in customer places an order → finish page → order history with status chip; account pages share the page-header pattern |
 | `theme.spec.ts` | WCAG AA text contrast (4.5:1 / 3:1 large) on guest and customer pages, light and dark |
 
+Run it against the plugin's own stack (recommended — see *Development*):
+
 ```bash
-npm install
-npx playwright install chromium
-npm run e2e                                  # against http://localhost
-E2E_BASE_URL=https://staging.example.com npm run e2e
-npm run e2e:report                           # HTML report of the last run
+make up            # once: build + start the stack, composer-install theme + demo data
+make e2e-setup     # activate, seed demo catalogue, map domains to :8100, assign theme
+make e2e-install   # once, on the host: npm deps + Chromium
+make e2e           # run the suite; `make e2e-report` opens the HTML report
+```
+
+…or against any storefront that has the theme assigned:
+
+```bash
+E2E_BASE_URL=https://staging.example.com npx playwright test
 ```
 
 Notes:
-- Paths default to the KmhDemoDataSW catalogue; override with
-  `E2E_SIDEBAR_CATEGORY`, `E2E_TOOLBAR_CATEGORY`, `E2E_PRODUCT`,
-  `E2E_PRODUCT_NAME` (see `tests/e2e/support.ts`).
+- Page paths default to the KmhDemoDataSW catalogue; override with
+  `E2E_SIDEBAR_CATEGORY`, `E2E_TOOLBAR_CATEGORY`, `E2E_SEARCH`. The product the
+  suite opens is the first one listed in the sidebar category, unless
+  `E2E_PRODUCT` and `E2E_PRODUCT_NAME` are both set (see `tests/e2e/support.ts`).
 - Each run registers one throwaway customer (`kmh-e2e-…@example.com`) and
   places **one real order** (cash on delivery) — run it against dev/staging,
   not production. Its session and credentials stay in the git-ignored
   `tests/e2e/.auth/`.
 - Cookie consent is pre-set, so the banner never covers controls.
 - Order- and wishlist-changing tests run on the desktop project only (both
-  projects share the run's customer); the 11 skips are these plus
+  projects share the run's customer); skipped tests are these plus
   device-specific checks.
+
+## Development
+
+The theme carries its own dockware stack (Shopware 6.7.8 + shopware-cli),
+published on `http://localhost:8100` so it can run beside other shops.
+
+| Command | What it does |
+|---|---|
+| `make up` / `make down` | start (and composer-install the theme + KmhDemoDataSW) / tear down |
+| `make check` | php-cs-fixer dry-run + PHPStan + PHPUnit |
+| `make test` · `make analyse` · `make cs-fix` | the individual steps |
+| `make e2e-setup` · `make e2e` | prepare the storefront and run Playwright |
+| `make validate-plugin` | shopware-cli store-compliance check |
+| `make shell` | shell in the container (`bin/console theme:compile` after SCSS edits) |
+
+CI (`.github/workflows/php.yml`) runs the PHP checks with coverage, then the
+Playwright suite in the same stack.
 
 ## Build
 

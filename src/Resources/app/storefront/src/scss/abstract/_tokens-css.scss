@@ -10,6 +10,10 @@ Imported once from base.scss (after @Storefront) so it wins the cascade.
 @sw-package framework
 */
 
+/* stylelint-disable scss/no-global-function-names -- Shopware compiles themes
+   with scssphp, which cannot load Sass modules (@use 'sass:…') inside imported
+   partials, so the global functions are the only ones that build. */
+
 @import 'palette';
 @import 'config';
 

@@ -1,8 +1,8 @@
 import { test, expect, paths, isMobile, authFile } from './support';
 
 test.describe('Checkout — guest', () => {
-    test('add to cart opens the cart drawer with a success notice', async ({ page }) => {
-        await page.goto(paths.product);
+    test('add to cart opens the cart drawer with a success notice', async ({ page, product }) => {
+        await page.goto(product.path);
         await page.locator('.btn-buy').first().click();
 
         const drawer = page.locator('.offcanvas.show');
@@ -14,8 +14,8 @@ test.describe('Checkout — guest', () => {
         await expect(drawer.locator('.line-item')).not.toHaveCount(0);
     });
 
-    test('cart page: title with muted item counter, summary and checkout CTA', async ({ page }) => {
-        await page.goto(paths.product);
+    test('cart page: title with muted item counter, summary and checkout CTA', async ({ page, product }) => {
+        await page.goto(product.path);
         await page.locator('.btn-buy').first().click();
         await expect(page.locator('.offcanvas.show')).toBeVisible();
 
@@ -29,8 +29,8 @@ test.describe('Checkout — guest', () => {
         await expect(page.locator('a[href*="/checkout/confirm"], .begin-checkout-btn').first()).toBeVisible();
     });
 
-    test('checkout register form flags missing fields', async ({ page }) => {
-        await page.goto(paths.product);
+    test('checkout register form flags missing fields', async ({ page, product }) => {
+        await page.goto(product.path);
         await page.locator('.btn-buy').first().click();
         await expect(page.locator('.offcanvas.show')).toBeVisible();
 
@@ -47,10 +47,10 @@ test.describe('Checkout — guest', () => {
 test.describe('Checkout — customer places an order', () => {
     test.use({ storageState: authFile });
 
-    test('cart → confirm → finish → order history', async ({ page }, testInfo) => {
+    test('cart → confirm → finish → order history', async ({ page, product }, testInfo) => {
         test.skip(isMobile(testInfo), 'places a real order — run once per suite');
 
-        await page.goto(paths.product);
+        await page.goto(product.path);
         await page.locator('.btn-buy').first().click();
         await expect(page.locator('.offcanvas.show')).toBeVisible();
 
@@ -84,7 +84,7 @@ test.describe('Checkout — customer places an order', () => {
 test.describe('Account', () => {
     test.use({ storageState: authFile });
 
-    test('pages share the page-header pattern and the sidebar marks the current page', async ({ page }, testInfo) => {
+    test('pages share the page-header pattern and the sidebar marks the current page', async ({ page, product }, testInfo) => {
         for (const [path, label] of [
             ['/account', 'Overview'],
             ['/account/profile', 'Your profile'],

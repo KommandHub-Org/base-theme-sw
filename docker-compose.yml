@@ -1,0 +1,42 @@
+services:
+  shopware:
+    # Built from the local Dockerfile: the stock dockware image plus shopware-cli,
+    # so the plugin can be validated from inside its own test environment.
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: 'kommandhub-basetheme-plugin:6.7.8.0'
+    container_name: kommandhub-basetheme-plugin
+    # Published so the Playwright suite (runs on the host) can reach the
+    # storefront. 8100 avoids clashing with a sandbox shop on :80; `make
+    # e2e-setup` points the sales-channel domains at this port.
+    ports:
+      - '${E2E_PORT:-8100}:80'
+    environment:
+      - 'XDEBUG_ENABLED=0'
+      - 'PHP_VERSION=8.3'
+    volumes:
+      # ----------------------------------------------------------------------------------------------------------------------------------
+      # PLUGINS
+      - "./:/var/www/html/custom/static-plugins/KmhBaseTheme"
+      # E2E catalogue. KmhDemoDataSW is not on Packagist (the package of the
+      # same name there is an older, different plugin), so it is mounted from
+      # a sibling checkout; composer's custom/static-plugins path repository
+      # then wins over Packagist. CI checks it out into .ci/ (see php.yml).
+      - "${KMH_DEMO_DATA_PATH:-../KmhDemoDataSW}:/var/www/html/custom/static-plugins/KmhDemoDataSW"
+      - "database:/var/lib/mysql"
+      - "./Makefile:/var/www/html/Makefile"
+      # - ".env.test:/var/www/html/.env.test"
+      # ----------------------------------------------------------------------------------------------------------------------------------
+      # EXCLUDE
+      - "/var/www/html/custom/static-plugins/KmhBaseTheme/.git/"
+      - "/var/www/html/custom/static-plugins/KmhBaseTheme/node_modules/"
+      - "/var/www/html/custom/static-plugins/KmhDemoDataSW/.git/"
+      - "/var/www/html/custom/static-plugins/KmhDemoDataSW/vendor/"
+      - "/var/www/html/custom/static-plugins/KmhDemoDataSW/node_modules/"
+      - "/var/www/html/custom/static-plugins/KmhBaseTheme/vendor/"
+      # ----------------------------------------------------------------------------------------------------------------------------------
+
+volumes:
+  database:
+    driver: local

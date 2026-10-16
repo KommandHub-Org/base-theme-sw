@@ -23,3 +23,11 @@
 /tests/e2e/.results/
 /tests/e2e/.report/
 /tests/e2e/.auth/
+
+# PHP tooling
+/build/
+/.phpunit.cache/
+/.php-cs-fixer.cache
+
+# CI-only checkouts (KmhDemoDataSW for E2E)
+/.ci/

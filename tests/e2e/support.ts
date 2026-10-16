@@ -10,22 +10,57 @@ export const paths = {
     sidebarCategory: process.env.E2E_SIDEBAR_CATEGORY ?? '/Fashion-Apparel/Men-s-Clothing/',
     /** Top-level category using the horizontal filter row (no sidebar). */
     toolbarCategory: process.env.E2E_TOOLBAR_CATEGORY ?? '/Clothing/',
-    /** A purchasable product that sits in `sidebarCategory`. */
-    product: process.env.E2E_PRODUCT ?? '/Delta-Oxford-Shirt/KMH-FLA-MENSA85-013',
-    productName: process.env.E2E_PRODUCT_NAME ?? 'Delta Oxford Shirt',
-    search: '/search?search=shirt',
+    search: process.env.E2E_SEARCH ?? '/search?search=shirt',
 };
 
 /**
  * Every test starts with cookie consent already given (technically required
  * only) so the banner never covers controls.
  */
-export const test = base.extend({
+const consentCookie = (baseURL: string) => ({
+    name: 'cookie-preference',
+    value: '1',
+    domain: new URL(baseURL).hostname,
+    path: '/',
+});
+
+export interface ProductRef {
+    path: string;
+    name: string;
+}
+
+export const test = base.extend<object, { product: ProductRef }>({
     context: async ({ context, baseURL }, use) => {
-        const url = new URL(baseURL ?? 'http://localhost');
-        await context.addCookies([{ name: 'cookie-preference', value: '1', domain: url.hostname, path: '/' }]);
+        await context.addCookies([consentCookie(baseURL ?? 'http://localhost')]);
         await use(context);
     },
+
+    /**
+     * The product the suite opens: E2E_PRODUCT (+ E2E_PRODUCT_NAME) if set,
+     * otherwise the first product in `sidebarCategory`. Resolved once per
+     * worker, so the suite runs on any seed size or catalogue.
+     */
+    product: [
+        async ({ browser }, use, workerInfo) => {
+            if (process.env.E2E_PRODUCT && process.env.E2E_PRODUCT_NAME) {
+                await use({ path: process.env.E2E_PRODUCT, name: process.env.E2E_PRODUCT_NAME });
+                return;
+            }
+            const baseURL = (workerInfo.project.use.baseURL as string) ?? 'http://localhost';
+            const context = await browser.newContext({ baseURL });
+            await context.addCookies([consentCookie(baseURL)]);
+            const page = await context.newPage();
+            await page.goto(paths.sidebarCategory);
+            const link = page.locator('.cms-listing-row .product-box a.product-name').first();
+            const ref = {
+                path: new URL((await link.getAttribute('href'))!, baseURL).pathname,
+                name: ((await link.getAttribute('title')) ?? (await link.textContent()) ?? '').trim(),
+            };
+            await context.close();
+            await use(ref);
+        },
+        { scope: 'worker' },
+    ],
 });
 
 export { expect };

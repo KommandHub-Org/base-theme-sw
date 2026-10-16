@@ -1,0 +1,107 @@
+name: Theme CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, gd, zip
+          coverage: pcov
+
+      - name: Validate composer.json
+        run: composer validate
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      # ✅ Lint PHP (fast fail)
+      - name: Lint PHP files
+        run: find src tests -type f -name "*.php" -print0 | xargs -0 -n1 php -l
+
+      # ✅ Static analysis
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse src --no-progress
+
+      # ✅ Code style
+      - name: Run PHP CS Fixer
+        run: ./vendor/bin/php-cs-fixer fix --dry-run --diff
+
+      # ✅ Unit + mockable integration tests with coverage (no Shopware kernel!)
+      # Tests tagged @group kernel need a booted Shopware kernel + database and
+      # are excluded here; run the full suite locally with `make test`.
+      - name: Run PHPUnit
+        run: ./vendor/bin/phpunit --exclude-group kernel --testdox --coverage-clover build/logs/clover.xml
+
+      # ✅ Enforce the line-coverage threshold
+      - name: Check coverage threshold
+        run: ./vendor/bin/coverage-check build/logs/clover.xml 100
+
+  # Playwright against a real storefront: the plugin's own dockware stack,
+  # seeded with KmhDemoDataSW, the theme assigned to every sales channel.
+  e2e:
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      KMH_DEMO_DATA_PATH: ./.ci/KmhDemoDataSW
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # The E2E catalogue plugin, mounted into the stack (docker-compose.yml).
+      - name: Checkout KmhDemoDataSW
+        uses: actions/checkout@v4
+        with:
+          repository: KommandHub/KmhDemoDataSW
+          path: .ci/KmhDemoDataSW
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Start the Shopware stack
+        run: make up
+
+      - name: Prepare storefront for E2E
+        run: make e2e-setup
+
+      - name: Install Playwright
+        run: make e2e-install
+
+      - name: Run Playwright
+        run: make e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            tests/e2e/.report
+            tests/e2e/.results
+          retention-days: 7

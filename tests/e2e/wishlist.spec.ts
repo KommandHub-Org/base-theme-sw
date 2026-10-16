@@ -6,10 +6,10 @@ import { test, expect, paths, isMobile, isFullyVisible, authFile } from './suppo
  */
 test.use({ storageState: authFile });
 
-test('wishlist: red heart, visible header counter, consistent page', async ({ page }, testInfo) => {
+test('wishlist: red heart, visible header counter, consistent page', async ({ page, product }, testInfo) => {
     test.skip(isMobile(testInfo), 'mutates the shared customer — desktop only');
 
-    await page.goto(paths.product);
+    await page.goto(product.path);
     const action = page.locator('.product-detail-wishlist .product-wishlist-action, .product-wishlist-action').first();
     if (await action.evaluate((b) => b.classList.contains('product-wishlist-added'))) {
         await action.click();
@@ -42,7 +42,7 @@ test('wishlist: red heart, visible header counter, consistent page', async ({ pa
     await expect(page.locator('.cms-element-product-listing-actions')).toBeHidden();
 
     // Clean up: remove the product again.
-    await page.goto(paths.product);
+    await page.goto(product.path);
     await page.locator('.product-wishlist-action').first().click();
     await expect(page.locator('.product-wishlist-action').first()).toHaveClass(/product-wishlist-not-added/);
 });

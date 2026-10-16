@@ -1,0 +1,6 @@
+src/Resources/app/storefront/dist
+src/Resources/public
+tests/e2e/.results
+tests/e2e/.report
+tests/e2e/.auth
+node_modules

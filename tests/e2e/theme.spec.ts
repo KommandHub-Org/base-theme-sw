@@ -5,16 +5,17 @@ import { test, expect, paths, setTheme, freezeMotion, contrastIssues, authFile }
  * in both colour schemes — the guard for core colours that are baked at
  * compile time and escape the token layer (see base/_core-colors.scss).
  */
-const guestPages = [paths.home, paths.sidebarCategory, paths.toolbarCategory, paths.product, paths.search, '/account/login'];
+// 'product' is resolved per worker (see support.ts).
+const guestPages = [paths.home, paths.sidebarCategory, paths.toolbarCategory, 'product', paths.search, '/account/login'];
 const customerPages = ['/account', '/account/profile', '/account/address', '/account/order', '/checkout/cart'];
 
 for (const theme of ['light', 'dark'] as const) {
     test.describe(`Contrast — ${theme}`, () => {
         for (const path of guestPages) {
-            test(`guest ${path}`, async ({ page }) => {
+            test(`guest ${path}`, async ({ page, product }) => {
                 await page.goto(paths.home);
                 await setTheme(page, theme);
-                await page.goto(path);
+                await page.goto(path === 'product' ? product.path : path);
                 await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
                 await freezeMotion(page);
                 expect(await contrastIssues(page)).toEqual([]);

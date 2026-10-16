@@ -1,19 +1,80 @@
 {
-  "name": "kommandhub/base-theme-sw",
-  "description": "Theme skeleton plugin",
-  "type": "shopware-platform-plugin",
-  "license": "MIT",
-  "autoload": {
-    "psr-4": {
-      "Kommandhub\\BaseTheme\\": "src/"
-    }
-  },
-  "extra": {
-    "shopware-plugin-class": "Kommandhub\\BaseTheme\\KmhBaseTheme",
-    "plugin-icon": "src/Resources/config/plugin.png",
-    "label": {
-      "de-DE": "Base Theme",
-      "en-GB": "Base Theme"
-    }
-  }
+    "name": "kommandhub/base-theme-sw",
+    "description": "Modern, premium base theme for Shopware 6.7: neutral monochrome UI with colour reserved for meaning, design tokens, dark mode, accessible navigation and refined checkout.",
+    "type": "shopware-platform-plugin",
+    "version": "0.1.0",
+    "license": "Apache-2.0",
+    "keywords": [
+        "shopware",
+        "shopware6",
+        "shopware-plugin",
+        "shopware-theme",
+        "theme"
+    ],
+    "homepage": "https://github.com/KommandHub/KmhBaseTheme",
+    "authors": [
+        {
+            "name": "Kommandhub",
+            "email": "info@kommandhub.com",
+            "homepage": "https://kommandhub.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "info@kommandhub.com",
+        "issues": "https://github.com/KommandHub/KmhBaseTheme/issues",
+        "source": "https://github.com/KommandHub/KmhBaseTheme",
+        "docs": "https://github.com/KommandHub/KmhBaseTheme/blob/main/README.md"
+    },
+    "require": {
+        "php": ">=8.2",
+        "shopware/core": "~6.7.0",
+        "shopware/storefront": "~6.7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5",
+        "shopware/dev-tools": "^1.5",
+        "friendsofphp/php-cs-fixer": "^3.94",
+        "phpstan/phpstan": "^2.1",
+        "rregeer/phpunit-coverage-check": "^0.3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kommandhub\\BaseTheme\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kommandhub\\BaseTheme\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "shopware-plugin-class": "Kommandhub\\BaseTheme\\KmhBaseTheme",
+        "plugin-icon": "src/Resources/config/plugin.png",
+        "label": {
+            "de-DE": "Base Theme",
+            "en-GB": "Base Theme"
+        },
+        "description": {
+            "de-DE": "Modernes Premium-Basis-Theme für Shopware 6.7: neutrale monochrome Oberfläche, Farbe nur mit Bedeutung, Design-Tokens, Dark Mode, barrierearme Navigation und Checkout.",
+            "en-GB": "Modern, premium base theme for Shopware 6.7: neutral monochrome UI with colour reserved for meaning, design tokens, dark mode, accessible navigation and refined checkout."
+        },
+        "manufacturerLink": {
+            "de-DE": "https://kommandhub.com",
+            "en-GB": "https://kommandhub.com"
+        },
+        "supportLink": {
+            "de-DE": "https://kommandhub.com/support",
+            "en-GB": "https://kommandhub.com/support"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "symfony/runtime": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
