@@ -122,6 +122,9 @@ export async function contrastIssues(page: Page): Promise<ContrastIssue[]> {
         document.querySelectorAll<HTMLElement>('body *').forEach((el) => {
             if (!el.offsetParent || el.closest('.sf-toolbar, [aria-hidden="true"], .visually-hidden, script, style')) return;
             if (el.closest(':disabled, .disabled, [aria-disabled="true"]')) return;
+            // Text over a CMS background image has no single background colour
+            // to measure; cms.spec.ts checks the scrim + light text instead.
+            if (el.closest('.cms-block.bg-image, .cms-section.bg-image')) return;
             const ownText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent!.trim());
             if (!ownText) return;
 

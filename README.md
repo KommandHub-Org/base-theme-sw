@@ -152,6 +152,45 @@ Generic fix that also serves plugins: any `<select class="form-control">` gets
 the same chevron as `.form-select`. `tests/e2e/plugins.spec.ts` checks each skin
 and skips itself when the plugin isn't on the shop.
 
+## Shopping Experiences (CMS)
+
+Every core CMS block is styled on the design system (`component/_cms.scss`):
+text typography and `.lead`, rounded images, sliders and galleries, circular
+bubbles, hairline image-text cards, equal-height product boxes (also in
+product sliders), a scrim + light text on *Text on image*, and a themed consent
+card for YouTube/Vimeo. Core's baked white frames and backdrops follow dark
+mode.
+
+What an editor sets in the Administration keeps working: block and section
+margins, background colours and media, sizing mode and alignment are never
+overridden. On top of that, three opt-in looks go into a block's
+**CSS class** field (*Layout → block → Advanced*):
+
+| Class | Look |
+|---|---|
+| `kmh-cms-surface` | tinted panel with hairline border and padding |
+| `kmh-cms-cards` | each column of the block becomes a card |
+| `kmh-cms-center` | centred text in every column |
+
+Rich-text elements can use `<p class="kmh-eyebrow">` (small label above a
+heading), `<p class="lead">` and `btn btn-primary` / `btn btn-outline-secondary`
+links.
+
+`tests/e2e/fixtures/seed-cms-home.mjs` builds a homepage that uses every block
+that works outside a product or listing page (32 blocks, including a sidebar
+section) and assigns it to a sales channel's root category. It is idempotent
+(fixed layout id) and leaves the previous homepage layout in place — assign it
+back in the Administration to roll back. Run it with `make e2e-cms` on the
+theme stack, or against any shop with an integration's credentials:
+
+```bash
+SW_URL=http://localhost SW_CLIENT_ID=… SW_CLIENT_SECRET=… SW_SALES_CHANNEL=Storefront \
+  node tests/e2e/fixtures/seed-cms-home.mjs
+```
+
+Images come from product covers; on a shop without product media it uploads
+neutral SVG placeholders.
+
 ## End-to-end tests
 
 A Playwright suite in `tests/e2e/` drives a live storefront that has the theme
@@ -165,13 +204,15 @@ theme is responsible for:
 | `wishlist.spec.ts` | red heart when saved, header counter fully visible, wishlist page header + no empty toolbar |
 | `checkout.spec.ts` | cart drawer + success tint, cart page title/counter, register-form validation colour; logged-in customer places an order → finish page → order history with status chip; account pages share the page-header pattern |
 | `theme.spec.ts` | WCAG AA text contrast (4.5:1 / 3:1 large) on guest and customer pages and the open account menu, light and dark |
+| `product-tabs.spec.ts` | PDP description (measure, unstriped properties) and reviews (score, aligned distribution bars, date beside stars, reply panel, CTA toggles the form) + contrast, light and dark |
+| `cms.spec.ts` | Shopping Experiences homepage: no sideways scroll, circular bubbles, highlight-row elevation, equal product cards, text-on-image scrim, themed video consent, opt-in classes |
 | `plugins.spec.ts` | optional plugin skins (pickup controls + contrast, bank details layout, dial-code field); each skips when its plugin is absent |
 
 Run it against the plugin's own stack (recommended — see *Development*):
 
 ```bash
 make up            # once: build + start the stack, composer-install theme + demo data
-make e2e-setup     # activate, seed demo catalogue, map domains to :8100, assign theme
+make e2e-setup     # activate, seed demo catalogue + CMS homepage, map domains to :8100, assign theme
 make e2e-install   # once, on the host: npm deps + Chromium
 make e2e           # run the suite; `make e2e-report` opens the HTML report
 ```
@@ -192,6 +233,10 @@ Notes:
   not production. Its session and credentials stay in the git-ignored
   `tests/e2e/.auth/`.
 - Cookie consent is pre-set, so the banner never covers controls.
+- `make e2e-cms` creates a new admin integration (`kmh-e2e-cms`) on each run;
+  delete old ones under *Settings → Integrations* if they pile up.
+- The contrast probe skips text over CMS background images (no single
+  background colour to measure); `cms.spec.ts` checks the scrim instead.
 - Order- and wishlist-changing tests run on the desktop project only (both
   projects share the run's customer); skipped tests are these plus
   device-specific checks.
@@ -235,7 +280,8 @@ non-link current crumb, product crumb) and the PDP breadcrumb include).
 | Design system, base layer | `abstract/*`, `base/*` |
 | Header, nav, search, actions | `layout/_header.scss`, `views/…/header.html.twig`, `header/header.html.twig`, `header/logo.html.twig`, `top-bar.html.twig` |
 | Listing + product cards | `component/_product-card.scss` |
-| Product detail (PDP) | `page/_product-detail.scss` |
+| Product detail (PDP) | `page/_product-detail.scss`, `page/_product-tabs.scss`, `views/…/component/review/review-widget.html.twig` |
+| Shopping Experiences (CMS blocks) | `component/_cms.scss` |
 | Breadcrumb + page headers | `component/_page-header.scss`, `views/…/breadcrumb.html.twig`, `views/…/page/content/product-detail.html.twig` |
 | Filters, pagination, category nav | `component/_listing.scss` |
 | Off-canvas nav + cart, line items | `layout/_offcanvas.scss`, `component/_line-item.scss` |

@@ -54,11 +54,13 @@ test.describe('Product detail tabs', () => {
         expect(new Set(bars).size, 'bars share one column').toBe(1);
 
         const item = root.locator('.product-detail-review-item').first();
-        const date = item.locator('.product-detail-review-item-date');
-        const stars = item.locator('.product-detail-review-item-points');
-        const [d, s] = [await date.boundingBox(), await stars.boundingBox()];
-        expect(Math.abs(d!.y + d!.height / 2 - (s!.y + s!.height / 2)), 'date shares the stars row').toBeLessThan(6);
-        expect(d!.x).toBeGreaterThan(s!.x);
+        // One evaluate: the page may still be scrolling after the tab click.
+        const [d, st] = await item.evaluate((el) => ['date', 'points'].map((k) => {
+            const r = el.querySelector(`.product-detail-review-item-${k}`)!.getBoundingClientRect();
+            return { x: r.left, mid: r.top + r.height / 2 };
+        }));
+        expect(Math.abs(d.mid - st.mid), 'date shares the stars row').toBeLessThan(6);
+        expect(d.x).toBeGreaterThan(st.x);
 
         const reply = root.locator('.product-detail-review-item-comment .blockquote').first();
         if (await reply.count()) {

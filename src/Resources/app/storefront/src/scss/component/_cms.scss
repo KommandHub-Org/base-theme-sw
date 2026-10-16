@@ -1,0 +1,324 @@
+/*
+Shopping Experiences (CMS)
+==================================================
+Core blocks and elements on the design system. Two rules:
+
+1. Never fight what an editor sets in the Administration. Block/section
+   margins, background colours and media, sizing mode and alignment arrive
+   as inline styles or modifier classes and keep working; nothing here sets
+   margins on blocks or backgrounds on unstyled blocks.
+2. Opt-in looks live in classes an editor types into a block's
+   "CSS class" field (Layout → block → Advanced):
+
+   kmh-cms-surface  subtle panel: tinted background, hairline border, padding
+   kmh-cms-cards    each column of a text/image block becomes a card
+   kmh-cms-center   centre the text in every column
+
+   Rich-text content can use `.lead` (intro paragraph), `.kmh-eyebrow`
+   (small label above a heading) and `.btn .btn-primary` /
+   `.btn-outline-secondary` links.
+
+@sw-package storefront
+*/
+
+// --------------------------------------------------
+// Text
+// --------------------------------------------------
+.cms-element-text {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-base);
+
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--color-text-primary);
+        letter-spacing: var(--tracking-snug);
+        line-height: var(--line-height-tight);
+    }
+
+    h1, h2 { letter-spacing: var(--tracking-tight); }
+    h3 { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+
+    .lead {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-lg);
+        line-height: var(--line-height-snug);
+    }
+
+    > :last-child { margin-bottom: 0; }
+
+    .btn { margin: 0 var(--space-2) var(--space-2) 0; }
+}
+
+.kmh-eyebrow {
+    margin-bottom: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+}
+
+.cms-block-text-hero .cms-element-text {
+    padding: var(--space-8) 0;
+
+    h1 {
+        max-width: 18ch;
+        margin-bottom: var(--space-4);
+        font-size: #{'clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem)'}; // string: scssphp can't mix vw and rem
+        font-weight: var(--font-weight-semibold);
+    }
+
+    .lead { max-width: 60ch; margin-bottom: var(--space-6); }
+}
+
+.cms-block-text-teaser .cms-element-text h2 {
+    max-width: 30ch;
+    font-size: var(--font-size-2xl);
+}
+
+// Stacked columns (phones) need air between them; core only spaces the
+// image-only blocks.
+.cms-block-text-two-column,
+.cms-block-text-three-column,
+.cms-block-text-teaser-section,
+.cms-block-center-text,
+.cms-block-image-text-row,
+.cms-block-image-text-bubble {
+    .cms-row { row-gap: var(--space-6); }
+}
+
+// Teaser section: big headline left, copy right, baseline-aligned.
+.cms-block-text-teaser-section .cms-element-text h2 {
+    font-size: var(--font-size-2xl);
+    margin: 0;
+}
+
+// --------------------------------------------------
+// Images
+// --------------------------------------------------
+.cms-element-image .cms-image-container,
+.cms-element-image-slider .image-slider-container,
+.cms-element-image-gallery .gallery-slider-container,
+.cms-element-youtube-video,
+.cms-element-vimeo-video,
+.cms-element-video {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.cms-element-image-gallery .gallery-slider-item {
+    border-radius: 0; // the container clips; no double rounding
+
+    // "Standard" display mode: centre the image in its frame (core: left).
+    &.is-standard {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+// Three-cover is one edge-to-edge strip: round its ends, not each image.
+.cms-block-image-three-cover {
+    .cms-row {
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+    }
+
+    .cms-image-container { border-radius: 0; }
+}
+
+// Bubbles: core fixes 300×300 but the image's min-height can stretch it
+// into an oval — lock the aspect ratio instead.
+.cms-block-image-text-bubble,
+.cms-block-image-bubble-row {
+    .cms-element-image .cms-image-container {
+        width: min(100%, 16rem);
+        height: auto;
+        aspect-ratio: 1;
+        min-height: 0 !important; // inline min-height from the element config
+        border-radius: 50%;
+
+        .cms-image { height: 100%; object-fit: cover; }
+    }
+
+    .cms-element-text { text-align: center; }
+}
+
+// Highlight row: core frames each image with a 12px white border (stays
+// white in dark mode). Soft elevation instead.
+.cms-block-image-highlight-row .cms-element-image {
+    border: 0;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+// Image-text gallery: hairline cards, not a drop shadow.
+.cms-block-image-text-gallery {
+    .cms-row { row-gap: var(--space-6); }
+
+    .image-text-gallery-card {
+        height: 100%;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        background-color: var(--color-surface);
+        box-shadow: none;
+        overflow: hidden;
+
+        .cms-image-container { border-radius: 0; }
+    }
+
+    .cms-element-text { padding: var(--space-5); }
+}
+
+.cms-block-image-text-row,
+.cms-block-image-text-bubble {
+    .cms-element-text { padding-top: var(--space-4); }
+}
+
+.cms-block-image-text,
+.cms-block-image-text-cover {
+    .cms-row { row-gap: var(--space-6); align-items: center; }
+}
+
+.cms-block-image-text-cover .cms-element-text { padding: var(--space-6); }
+
+.cms-block-center-text .cms-element-text {
+    padding: var(--space-6);
+    text-align: center;
+}
+
+// Text on image: scrim + light text so copy stays readable on any photo.
+// Only when a background image is set — a plain colour background is the
+// editor's call and keeps normal text colours.
+.cms-block-text-on-image.bg-image {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.15) 100%);
+    }
+
+    .cms-block-container { z-index: 1; }
+
+    .cms-element-text {
+        min-height: 18rem;
+        padding: var(--space-10) var(--space-8);
+        color: rgba(255, 255, 255, 0.85);
+
+        h1, h2, h3, h4, h5, h6, a:not(.btn) { color: #fff; }
+
+        .lead { color: rgba(255, 255, 255, 0.85); }
+    }
+
+    .btn-primary {
+        --bs-btn-bg: #fff;
+        --bs-btn-border-color: #fff;
+        --bs-btn-color: #000;
+        --bs-btn-hover-bg: rgba(255, 255, 255, 0.88);
+        --bs-btn-hover-border-color: transparent;
+        --bs-btn-hover-color: #000;
+    }
+}
+
+// --------------------------------------------------
+// Video consent (YouTube / Vimeo with "requires confirmation")
+// --------------------------------------------------
+.cms-element-youtube-video,
+.cms-element-vimeo-video {
+    &__backdrop {
+        position: absolute;
+        inset: 0;
+        padding: var(--space-4);
+        background-color: rgba(0, 0, 0, 0.35);
+
+        > div {
+            max-width: 28rem;
+            padding: var(--space-5);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            background: var(--color-surface);
+            box-shadow: var(--shadow-lg);
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            line-height: var(--line-height-base);
+
+            .btn { margin-top: var(--space-3); }
+
+            // A 16:9 frame on a phone is ~200px tall: compact card.
+            @media (max-width: #{$kmh-bp-md - 0.02px}) {
+                padding: var(--space-3);
+                font-size: var(--font-size-xs);
+                line-height: var(--line-height-snug);
+
+                .btn { margin-top: var(--space-2); }
+            }
+        }
+    }
+}
+
+// --------------------------------------------------
+// Commerce
+// --------------------------------------------------
+// Product boxes in a row share one height (with/without rating, long names).
+.cms-block-product-three-column .cms-element-product-box,
+.cms-element-product-box .product-box {
+    height: 100%;
+}
+
+.cms-block-product-three-column .cms-row { row-gap: var(--space-6); }
+
+.cms-element-product-slider .cms-element-title {
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary); // core bakes $headings-color
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-snug);
+}
+
+// --------------------------------------------------
+// Opt-in block classes (block → Advanced → CSS class)
+// --------------------------------------------------
+.cms-block.kmh-cms-surface {
+    padding: var(--space-8) var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-bg-subtle);
+
+    @media (min-width: $kmh-bp-md) {
+        padding: var(--space-10) var(--space-8);
+    }
+}
+
+.cms-block.kmh-cms-cards {
+    .cms-row { row-gap: var(--space-4); }
+
+    .cms-row > [class*='col'] > * {
+        height: 100%;
+        padding: var(--space-6);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        background-color: var(--color-surface);
+    }
+}
+
+.cms-block.kmh-cms-center .cms-element-text {
+    text-align: center;
+
+    h1, h2, .lead { margin-left: auto; margin-right: auto; }
+}
+
+// Product sliders (CMS and cross-selling): tiny-slider lays items out as
+// inline-blocks, so cards end at different heights. A flex track keeps the
+// same transform-based sliding and lets every card stretch.
+.product-slider-container.tns-horizontal {
+    display: flex;
+
+    > .tns-item {
+        display: flex;
+        flex-shrink: 0;
+
+        > .product-box { width: 100%; }
+    }
+}

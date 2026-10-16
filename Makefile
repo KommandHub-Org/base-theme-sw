@@ -1,4 +1,4 @@
-.PHONY: help up down build restart shell plugin-list test test-coverage cs cs-fix analyse fixture-load resync prepare validate-plugin cli changelog zip e2e-install e2e-setup e2e e2e-headed e2e-report check
+.PHONY: help up down build restart shell plugin-list test test-coverage cs cs-fix analyse fixture-load resync prepare validate-plugin cli changelog zip e2e-install e2e-setup e2e-cms e2e e2e-headed e2e-report check
 
 CONTAINER := shopware
 PLUGIN_DIR := custom/static-plugins/KmhBaseTheme
@@ -95,6 +95,7 @@ help:
 	@echo "  check             - cs + analyse + test (everything that runs in the container)"
 	@echo "  e2e-install       - Install Playwright and Chromium on the host (once)"
 	@echo "  e2e-setup         - Activate theme + demo data, seed, assign theme, map domain"
+	@echo "  e2e-cms           - (Re)seed the Shopping Experiences homepage showcase"
 	@echo "  e2e               - Run the Playwright suite against this stack"
 	@echo "  e2e-headed        - Same, with a visible browser"
 	@echo "  e2e-report        - Open the HTML report of the last E2E run"
@@ -259,6 +260,16 @@ e2e-setup:
 	docker compose exec $(CONTAINER) bin/console system:config:set core.cart.wishlistEnabled true
 	docker compose exec $(CONTAINER) bin/console theme:change --all --sync KmhBaseTheme
 	docker compose exec $(CONTAINER) bin/console dal:refresh:index
+	$(MAKE) e2e-cms
+
+# Homepage showcase of every core CMS block (cms.spec.ts). Talks to the
+# Admin API through a throwaway integration; re-runnable.
+e2e-cms:
+	@set -e; creds=$$(docker compose exec -T $(CONTAINER) bin/console integration:create kmh-e2e-cms --admin); \
+	SW_CLIENT_ID=$$(echo "$$creds" | sed -n 's/^SHOPWARE_ACCESS_KEY_ID=//p' | tr -d '\r') \
+	SW_CLIENT_SECRET=$$(echo "$$creds" | sed -n 's/^SHOPWARE_SECRET_ACCESS_KEY=//p' | tr -d '\r') \
+	SW_URL=http://localhost:$(E2E_PORT) SW_SALES_CHANNEL=Storefront \
+	node tests/e2e/fixtures/seed-cms-home.mjs
 	docker compose exec $(CONTAINER) bin/console cache:clear
 
 e2e:
