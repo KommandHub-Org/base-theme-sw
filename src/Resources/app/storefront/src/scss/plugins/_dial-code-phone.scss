@@ -1,0 +1,17 @@
+/*
+KmhSmsSW — dial code + national number phone field
+==================================================
+Optional: matches only the plugin's own markup.
+
+@sw-package framework
+*/
+
+// Bootstrap squares the inner corners of every input-group child that isn't
+// last; the plugin renders hidden feedback elements after the number field,
+// so its outer (right) corners lost their radius too.
+.kmh-dial-code-phone > .kmh-dial-code-phone__national {
+    // Bootstrap's `.input-group:not(.has-validation) > :not(:last-child):not(…)`
+    // chain is six selectors deep; !important rather than an arms race.
+    border-top-right-radius: var(--radius) !important;
+    border-bottom-right-radius: var(--radius) !important;
+}

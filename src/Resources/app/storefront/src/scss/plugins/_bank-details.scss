@@ -1,0 +1,61 @@
+/*
+KmhPaystackSW / KmhFlutterwaveSW — bank details in the customer account
+==================================================
+Optional: matches only the plugins' own markup. Both plugins render the same
+structure, so one skin serves either or both.
+
+@sw-package framework
+*/
+
+// Label / value pairs ("<p><strong>Bank Name:</strong><br>value</p>") as the
+// theme's quiet-label-over-value pattern.
+.bank-details-content {
+    p {
+        margin-bottom: var(--space-3);
+        color: var(--color-text-primary);
+        overflow-wrap: break-word;
+
+        &:last-child { margin-bottom: 0; }
+    }
+
+    strong {
+        display: block;
+        margin-bottom: 0.125rem;
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+    }
+
+    // The block label already breaks the line.
+    br { display: none; }
+}
+
+// Account overview: each plugin adds its own one-card row. With both active,
+// sit the two cards side by side instead of two half-empty rows.
+@media (min-width: 992px) {
+    .account-overview:has(.js-account-overview-bank_details + .js-account-overview-bank_details) {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: var(--bs-gutter-x, 1.5rem);
+
+        > * { grid-column: 1 / -1; }
+
+        // Other overview rows keep their normal content height; stretched grid
+        // items would make the cards' height:100% swallow their bottom margin.
+        > :not(.js-account-overview-bank_details) { align-self: start; }
+        > .account-overview-card { height: auto; }
+
+        > .js-account-overview-bank_details {
+            grid-column: auto;
+            margin-inline: 0;
+            margin-bottom: var(--space-12); // the card's own margin collapses when stretched
+
+            > .account-overview-card {
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 0;
+                padding-inline: 0;
+            }
+        }
+    }
+}

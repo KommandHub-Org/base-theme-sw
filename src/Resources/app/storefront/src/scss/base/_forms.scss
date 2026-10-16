@@ -52,6 +52,18 @@ status red border + message. Labels are 14px medium, sitting 6px above.
     min-height: var(--control-height-sm);
 }
 
+// Some plugins render <select class="form-control"> (not .form-select), which
+// loses the dropdown chevron and reads as a text box. Give it the same chevron
+// as .form-select (re-issued for dark mode below).
+select.form-control:not([multiple]):not([size]) {
+    padding-right: 2.25rem;
+    appearance: none;
+    background-image: #{escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$mono-700}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>"))};
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
 textarea.form-control {
     min-height: calc(var(--control-height) * 2.5);
     border-radius: var(--radius-lg); // a 999px 'pill' radius would warp a box
@@ -183,6 +195,10 @@ input[type='number'] {
     .was-validated .form-control:invalid,
     .was-validated .form-control:valid {
         background-image: none;
+    }
+
+    select.form-control:not([multiple]):not([size]) {
+        background-image: #{escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$mono-200}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>"))};
     }
 
     .form-select {

@@ -1,0 +1,119 @@
+/*
+KmhClickAndPickSW — self-pickup at checkout and on the finish page
+==================================================
+Optional: every selector is the plugin's own markup, so nothing matches (and
+nothing ships beyond a few bytes) when the plugin isn't installed.
+
+The plugin ships the pickup card with an inline <style> (gradient, fixed hex
+colours, "Segoe UI"); that block sits after the theme CSS in the page, so the
+overrides below use one extra class of specificity to win without !important.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Pickup fields inside the self-pickup shipping option
+// --------------------------------------------------
+[data-sales-channel-pickup-location],
+[data-sales-channel-pickup-time] {
+    // The plugin's labels carry no .form-label class.
+    label {
+        display: block;
+        margin-bottom: 0.375rem;
+        color: var(--color-text-primary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+    }
+
+    label.mt-2 {
+        margin-top: var(--space-3) !important; // beat .mt-2 utility for even rhythm
+    }
+
+    [data-pickup-location-geolocation] {
+        font-size: var(--font-size-xs);
+    }
+}
+
+// --------------------------------------------------
+// Pickup card (finish page, order details)
+// --------------------------------------------------
+.pickup-location-location-field-id-info-inner {
+    .pickup-location-card {
+        padding: var(--space-4) var(--space-5);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-xs);
+        color: var(--color-text-primary);
+        font-family: inherit;
+        line-height: var(--line-height-base);
+    }
+
+    .pickup-location-card__header {
+        align-items: center;
+        margin-bottom: var(--space-3);
+    }
+
+    .pickup-location-card__badge {
+        padding: 0.2em 0.65em;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        background: var(--color-bg-muted);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-medium);
+        letter-spacing: 0;
+        text-transform: none;
+    }
+
+    .pickup-location-card__remove {
+        padding: 0.3125rem var(--space-3);
+        border: 1px solid var(--color-border-strong);
+        border-radius: var(--radius);
+        background: var(--color-surface);
+        box-shadow: var(--shadow-xs);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        @include kmh-motion-safe {
+            transition: background-color var(--transition-fast);
+        }
+
+        &:hover,
+        &:focus {
+            background: var(--color-bg-subtle);
+            border-color: var(--color-border-strong);
+            box-shadow: var(--shadow-xs);
+        }
+    }
+
+    .pickup-location-card__name {
+        margin-bottom: var(--space-2);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: var(--tracking-snug);
+    }
+
+    .pickup-location-card__meta {
+        gap: var(--space-1);
+    }
+
+    .pickup-location-card__row {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+    }
+
+    .pickup-location-card__label {
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-medium);
+    }
+
+    .pickup-location-card__feedback {
+        color: var(--color-success-text);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-medium);
+    }
+}

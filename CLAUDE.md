@@ -35,6 +35,7 @@ src/Resources/
     component/ cards+tables, overlays, alerts+badges, page-header+breadcrumb, listing, product card
     layout/    header+nav, off-canvas, footer, chrome, container
     page/      product-detail, checkout, account
+    plugins/   OPTIONAL skins for Kommandhub plugins (selectors = plugin markup only)
   views/storefront/               small block-preserving Twig overrides
   snippet/                        storefront.<locale>.json
 tests/Unit/                       PHPUnit (theme class, theme.json, snippets)
@@ -57,6 +58,10 @@ tests/e2e/                        Playwright (see README → End-to-end tests)
 - **Specificity, not `!important`.** Match core's selector specificity; use
   `!important` only to beat a core utility class or inline CMS style, with a
   comment saying which.
+- **Plugins are optional.** Style a plugin's UI in `scss/plugins/<plugin>.scss`
+  using only that plugin's own selectors; never reference a plugin from the
+  theme's Twig, `theme.json` or composer.json. Its E2E test must `test.skip`
+  when the plugin's markup is absent.
 - Add a test with each behaviour change: PHPUnit for theme.json/snippets, a
   Playwright assertion for anything visible.
 

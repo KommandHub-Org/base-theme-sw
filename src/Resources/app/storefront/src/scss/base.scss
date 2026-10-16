@@ -40,6 +40,13 @@ entry point.
 @import 'layout/footer';
 @import 'layout/chrome';
 
+// Optional plugin skins -------------------------------------------------------
+// Kommandhub plugins with storefront UI. Selectors target each plugin's own
+// markup only, so the theme has no dependency on them: absent plugin, no match.
+@import 'plugins/click-and-pick';
+@import 'plugins/bank-details';
+@import 'plugins/dial-code-phone';
+
 // Pages ---------------------------------------------------------------------
 @import 'page/product-detail';
 @import 'page/checkout';

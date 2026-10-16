@@ -134,6 +134,24 @@ that Shopware core already self-hosts (`@Storefront` assets), falling back to th
 system stack. To use another font, add an `@font-face` in `base.scss` and point
 `sw-font-family-base` / `sw-font-family-headline` at it.
 
+## Kommandhub plugin skins (optional)
+
+The theme styles the storefront UI of the Kommandhub plugins so they match the
+design system — and depends on none of them. Every rule in `scss/plugins/`
+targets the plugin's own markup, so with a plugin absent nothing matches; no
+Twig of the theme references a plugin.
+
+| Plugin | What the theme adjusts |
+|---|---|
+| KmhClickAndPickSW | pickup labels and selects at checkout; the pickup card's inline styles (gradient, fixed colours, Segoe UI) replaced with tokens — light + dark |
+| KmhPaystackSW / KmhFlutterwaveSW | bank details as label/value pairs; with both active, the two account-overview cards sit side by side |
+| KmhSmsSW | dial-code + number field keeps its rounded outer corners |
+| KmhAfricaCommerceCoreSW | none needed — its address fields use core form markup |
+
+Generic fix that also serves plugins: any `<select class="form-control">` gets
+the same chevron as `.form-select`. `tests/e2e/plugins.spec.ts` checks each skin
+and skips itself when the plugin isn't on the shop.
+
 ## End-to-end tests
 
 A Playwright suite in `tests/e2e/` drives a live storefront that has the theme
@@ -146,7 +164,8 @@ theme is responsible for:
 | `listing.spec.ts` | horizontal filter row (even 40px row, 24px under title), boolean filter ring + active chip, phone filter sheet stacks full width; sidebar active category, card rows align, pagination |
 | `wishlist.spec.ts` | red heart when saved, header counter fully visible, wishlist page header + no empty toolbar |
 | `checkout.spec.ts` | cart drawer + success tint, cart page title/counter, register-form validation colour; logged-in customer places an order → finish page → order history with status chip; account pages share the page-header pattern |
-| `theme.spec.ts` | WCAG AA text contrast (4.5:1 / 3:1 large) on guest and customer pages, light and dark |
+| `theme.spec.ts` | WCAG AA text contrast (4.5:1 / 3:1 large) on guest and customer pages and the open account menu, light and dark |
+| `plugins.spec.ts` | optional plugin skins (pickup controls + contrast, bank details layout, dial-code field); each skips when its plugin is absent |
 
 Run it against the plugin's own stack (recommended — see *Development*):
 
