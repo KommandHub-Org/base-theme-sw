@@ -1,0 +1,351 @@
+/*
+Breadcrumb & page header
+==================================================
+One rhythm for the top of every page:
+
+    breadcrumb   12px →   title   8px →   description / meta   →   actions
+                          ──────────── 32px ────────────→   main content
+
+Breadcrumb: compact 13px trail, muted parents, current page in ink medium
+(plain text, aria-current). Slash separators. On phones it collapses to
+"… / parent / current" and long names truncate, so it never wraps or
+competes with the title.
+
+Page header: a reusable `.page-header` component for any template —
+
+    <header class="page-header">
+      <div class="page-header-main">
+        <p class="page-header-eyebrow">Settings</p>          (optional)
+        <div class="page-header-heading">
+          <h1 class="page-title">Orders</h1>
+          <span class="badge bg-success">Paid</span>            (optional meta)
+        </div>
+        <p class="page-description">Short supporting line.</p> (optional)
+      </div>
+      <div class="page-header-actions">…buttons…</div>          (optional)
+      <nav class="page-header-nav">…tabs…</nav>                 (optional)
+      <div class="page-header-toolbar">…filters/search…</div>   (optional)
+    </header>
+
+Shopware's own page headers (account, cart, checkout, search, wishlist, 404,
+product, CMS category title) are mapped onto the same mixins below, so core
+markup and its extension blocks stay untouched.
+
+@sw-package framework
+*/
+
+@import '../abstract/config';
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Shared header primitives
+// --------------------------------------------------
+@mixin kmh-page-title {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    text-align: left;
+    text-wrap: balance;
+}
+
+@mixin kmh-page-description {
+    max-width: 65ch;
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+}
+
+// Inline contextual meta next to a title (counts, status): muted, regular,
+// optically aligned with the title's x-height rather than its baseline.
+@mixin kmh-page-title-meta {
+    margin: 0 0 0 var(--space-2);
+    color: var(--color-text-muted) !important; // beat core .text-dark-emphasis
+    font-size: var(--font-size-lg) !important;  // beat core .fs-3
+    font-weight: var(--font-weight-regular) !important; // beat core .fw-bold
+    letter-spacing: 0;
+    vertical-align: baseline;
+}
+
+// --------------------------------------------------
+// Breadcrumb
+// --------------------------------------------------
+.cms-breadcrumb {
+    padding-top: var(--space-6);
+    padding-bottom: 0;
+}
+
+.breadcrumb {
+    --bs-breadcrumb-divider: '/';
+    --bs-breadcrumb-item-padding-x: var(--space-2);
+    --bs-breadcrumb-divider-color: var(--color-border-strong);
+    --bs-breadcrumb-item-active-color: var(--color-text-primary);
+    flex-wrap: nowrap;
+    align-items: center;
+    min-width: 0;
+    margin: 0 0 var(--space-3);
+    padding: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    background: none;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex: 0 1 auto;
+    color: var(--color-text-muted);
+
+    + .breadcrumb-item::before {
+        flex: 0 0 auto;
+        color: var(--color-border-strong);
+        font-weight: var(--font-weight-regular);
+    }
+}
+
+.breadcrumb-link,
+.breadcrumb-current,
+.breadcrumb-item > [itemprop='item'] {
+    display: block;
+    max-width: 16rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.breadcrumb .breadcrumb-link { // beats core `.breadcrumb a { font-size: 1rem }`
+    font-size: inherit;
+    margin: -0.125rem -0.25rem;
+    padding: 0.125rem 0.25rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    @include kmh-motion-safe {
+        transition: color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    &:hover {
+        color: var(--color-text-primary);
+        background-color: var(--color-bg-muted);
+    }
+
+    &:focus-visible {
+        color: var(--color-text-primary);
+        @include kmh-focus-ring(1px);
+    }
+}
+
+.breadcrumb-current {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+}
+
+// A one-item trail (top-level category) only repeats the page title — hide it
+// and give the title the spacing the breadcrumb would have provided.
+.cms-breadcrumb:has(.breadcrumb-item:only-child) {
+    display: none;
+
+    + .cms-page .cms-section:first-child {
+        padding-top: var(--space-8);
+    }
+}
+
+// Phones: keep only parent + current, with an ellipsis standing in for the
+// rest of the trail. Single line, no wrapping.
+@media (max-width: #{$kmh-bp-md - 0.02px}) {
+    .breadcrumb-item:not(:nth-last-child(-n + 2)) {
+        display: none;
+    }
+
+    .breadcrumb-item:nth-last-child(2):not(:first-child)::before {
+        content: '…\00a0\00a0/';
+        padding-right: var(--space-2);
+        color: var(--color-text-muted);
+    }
+
+    .breadcrumb-link,
+    .breadcrumb-current {
+        max-width: 11rem;
+    }
+}
+
+// --------------------------------------------------
+// Page header component
+// --------------------------------------------------
+.page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    column-gap: var(--space-6);
+    row-gap: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+.page-header-main {
+    flex: 1 1 24rem;
+    min-width: 0;
+}
+
+.page-header-eyebrow {
+    margin: 0 0 var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.page-header-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+}
+
+.page-title { @include kmh-page-title; }
+.page-description { @include kmh-page-description; }
+
+.page-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+}
+
+// Tabs / secondary nav: full-width row on the header's hairline.
+.page-header-nav {
+    flex: 1 0 100%;
+    display: flex;
+    gap: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+
+    .nav-link {
+        margin-bottom: -1px;
+        padding: var(--space-3) var(--space-1);
+        border-bottom: 2px solid transparent;
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+
+        &:hover { color: var(--color-text-primary); }
+
+        &.active,
+        &[aria-current='page'] {
+            color: var(--color-text-primary);
+            border-bottom-color: var(--color-action);
+        }
+    }
+}
+
+// Filters / search / sorting row.
+.page-header-toolbar {
+    flex: 1 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+@media (max-width: #{$kmh-bp-md - 0.02px}) {
+    .page-header { margin-bottom: var(--space-6); }
+    .page-header-actions { margin-left: 0; width: 100%; }
+}
+
+// --------------------------------------------------
+// Shopware page headers → the same component
+// --------------------------------------------------
+
+// Account overview / profile / orders: <div.account-welcome><h1/><p/></div>
+// Addresses:                           <h1.account-welcome/><p/>
+.account-welcome {
+    margin-bottom: var(--space-8);
+
+    h1 { @include kmh-page-title; }
+    p { @include kmh-page-description; }
+}
+
+h1.account-welcome {
+    @include kmh-page-title;
+    margin-bottom: 0;
+
+    + p {
+        @include kmh-page-description;
+        margin-bottom: var(--space-8);
+    }
+}
+
+// Cart / confirm: <h1 .d-inline-block/> + <span counter/> — title with meta.
+.cart-main-header,
+.confirm-main-header {
+    @include kmh-page-title;
+    display: inline-block;
+}
+
+.cart-main-header-item-counter,
+.confirm-main-header-item-counter {
+    @include kmh-page-title-meta;
+    margin-bottom: var(--space-8) !important; // core .mb-4
+}
+
+// Search results and wishlist: core centres them; align with every other page.
+.search-headline,
+.wishlist-headline {
+    @include kmh-page-title;
+    display: block;
+    margin-bottom: var(--space-8) !important; // core .mb-4
+}
+
+// 404: keep it centred (a dead end, not a page in the hierarchy).
+.error-404 h1,
+.container-main > h1.text-center {
+    @include kmh-page-title;
+    text-align: center;
+}
+
+// Product detail: name + optional manufacturer logo on one row.
+.product-detail-name {
+    @include kmh-page-title;
+}
+
+.product-heading-manufacturer-logo-container img {
+    max-height: 2rem;
+    width: auto;
+}
+
+.cms-block-product-heading {
+    margin-bottom: var(--space-6);
+}
+
+// CMS category pages: the title is a CMS text block, the description often an
+// image+text block with no image. Pull the first section up under the
+// breadcrumb, and when the image is missing let the text run as the
+// description under the title instead of floating in the right half.
+// When that first section is the page header (starts with an h1), close the
+// gap to the content below to the standard 32px.
+.cms-breadcrumb + .cms-page .cms-section:first-child {
+    padding-top: var(--space-2);
+}
+
+.cms-breadcrumb + .cms-page .cms-section:first-child:has(.cms-element-text > h1:first-child) {
+    padding-bottom: 0;
+
+    + .cms-section { padding-top: var(--space-8); }
+}
+
+.cms-section:first-child .cms-block:first-child .cms-element-text > h1:first-child {
+    @include kmh-page-title;
+}
+
+.cms-block-image-text:not(:has(.cms-element-image img)) { // (:has can't nest)
+    .cms-block-container { padding-block: 0 !important; } // inline style from the CMS
+    .col-md-6:has(.cms-element-image) { display: none; }
+    .col-md-6:has(.cms-element-text) { flex: 1 1 100%; max-width: 100%; }
+
+    .cms-element-text p:only-child,
+    .cms-element-text p:first-child {
+        @include kmh-page-description;
+    }
+}

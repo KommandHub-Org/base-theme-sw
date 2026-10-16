@@ -1,0 +1,16 @@
+{% sw_extends '@Storefront/storefront/page/content/product-detail.html.twig' %}
+
+{#
+    Pass the product to the breadcrumb (core includes it with `only`), so the
+    product name becomes the current crumb instead of its category.
+#}
+{% block cms_breadcrumb %}
+    <div class="cms-breadcrumb container">
+        {% sw_include '@Storefront/storefront/layout/breadcrumb.html.twig' with {
+            context: context,
+            themeIconConfig: themeIconConfig,
+            category: page.product.seoCategory,
+            product: page.product
+        } only %}
+    </div>
+{% endblock %}

@@ -75,18 +75,7 @@ radio itself. Line items reuse component/_line-item.scss.
 // --------------------------------------------------
 // Cart page
 // --------------------------------------------------
-// 6.7 renders `.cart-main-header` as the page <h1> with the item counter as
-// an inline sibling — style it as a heading, not a table-header label.
-.cart-main-header {
-    color: var(--color-text-primary);
-}
-
-.cart-main-header-item-counter,
-.confirm-main-header-item-counter {
-    color: var(--color-text-muted) !important; // beat core .text-dark-emphasis
-    text-transform: none;
-    letter-spacing: 0;
-}
+// (Cart / confirm titles: component/_page-header.scss.)
 
 .checkout-product-table {
     width: 100%;

@@ -1,0 +1,24 @@
+{% sw_extends '@Storefront/storefront/layout/meta.html.twig' %}
+
+{#
+    Dark mode, step 1 (no flash): apply the visitor's stored choice to <html>
+    before the stylesheet paints. Lives here, not in base.html.twig's
+    `base_head`, because some pages (e.g. the product page) replace
+    `base_head` entirely; every page renders this meta template, including the
+    product page's own meta, which extends it.
+#}
+{% block layout_head_stylesheet %}
+    {% if theme_config('kmh-dark-mode-toggle') %}
+        <script>
+            (function () {
+                try {
+                    var t = localStorage.getItem('kmh-theme');
+                    if (t === 'dark' || t === 'light') {
+                        document.documentElement.setAttribute('data-theme', t);
+                    }
+                } catch (e) {}
+            })();
+        </script>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

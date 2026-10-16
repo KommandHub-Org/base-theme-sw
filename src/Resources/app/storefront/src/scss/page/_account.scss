@@ -103,9 +103,7 @@ label (+ tone).
 // --------------------------------------------------
 // Overview
 // --------------------------------------------------
-.account-welcome h1 {
-    color: var(--color-text-primary);
-}
+// (Page title + intro: component/_page-header.scss.)
 
 .account-overview-card .card,
 .account-overview-card {
@@ -173,12 +171,4 @@ label (+ tone).
 .address-manager-address.is-selected {
     border-color: var(--color-action);
     box-shadow: inset 0 0 0 1px var(--color-action);
-}
-
-// --------------------------------------------------
-// Wishlist — page title aligned like every other page heading
-// --------------------------------------------------
-.wishlist-headline {
-    justify-content: flex-start; // core centres it as a flex row
-    margin-bottom: var(--space-6);
 }

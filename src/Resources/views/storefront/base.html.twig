@@ -3,29 +3,15 @@
 {#
     Dark mode (opt-in via `kmh-dark-mode-toggle`). Implemented inline — no
     webpack build required:
-      1. A no-flash script in <head> applies the stored [data-theme] before the
-         stylesheet paints (only an explicit user choice; default stays light).
+      1. A no-flash script in <head> (layout/meta.html.twig) applies the stored
+         [data-theme] before the stylesheet paints (default stays light).
       2. A wiring script at end of <body> toggles + persists the choice for any
-         `[data-kmh-theme-toggle]` control (the top-bar button).
+         `[data-kmh-theme-toggle]` control (the header moon button).
     Both are gated on the setting, so a theme with dark mode off ships no extra
     markup or script.
 #}
 
-{% block base_head %}
-    {% if theme_config('kmh-dark-mode-toggle') %}
-        <script>
-            (function () {
-                try {
-                    var t = localStorage.getItem('kmh-theme');
-                    if (t === 'dark' || t === 'light') {
-                        document.documentElement.setAttribute('data-theme', t);
-                    }
-                } catch (e) {}
-            })();
-        </script>
-    {% endif %}
-    {{ parent() }}
-{% endblock %}
+{# Step 1 (no-flash <head> script) lives in layout/meta.html.twig. #}
 
 {% block base_body_script %}
     {{ parent() }}

@@ -1,12 +1,61 @@
 {% sw_extends '@Storefront/storefront/layout/breadcrumb.html.twig' %}
 
 {#
-    Override: gate the whole breadcrumb behind the `kmh-show-breadcrumb` setting.
-    Returning early (rather than hiding via CSS) keeps the DOM clean when off.
-    All original blocks/schema.org markup are preserved via parent().
+    Breadcrumb
+    - Gated by the `kmh-show-breadcrumb` theme setting (no DOM when off).
+    - The current page is plain text with aria-current="page", never a link.
+    - On a product page the product itself is the current page: every category
+      stays a link and the product name is appended as the final crumb (core
+      marks the category as current, which misleads screen readers). The
+      product arrives via page/content/product-detail.html.twig.
+    - Separators are drawn in CSS (`.breadcrumb-item + .breadcrumb-item::before`),
+      so the legacy <div> placeholders — invalid inside <ol> — are dropped.
+    - schema.org BreadcrumbList markup is preserved; all blocks are kept so
+      plugins extending `layout_breadcrumb_list_item` still work.
 #}
 {% block layout_breadcrumb_inner %}
     {% if theme_config('kmh-show-breadcrumb') %}
+        {% set kmhProduct = product is defined ? product : null %}
         {{ parent() }}
     {% endif %}
 {% endblock %}
+
+{% block layout_breadcrumb_list_item %}
+    {% set kmhIsCurrent = not kmhProduct and key is same as(categoryId) %}
+    <li class="breadcrumb-item{% if kmhIsCurrent %} active{% endif %}"
+        {% if kmhIsCurrent %}aria-current="page"{% endif %}
+        itemprop="itemListElement"
+        itemscope
+        itemtype="https://schema.org/ListItem">
+        {% if kmhIsCurrent or breadcrumbCategory.type == 'folder' %}
+            {% if categoryUrl and breadcrumbCategory.type != 'folder' %}
+                <link itemprop="item" href="{{ categoryUrl }}">
+            {% endif %}
+            <span class="breadcrumb-current" itemprop="name" title="{{ name }}">{{ name }}</span>
+        {% else %}
+            <a href="{{ categoryUrl }}"
+               class="breadcrumb-link"
+               title="{{ name }}"
+               {% if breadcrumbCategory.shouldOpenInNewTab %}target="_blank"{% endif %}
+               itemprop="item">
+                <link itemprop="url" href="{{ categoryUrl }}">
+                <span class="breadcrumb-title" itemprop="name">{{ name }}</span>
+            </a>
+        {% endif %}
+        <meta itemprop="position" content="{{ loop.index }}">
+    </li>
+
+    {# Product page: append the product as the current crumb after the last category. #}
+    {% if kmhProduct and loop.last %}
+        <li class="breadcrumb-item active"
+            aria-current="page"
+            itemprop="itemListElement"
+            itemscope
+            itemtype="https://schema.org/ListItem">
+            <span class="breadcrumb-current" itemprop="name" title="{{ kmhProduct.translated.name }}">{{ kmhProduct.translated.name }}</span>
+            <meta itemprop="position" content="{{ loop.index + 1 }}">
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block layout_breadcrumb_placeholder %}{% endblock %}

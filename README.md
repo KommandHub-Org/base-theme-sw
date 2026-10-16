@@ -68,6 +68,14 @@ Dark mode is the same names re-valued under `[data-theme="dark"]`.
   core's spinner in `currentColor`.
 - **Forms** — 40px, 16px text (no iOS zoom), borders kept at 3:1 (WCAG 1.4.11),
   ink border + soft halo on focus, status-red invalid state + message.
+- **Breadcrumb → page header → content** — 13px muted trail with `/`
+  separators (current page in ink, plain text, `aria-current`; on product
+  pages the product is the current crumb), 12px to a semibold title, 8px to an
+  optional description, 32px to content. Phones collapse the trail to
+  `… / parent / current`. Reuse the `.page-header` component
+  (`component/_page-header.scss` documents the markup: title, description,
+  meta badges, actions, tabs, toolbar); core headers are mapped onto the same
+  mixins.
 - **Surfaces** — hairline border + xs shadow for cards; lg shadow for anything
   floating (dropdowns, modals, search suggest, flyout).
 - **Focus** — one solid 2px ring, `:focus-visible` only, never suppressed.
@@ -126,6 +134,41 @@ that Shopware core already self-hosts (`@Storefront` assets), falling back to th
 system stack. To use another font, add an `@font-face` in `base.scss` and point
 `sw-font-family-base` / `sw-font-family-headline` at it.
 
+## End-to-end tests
+
+A Playwright suite in `tests/e2e/` drives a live storefront that has the theme
+assigned — desktop (1440×900) and phone (Pixel 7) — and checks behaviour the
+theme is responsible for:
+
+| Spec | Covers |
+|---|---|
+| `header.spec.ts` | header icons share one centre/size, no sideways scroll, one-row phone header, full-bleed 32px top bar, active nav indicator, dark-mode toggle (switch, persist, revert); breadcrumb semantics (current page is text + `aria-current`, product crumb on PDP, single-item trail hidden, phone collapse, keyboard focus ring); page titles share one style |
+| `listing.spec.ts` | horizontal filter row (even 40px row, 24px under title), boolean filter ring + active chip, phone filter sheet stacks full width; sidebar active category, card rows align, pagination |
+| `wishlist.spec.ts` | red heart when saved, header counter fully visible, wishlist page header + no empty toolbar |
+| `checkout.spec.ts` | cart drawer + success tint, cart page title/counter, register-form validation colour; logged-in customer places an order → finish page → order history with status chip; account pages share the page-header pattern |
+| `theme.spec.ts` | WCAG AA text contrast (4.5:1 / 3:1 large) on guest and customer pages, light and dark |
+
+```bash
+npm install
+npx playwright install chromium
+npm run e2e                                  # against http://localhost
+E2E_BASE_URL=https://staging.example.com npm run e2e
+npm run e2e:report                           # HTML report of the last run
+```
+
+Notes:
+- Paths default to the KmhDemoDataSW catalogue; override with
+  `E2E_SIDEBAR_CATEGORY`, `E2E_TOOLBAR_CATEGORY`, `E2E_PRODUCT`,
+  `E2E_PRODUCT_NAME` (see `tests/e2e/support.ts`).
+- Each run registers one throwaway customer (`kmh-e2e-…@example.com`) and
+  places **one real order** (cash on delivery) — run it against dev/staging,
+  not production. Its session and credentials stay in the git-ignored
+  `tests/e2e/.auth/`.
+- Cookie consent is pre-set, so the banner never covers controls.
+- Order- and wishlist-changing tests run on the desktop project only (both
+  projects share the run's customer); the 11 skips are these plus
+  device-specific checks.
+
 ## Build
 
 ```bash
@@ -140,7 +183,8 @@ Activate the theme in Admin → Sales Channel → Theme, then assign *KmhBaseThe
 
 The storefront is styled end-to-end. All work is token-driven SCSS; the Twig
 overrides are small and block-preserving (sticky-header wrapper, header actions
-for the theme toggle, dark logo, top-bar and breadcrumb config gates).
+for the theme toggle, dark logo, top-bar gate, breadcrumb (setting gate,
+non-link current crumb, product crumb) and the PDP breadcrumb include).
 
 | Area | Files |
 |---|---|
@@ -148,7 +192,8 @@ for the theme toggle, dark logo, top-bar and breadcrumb config gates).
 | Header, nav, search, actions | `layout/_header.scss`, `views/…/header.html.twig`, `header/header.html.twig`, `header/logo.html.twig`, `top-bar.html.twig` |
 | Listing + product cards | `component/_product-card.scss` |
 | Product detail (PDP) | `page/_product-detail.scss` |
-| Breadcrumb, filters, pagination | `component/_listing.scss`, `views/…/breadcrumb.html.twig` |
+| Breadcrumb + page headers | `component/_page-header.scss`, `views/…/breadcrumb.html.twig`, `views/…/page/content/product-detail.html.twig` |
+| Filters, pagination, category nav | `component/_listing.scss` |
 | Off-canvas nav + cart, line items | `layout/_offcanvas.scss`, `component/_line-item.scss` |
 | Checkout (cart/confirm/finish/register) | `page/_checkout.scss` |
 | Alerts, badges, order status | `component/_alert.scss` |

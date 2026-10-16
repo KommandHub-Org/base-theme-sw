@@ -73,11 +73,92 @@ via flex-basis at md+ — no Twig override, same pattern as the listing grid).
     margin-bottom: 0;
 }
 
+// --------------------------------------------------
+// Brand + service hotline column
+//   logo  →  20px  →  "Service hotline"  →  label / NUMBER / hours  →  contact link
+// The hotline copy is one translatable snippet ("Support … via: <a tel> …
+// hours"); turning the tel link into a block splits it into three lines
+// without editing the text.
+// --------------------------------------------------
+.footer-brand {
+    margin-bottom: var(--space-5);
+}
+
+// Desktop: core pads every column heading 48px from the top. Drop it so the
+// logo and the neighbouring column headings start on the same line (the
+// footer's own top padding supplies the space) — a brand column.
+@media (min-width: $kmh-bp-md) {
+    .footer-columns .footer-column-headline {
+        padding-top: 0;
+    }
+
+    .footer-brand {
+        // Logo is 32px; neighbouring headings are ~21px — centre them optically.
+        margin-top: -0.0625rem;
+    }
+}
+
+.footer-brand-link {
+    display: inline-block;
+    border-radius: var(--radius-sm);
+}
+
+.footer-brand-img {
+    display: block;
+    height: 2rem;
+    width: auto;
+    max-width: 12rem;
+    object-fit: contain;
+    object-position: left center;
+    // The default logo PNG has an opaque white background; multiply drops the
+    // white onto the grey footer (no effect on transparent logos).
+    mix-blend-mode: multiply;
+}
+
+// Same dark-mode treatment as the header logo.
+.footer-brand-img-dark { display: none; }
+
+[data-theme='dark'] {
+    .footer-brand-img:not(.footer-brand-img-dark) {
+        filter: invert(1);
+        mix-blend-mode: screen; // inverted white bg is now black — drop it
+    }
+
+    .footer-brand-img-dark { mix-blend-mode: normal; }
+    .footer-brand-img-dark { display: block; }
+    .footer-brand-img-dark + .footer-brand-img { display: none; }
+}
+
 .footer-contact-hotline {
-    color: var(--color-text-primary);
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-semibold);
-    font-variant-numeric: tabular-nums;
+    max-width: 18rem;
+    margin-bottom: var(--space-4);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-base);
+
+    a {
+        display: block;
+        width: fit-content;
+        margin-block: var(--space-1);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: var(--tracking-snug);
+        line-height: 1.3;
+        font-variant-numeric: tabular-nums;
+        border-radius: var(--radius-sm);
+        @include kmh-motion-safe {
+            transition: opacity var(--transition-fast);
+        }
+
+        &:hover { opacity: 0.72; }
+    }
+}
+
+.footer-contact-form {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
 }
 
 // Bottom bar — copyright, VAT note, payment logos.

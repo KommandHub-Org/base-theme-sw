@@ -1,0 +1,31 @@
+{% sw_extends '@Storefront/storefront/layout/footer/footer.html.twig' %}
+
+{#
+    Brand block above the service hotline: the shop logo (same asset as the
+    header, incl. the optional dark-mode logo). Sits outside the collapsible
+    content so it stays visible when the footer columns collapse on phones.
+    The hotline headline/content blocks are rendered untouched via parent().
+#}
+{% block layout_footer_navigation_hotline_headline %}
+    {% block layout_footer_brand %}
+        {% set kmhShopName = config('core.basicInformation.shopName') %}
+        <div class="footer-brand">
+            <a class="footer-brand-link"
+               href="{{ path('frontend.home.page') }}"
+               title="{{ 'header.logoLink'|trans|striptags }}">
+                {% if theme_config('kmh-dark-mode-toggle') and theme_config('kmh-logo-dark') %}
+                    <img src="{{ theme_config('kmh-logo-dark')|sw_encode_url }}"
+                         alt="{{ kmhShopName ?: 'header.logoLink'|trans|striptags }}"
+                         class="footer-brand-img footer-brand-img-dark"
+                         loading="lazy">
+                {% endif %}
+                <img src="{{ theme_config('sw-logo-desktop')|sw_encode_url }}"
+                     alt="{{ kmhShopName ?: 'header.logoLink'|trans|striptags }}"
+                     class="footer-brand-img"
+                     loading="lazy">
+            </a>
+        </div>
+    {% endblock %}
+
+    {{ parent() }}
+{% endblock %}

@@ -17,3 +17,9 @@
 /src/Resources/app/storefront/src/scss/base/_fonts.scss
 #  - assets/fonts/: only held the removed self-hosted font
 /src/Resources/app/storefront/src/assets/fonts/
+
+# E2E (Playwright)
+/node_modules/
+/tests/e2e/.results/
+/tests/e2e/.report/
+/tests/e2e/.auth/

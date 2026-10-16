@@ -69,7 +69,6 @@ tokens. Light-mode output is unchanged — the tokens resolve to the same values
 .footer-link,
 .footer-contact-hotline a,
 .footer-column-headline,
-.breadcrumb a,
 .search-suggest-product-link,
 .line-item-label,
 .base-slider-controls-prev,
@@ -77,6 +76,7 @@ tokens. Light-mode output is unchanged — the tokens resolve to the same values
 .header-minimal-back-to-shop-button,
 .header-minimal-contact a,
 .filter-panel-submit,
+.product-detail-tab-preview-more,
 .account-menu-header {
     color: var(--color-text-primary);
 }

@@ -275,3 +275,16 @@ override needed. Cards read as one system across listings and sliders.
         background-color: var(--color-bg-base);
     }
 }
+
+// --------------------------------------------------
+// Wishlist heart — filled red once the product is on the wishlist (cards and
+// the PDP). A hue with meaning, like status. Core's red is lost because the
+// button system tints icons with currentColor.
+// --------------------------------------------------
+.product-wishlist-added .icon-wishlist-added {
+    color: var(--color-danger);
+}
+
+.product-wishlist-btn:hover .icon-wishlist-not-added {
+    color: var(--color-danger);
+}
