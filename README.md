@@ -204,6 +204,7 @@ theme is responsible for:
 | `wishlist.spec.ts` | red heart when saved, header counter fully visible, wishlist page header + no empty toolbar |
 | `checkout.spec.ts` | cart drawer + success tint, cart page title/counter, register-form validation colour; logged-in customer places an order → finish page → order history with status chip; account pages share the page-header pattern |
 | `theme.spec.ts` | WCAG AA text contrast (4.5:1 / 3:1 large) on guest and customer pages and the open account menu, light and dark |
+| `address.spec.ts` | address manager (6.7): rounded address cards, neutral default chip, search row on phones, new-address page spacing; checkout address modal title, segmented shipping/billing switch and contrast, light and dark |
 | `product-tabs.spec.ts` | PDP description (measure, unstriped properties) and reviews (score, aligned distribution bars, date beside stars, reply panel, CTA toggles the form) + contrast, light and dark |
 | `cms.spec.ts` | Shopping Experiences homepage: no sideways scroll, circular bubbles, highlight-row elevation, equal product cards, text-on-image scrim, themed video consent, opt-in classes |
 | `plugins.spec.ts` | optional plugin skins (pickup controls + contrast, bank details layout, dial-code field); each skips when its plugin is absent |
@@ -289,7 +290,7 @@ non-link current crumb, product crumb) and the PDP breadcrumb include).
 | Alerts, badges, order status | `component/_alert.scss` |
 | Dropdowns, modals, tooltips, popovers | `component/_modal.scss` |
 | Footer + global switches | `layout/_footer.scss`, `layout/_container.scss`, `base/_buttons.scss` |
-| Cards, list groups, tables, account | `component/_card.scss`, `page/_account.scss` |
+| Cards, list groups, tables, account, address manager + modal | `component/_card.scss`, `page/_account.scss` |
 | Dark-mode bridge for core's baked colours | `base/_core-colors.scss` |
 
 ### State signalling — where it lives
