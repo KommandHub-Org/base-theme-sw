@@ -1,4 +1,4 @@
-import { test, expect, paths, centreWithin, isMobile, freezeMotion } from './support';
+import { test, expect, paths, centreWithin, isMobile, freezeMotion, isFullyVisible } from './support';
 
 test.describe('Header', () => {
     test('action icons share one vertical centre and size', async ({ page, product }) => {
@@ -58,7 +58,27 @@ test.describe('Header', () => {
         expect(transform).toMatch(/matrix\(1, 0, 0, 1/);
     });
 
-    test('dark-mode toggle switches, persists and switches back', async ({ page, product }) => {
+    test('search suggest flyout opens under the field, unclipped and aligned', async ({ page }, testInfo) => {
+        await page.goto(paths.home);
+        if (isMobile(testInfo)) await page.locator('.search-toggle-btn').click();
+        const input = page.locator('.header-search-input');
+        await input.click();
+        await input.pressSequentially('shirt', { delay: 30 });
+
+        const flyout = page.locator('.search-suggest-container');
+        await expect(flyout).toBeVisible();
+        await expect(flyout.locator('.search-suggest-product').first()).toBeVisible();
+        // Topmost at its own position — i.e. not clipped by an overflow:hidden parent.
+        expect(await isFullyVisible(page, '.search-suggest-container .search-suggest-product')).toBe(true);
+
+        const box = await flyout.boundingBox();
+        const field = await page.locator('.header-search-form .input-group').boundingBox();
+        expect(Math.abs(box!.x - field!.x)).toBeLessThanOrEqual(2);
+        expect(Math.abs(box!.x + box!.width - (field!.x + field!.width))).toBeLessThanOrEqual(2);
+        expect(box!.y).toBeGreaterThan(field!.y + field!.height - 1);
+    });
+
+    test('dark-mode toggle switches, persists and switches back', async ({ page }) => {
         await page.goto(paths.home);
         const toggle = page.locator('[data-kmh-theme-toggle]');
         await expect(toggle).toBeVisible();

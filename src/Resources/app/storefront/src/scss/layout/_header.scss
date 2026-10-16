@@ -240,6 +240,7 @@ indicator.
 // Search — filled field that lifts to a surface on focus
 // --------------------------------------------------
 .header-search {
+    position: relative; // anchor for the search-suggest flyout
     max-width: 36rem;
     margin-inline: auto;
 }
@@ -248,7 +249,9 @@ indicator.
     min-height: var(--control-height);
     border: 1px solid transparent;
     border-radius: var(--radius);
-    overflow: hidden;
+    // No overflow clipping: core renders the search-suggest flyout INSIDE this
+    // group, so `overflow: hidden` would cut it off. The children are
+    // transparent, so the rounded corners don't need clipping anyway.
     background-color: var(--color-bg-muted);
     @include kmh-motion-safe {
         transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
@@ -298,7 +301,15 @@ indicator.
 // Search suggest flyout — a dropdown like any other
 // --------------------------------------------------
 .search-suggest-container {
-    margin-top: var(--space-2);
+    // Directly under the search field, same width and left edge (core uses a
+    // fixed `top: 55px` and a viewport-relative width).
+    top: calc(100% + var(--space-2));
+    left: 0;
+    right: 0;
+    width: auto;
+    min-width: min(20rem, 100%); // never wider than the field on phones
+    font-size: var(--font-size-sm); // compact rows, as in every other menu
+    transform: none; // core centres it with translateX(-50%)
     padding: var(--space-1);
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -320,7 +331,11 @@ indicator.
 }
 
 .search-suggest-product-name { font-weight: var(--font-weight-medium); }
-.search-suggest-product-price { font-variant-numeric: tabular-nums; }
+.search-suggest-product-price {
+    padding-left: var(--space-3); // truncated names must not touch the price
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
 
 // --------------------------------------------------
 // Main navigation
