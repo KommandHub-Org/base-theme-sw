@@ -2,6 +2,8 @@
 
 CONTAINER := shopware
 PLUGIN_DIR := custom/static-plugins/KmhBaseTheme
+# Host user, to hand the bind-mounted checkout back after dockware's boot chown.
+HOST_UID := $(shell id -u)
 
 # Plugins installed via composer, as "<composer package>:<plugin class>".
 # Add sibling plugins this one depends on here.
@@ -189,7 +191,16 @@ prepare:
 	@echo ""
 	@echo "Preparing the project..."
 	$(CHECK_READY)
-	
+
+	@# dockware's first boot unpacks Shopware and runs `rsync --chown=33:33` over
+	@# all of /var/www/html — including this bind-mounted checkout. On Linux (CI)
+	@# that leaves the host files owned by www-data, and the host-side Playwright
+	@# run can't write tests/e2e/.results or .auth. Once boot has finished, give
+	@# the checkout back to the host user; group 33 + g+w keeps it writable for
+	@# the container (e.g. `make zip` -> build/). No-op ownership on macOS.
+	@docker compose exec -T $(CONTAINER) bash -c 'until [ -f /var/www/container.launched ]; do sleep 1; done'
+	docker compose exec -T -u root $(CONTAINER) bash -c 'chown -R $(HOST_UID):33 /var/www/html/$(PLUGIN_DIR) && chmod -R g+w /var/www/html/$(PLUGIN_DIR)'
+
 	docker compose exec $(CONTAINER) rm -rf custom/plugins/*
 
 # Drop the copies a previous run left in custom/static-plugins, and the vendor
