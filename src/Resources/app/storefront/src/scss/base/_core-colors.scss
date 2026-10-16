@@ -1,0 +1,114 @@
+/*
+Core colour bridge
+==================================================
+Shopware core compiles some colours straight from SCSS variables, so they stay
+fixed when the token layer flips (dark mode). Re-point those elements at the
+tokens. Light-mode output is unchanged — the tokens resolve to the same values.
+
+@sw-package framework
+*/
+
+.icon {
+    color: var(--color-text-secondary);
+}
+
+// Ratings: filled stars, review-form stars and distribution bars use the
+// rating hue; empty stars a visible neutral (core: near-invisible $gray-200).
+.icon-review,
+.product-detail-review-form-star.is-active .icon {
+    color: var(--color-rating);
+}
+
+.point-rating.point-blank .icon {
+    color: var(--color-rating-empty);
+}
+
+.product-detail-review-progressbar-bar {
+    background-color: var(--color-rating);
+}
+
+.category-navigation-link,
+.category-navigation-link.is-active {
+    color: var(--color-text-primary);
+}
+
+.header-cart-total,
+.main-navigation-link-text {
+    color: inherit;
+}
+
+.top-bar-nav-btn.btn {
+    --bs-btn-color: var(--color-text-primary);
+    --bs-btn-hover-color: var(--color-text-primary);
+}
+
+
+
+// Bootstrap defines these on `.navbar` / `.nav`, so they must be re-set there.
+.navbar {
+    --bs-navbar-color: var(--color-text-primary);
+    --bs-navbar-hover-color: var(--color-text-primary);
+    --bs-navbar-active-color: var(--color-text-primary);
+}
+
+.nav {
+    --bs-nav-link-color: var(--color-text-primary);
+    --bs-nav-link-hover-color: var(--color-text-primary);
+}
+
+.footer-bottom {
+    background-color: var(--color-bg-subtle);
+}
+
+// Text baked from $sw-headline-color / $sw-text-color / $body-color, which
+// Bootstrap also runs through colour math (so they can't be CSS vars).
+.product-detail-name,
+.wishlist-listing-col .wishlist-listing-header,
+.navigation-flyout-link,
+.navigation-offcanvas-link,
+.footer-link,
+.footer-contact-hotline a,
+.footer-column-headline,
+.breadcrumb a,
+.search-suggest-product-link,
+.line-item-label,
+.base-slider-controls-prev,
+.base-slider-controls-next,
+.header-minimal-back-to-shop-button,
+.header-minimal-contact a,
+.filter-panel-submit,
+.account-menu-header {
+    color: var(--color-text-primary);
+}
+
+// Surfaces baked from $white.
+.offcanvas .offcanvas-header,
+.navigation-offcanvas-placeholder,
+.navigation-offcanvas-overlay,
+.navigation-offcanvas-list-item,
+.header-minimal,
+.cookie-permission-container,
+.search-suggest-container,
+.search-suggest-container::after,
+.modal.zoom-modal .modal-footer,
+.filter-panel-submit,
+.filter-range-unit,
+.base-slider-controls-prev,
+.base-slider-controls-next {
+    background-color: var(--color-surface);
+}
+
+// Subtle fills baked from $light / $gray-100.
+.checkout-aside-summary,
+.product-block-prices-grid thead,
+.line-item-children,
+.order-item-detail-list-item.is-child,
+.order-item-detail-footer,
+.order-item-detail-footnote,
+.address-manager-modal .modal-footer {
+    background-color: var(--color-bg-subtle);
+}
+
+.line-item-children.nesting-level-2 {
+    background-color: var(--color-bg-muted);
+}

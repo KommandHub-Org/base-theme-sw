@@ -1,0 +1,171 @@
+/*
+Off-canvas — shell, mobile navigation & cart
+==================================================
+Monochrome styling for every Bootstrap off-canvas surface: the shared shell,
+the mobile navigation drawer and the cart drawer. Backdrop/overlay use the
+token overlay. No JS changes — Shopware's OffcanvasMenu/Cart plugins stay intact.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Shell
+// --------------------------------------------------
+.offcanvas {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    border-color: var(--color-border) !important;
+    box-shadow: var(--shadow-lg);
+}
+
+.offcanvas .offcanvas-header {
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding: 1rem 1.25rem;
+}
+
+.offcanvas .offcanvas-body {
+    padding: 1rem 1.25rem;
+}
+
+// Close control — quiet icon button, not the heavy default btn-secondary.
+// Scoped to real off-canvas panels: the same markup sits hidden inside PDP tab
+// panes and the account dropdown, and an unscoped `display` here un-hides it.
+.offcanvas .offcanvas-close.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+
+    &:hover {
+        background-color: var(--color-bg-subtle);
+        border-color: var(--color-border-strong);
+        color: var(--color-text-primary);
+    }
+}
+
+// Backdrop.
+.offcanvas-backdrop {
+    background-color: var(--color-overlay);
+}
+
+// --------------------------------------------------
+// Navigation drawer
+// --------------------------------------------------
+.navigation-offcanvas-actions {
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.navigation-offcanvas-headline {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-2) var(--space-3);
+}
+
+.navigation-offcanvas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 0;
+}
+
+// Rows are inset pills (below) — drop core's full-width dividers.
+.navigation-offcanvas-list-item,
+.navigation-offcanvas-link.is-back-link {
+    border: 0;
+}
+
+.navigation-offcanvas-link.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: 0.75rem var(--space-3);
+    border-radius: var(--radius);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+    border-bottom: 0;
+    text-decoration: none;
+    @include kmh-motion-safe {
+        transition: color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    &:hover {
+        color: var(--color-text-primary);
+        background-color: var(--color-bg-muted);
+    }
+
+    &.active,
+    &.is-current-category {
+        background-color: var(--color-bg-muted);
+        font-weight: var(--font-weight-semibold);
+    }
+
+    // Back / home links read as secondary navigation aids.
+    &.is-back-link,
+    &.is-home-link {
+        color: var(--color-text-secondary);
+        font-weight: var(--font-weight-medium);
+    }
+}
+
+.navigation-offcanvas-link-icon {
+    display: inline-flex;
+    color: var(--color-text-muted);
+}
+
+// --------------------------------------------------
+// Cart drawer
+// --------------------------------------------------
+.offcanvas-cart-header {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 0.5rem;
+}
+
+.offcanvas-cart-header-count {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: 0;
+}
+
+.offcanvas-cart-items {
+    margin-bottom: 0;
+}
+
+// Summary block.
+.offcanvas-summary {
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.offcanvas-summary-list {
+    .offcanvas-summary-label { color: var(--color-text-secondary); }
+    .offcanvas-summary-value {
+        color: var(--color-text-primary);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.offcanvas-cart-tax {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+}
+
+// Sticky action footer inside the drawer.
+.offcanvas-cart-actions {
+    position: sticky;
+    bottom: 0;
+    padding-top: 1rem;
+    padding-bottom: 0.25rem;
+    background-color: var(--color-surface);
+}

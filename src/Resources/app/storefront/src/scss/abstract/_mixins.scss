@@ -1,0 +1,46 @@
+/*
+Mixins & helpers
+==================================================
+Small, reusable primitives for the monochrome system. No CSS output on import.
+
+@sw-package framework
+*/
+
+// Accessible focus ring — visible on any background, monochrome-safe.
+// Uses a double ring (inverse halo + solid) so it reads on both light and
+// dark surfaces without relying on colour.
+@mixin kmh-focus-ring($offset: 2px) {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: $offset;
+    box-shadow: 0 0 0 #{$offset} var(--color-bg-base);
+}
+
+// Only expose the focus ring to keyboard users; never suppress it entirely.
+@mixin kmh-focus-visible($offset: 2px) {
+    &:focus-visible {
+        @include kmh-focus-ring($offset);
+    }
+    // Legacy: hide the default outline only when :focus-visible is supported.
+    &:focus:not(:focus-visible) {
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+// Elevation via monochrome shadow tokens.
+@mixin kmh-elevation($level: 'md') {
+    @if $level == 'sm' {
+        box-shadow: var(--shadow-sm);
+    } @else if $level == 'lg' {
+        box-shadow: var(--shadow-lg);
+    } @else {
+        box-shadow: var(--shadow-md);
+    }
+}
+
+// Respect prefers-reduced-motion for any transition/animation block.
+@mixin kmh-motion-safe {
+    @media (prefers-reduced-motion: no-preference) {
+        @content;
+    }
+}

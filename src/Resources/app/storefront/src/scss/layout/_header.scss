@@ -1,0 +1,586 @@
+/*
+Header, main navigation, search & actions
+==================================================
+Monochrome, premium header system. Sticky behaviour is pure CSS (see the Twig
+override that adds `.header-sticky-wrapper.is-sticky`). All colour comes from the
+token layer; state/hover reads through tone, a muted→ink shift and the active
+indicator.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Sticky wrapper (header row + main nav as one unit)
+// Translucent, blurred surface with a single hairline at the bottom — the
+// header stays legible over content without a heavy shadow.
+// --------------------------------------------------
+.header-sticky-wrapper {
+    background-color: var(--color-bg-base);
+
+    &.is-sticky {
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+
+        @supports (backdrop-filter: blur(1px)) {
+            background-color: color-mix(in srgb, var(--color-bg-base) 92%, transparent);
+            backdrop-filter: saturate(180%) blur(12px);
+        }
+    }
+}
+
+// --------------------------------------------------
+// Header shell — 64px row, no divider (the nav bar below owns the hairline)
+// --------------------------------------------------
+.header-main {
+    background-color: transparent;
+    border-bottom: 0;
+
+    .header-row {
+        min-height: 4rem;
+        column-gap: var(--space-2);
+    }
+
+    // Phones: core stacks logo above the action icons (~134px, sticky). Flatten
+    // the actions into the header row so it reads ☰ logo 🔍 👤 🛒 on one line.
+    @media (max-width: 575.98px) {
+        .header-row {
+            align-items: center;
+            min-height: 3.75rem;
+            padding-inline: calc(var(--bs-gutter-x) * 0.5);
+        }
+
+        .header-actions-col,
+        .header-actions-col > .row {
+            display: contents;
+        }
+
+        // Icons share order 1 with the logo (DOM order puts them after it); the
+        // search col keeps core's `.order-2` so it still drops below when open.
+        .header-actions-col > .row > * {
+            order: 1;
+            flex: 0 0 auto;
+            width: auto;
+            padding: 0;
+        }
+
+        .header-actions-col > .row > :first-child { order: 0; }
+
+        .header-logo-col {
+            order: 1;
+            flex: 1 1 0;
+            width: auto;
+            min-width: 0;
+            margin: 0 !important;
+            padding-inline: 0.5rem;
+        }
+
+        // Core gives the <picture> min-width 200px and centres it; let the logo
+        // shrink to its column and sit beside the menu button.
+        .header-logo-main { text-align: left !important; }
+        .header-logo-main-link,
+        .header-logo-picture { max-width: 100%; min-width: 0; }
+        .header-logo-picture { margin: 0 !important; } // beat core .m-auto
+        .header-logo-main-img { max-height: 2rem; }
+
+        // Five 36px icon targets leave the logo room (still ≥ 24px WCAG 2.5.8).
+        .header-actions-btn { --btn-size: 2.25rem; padding-inline: 0.375rem; }
+        .header-cart .header-cart-badge { left: calc(0.375rem + 0.9rem); }
+    }
+}
+
+// --------------------------------------------------
+// Logo
+// --------------------------------------------------
+.header-logo-main-link {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.header-logo-main-img {
+    max-height: 2.5rem;
+    width: auto;
+}
+
+// The default brand logo is monochrome (pure black). In dark mode invert it so
+// it stays visible on the dark header. Coloured logos should set the dedicated
+// dark logo (theme config `kmh-logo-dark`) instead.
+[data-theme='dark'] .header-logo-main-img:not(.header-logo-main-img-dark) {
+    filter: invert(1);
+}
+
+// Dedicated dark logo (config `kmh-logo-dark`) replaces the inverted one.
+.header-logo-main-img-dark {
+    display: none;
+}
+
+[data-theme='dark'] {
+    .header-logo-main-img-dark { display: inline-block; }
+    .header-logo-main-img-dark + .header-logo-picture { display: none !important; }
+}
+
+// --------------------------------------------------
+// Action buttons (search toggle, theme, wishlist, account, cart, menu)
+// 40px ghost icon buttons; icon muted at rest, ink on hover.
+// --------------------------------------------------
+.header-actions-btn {
+    --btn-size: var(--control-height);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--btn-size);
+    height: var(--btn-size);
+    padding: 0 var(--space-2);
+    border: 0;
+    border-radius: var(--radius);
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    box-shadow: none;
+    @include kmh-motion-safe {
+        transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    &:hover,
+    &[aria-expanded='true'] {
+        background-color: var(--color-bg-muted);
+        color: var(--color-text-primary);
+    }
+
+    .icon {
+        color: currentColor;
+    }
+}
+
+// Cart button keeps room for the running total.
+.header-cart-btn {
+    gap: 0.25rem;
+    padding-inline: 0.65rem;
+}
+
+.header-cart-total {
+    padding-left: 0.5rem; // clear the badge (core's .ms-sm-2 !important owns margin)
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+// Cart count → small monochrome (inverted) pill anchored to the icon.
+.header-cart-icon {
+    position: relative;
+    display: inline-flex;
+}
+
+// The badge is a sibling of the icon inside the (relative) button, not a child
+// of .header-cart-icon, so anchor it from the button's left to the icon corner;
+// `right` would land it on top of the cart total.
+// Count pills on header icons (cart + wishlist). Selectors match core's
+// specificity; `.badge` base styles from component/_alert.scss are reset.
+.header-cart .header-cart-badge,
+.header-wishlist .header-wishlist-badge {
+    position: absolute;
+    top: 0.25rem;
+    box-sizing: border-box;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    padding: 0 0.3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+    background-color: var(--color-action) !important; // beat .bg-primary + .badge
+    color: var(--color-action-text) !important;
+    border-radius: 999px;
+    border: 2px solid var(--color-bg-base);
+    letter-spacing: 0;
+}
+
+.header-cart .header-cart-badge {
+    left: calc(0.65rem + 0.9rem);
+    right: auto;
+}
+
+.header-wishlist .header-wishlist-badge {
+    left: calc(50% + 0.15rem); // top-right corner of the centred heart
+    right: auto;
+}
+
+.header-wishlist-btn {
+    position: relative;
+}
+
+// Core renders the counter element even at zero (empty) — hide the dot.
+.header-cart .header-cart-badge:empty,
+.header-wishlist .header-wishlist-badge:empty {
+    display: none;
+}
+
+// --------------------------------------------------
+// Search — filled field that lifts to a surface on focus
+// --------------------------------------------------
+.header-search {
+    max-width: 36rem;
+    margin-inline: auto;
+}
+
+.header-search-form .input-group {
+    min-height: var(--control-height);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background-color: var(--color-bg-muted);
+    @include kmh-motion-safe {
+        transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    &:hover {
+        border-color: var(--color-border);
+    }
+
+    &:focus-within {
+        background-color: var(--color-surface);
+        border-color: var(--color-action);
+        box-shadow: var(--focus-halo);
+    }
+}
+
+.header-search-input.form-control {
+    min-height: 0;
+    border: 0;
+    background-color: transparent;
+    box-shadow: none;
+    font-size: var(--font-size-md);
+
+    &:focus {
+        border: 0;
+        box-shadow: none;
+    }
+
+    &::placeholder { color: var(--color-text-muted); }
+}
+
+.header-search-btn,
+.header-close-btn {
+    border: 0;
+    background-color: transparent;
+    color: var(--color-text-muted);
+    border-radius: 0;
+    box-shadow: none;
+
+    &:hover {
+        color: var(--color-text-primary);
+        background-color: transparent;
+    }
+}
+
+// --------------------------------------------------
+// Search suggest flyout — a dropdown like any other
+// --------------------------------------------------
+.search-suggest-container {
+    margin-top: var(--space-2);
+    padding: var(--space-1);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+
+    &::after { display: none; } // core's speech-bubble arrow
+}
+
+.search-suggest-product,
+.search-suggest-total {
+    border-radius: var(--radius-sm);
+    border-bottom: 0;
+}
+
+.search-suggest-product:hover,
+.search-suggest-total:hover {
+    background-color: var(--color-bg-muted);
+}
+
+.search-suggest-product-name { font-weight: var(--font-weight-medium); }
+.search-suggest-product-price { font-variant-numeric: tabular-nums; }
+
+// --------------------------------------------------
+// Main navigation
+// Pills on hover, a 2px ink indicator on the bar's hairline for the active
+// section (and the one whose flyout is open). Muted at rest → ink on
+// hover/active, so the current section reads instantly without shouting.
+// --------------------------------------------------
+.nav-main {
+    background-color: transparent;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.main-navigation-menu {
+    --bs-navbar-padding-y: 0;
+    --bs-navbar-nav-link-padding-x: 0.625rem;
+    padding-block: 0;
+}
+
+.main-navigation-menu-list {
+    gap: 2px;
+    margin-inline: calc(var(--bs-navbar-nav-link-padding-x) * -1); // first label aligns with the logo
+}
+
+.main-navigation-link.nav-link {
+    position: relative;
+    margin-block: var(--space-2);
+    padding-block: 0.375rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.003em;
+    @include kmh-motion-safe {
+        transition: color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    // Active indicator, sitting on the nav bar's bottom hairline.
+    &::after {
+        content: '';
+        position: absolute;
+        left: var(--bs-navbar-nav-link-padding-x);
+        right: var(--bs-navbar-nav-link-padding-x);
+        bottom: calc((var(--space-2) + 1px) * -1);
+        height: 2px;
+        border-radius: 2px 2px 0 0;
+        background-color: var(--color-action);
+        transform: scaleX(0);
+        @include kmh-motion-safe {
+            transition: transform var(--transition-base);
+        }
+    }
+
+    &:hover {
+        color: var(--color-text-primary);
+        background-color: var(--color-bg-muted);
+    }
+
+    // Core draws its own border-bottom underline on the text span; we use the
+    // indicator above instead.
+    .main-navigation-link-text {
+        border-bottom: 0 !important; // core sets it with !important
+        padding-bottom: 0;
+    }
+
+    // Core adds a caret to dropdown toggles — the flyout is self-evident.
+    &.dropdown-toggle::after {
+        border: 0;
+        margin: 0;
+        vertical-align: initial;
+    }
+}
+
+.main-navigation-link.active,
+.nav-item.active > .main-navigation-link,
+.main-navigation-link.show {
+    color: var(--color-text-primary);
+
+    &::after { transform: scaleX(1); }
+}
+
+// --------------------------------------------------
+// Mega flyout — floating panel under the bar
+// --------------------------------------------------
+.main-navigation-menu .dropdown-menu {
+    margin-top: 1px;
+    padding: var(--space-6) !important; // core sets .p-4
+    border: 1px solid var(--color-border);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    background-color: var(--color-surface);
+}
+
+.navigation-flyout-category-link a {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+
+    &:hover { color: var(--color-text-primary); }
+}
+
+.navigation-flyout-categories.is-level-0 {
+    row-gap: var(--space-4);
+}
+
+.navigation-flyout-link {
+    display: block;
+    padding: 0.3125rem var(--space-2);
+    margin-inline: calc(var(--space-2) * -1);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    @include kmh-motion-safe {
+        transition: color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    &.is-level-0 {
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-semibold);
+    }
+
+    &:hover {
+        color: var(--color-text-primary);
+        background-color: var(--color-bg-muted);
+    }
+
+    &.active {
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-semibold);
+    }
+}
+
+.navigation-flyout-close {
+    color: var(--color-text-muted);
+
+    &:hover { color: var(--color-text-primary); }
+}
+
+// Compact "dropdown" navigation mode (theme config `kmh-nav-layout`): the
+// mega flyout collapses to a narrow, auto-width, single-column dropdown instead
+// of a full-bleed panel. Content/markup unchanged — layout only.
+@if $kmh-nav-layout == 'dropdown' {
+    .main-navigation-menu .dropdown-menu {
+        width: auto;
+        min-width: 16rem;
+        max-width: 22rem;
+        max-height: 70vh;
+        overflow-y: auto;
+        padding: var(--space-2) !important; // core sets .p-4
+        border-radius: var(--radius-lg);
+
+        .navigation-flyout-categories,
+        .navigation-flyout-content .row {
+            display: block;
+        }
+
+        .navigation-flyout-col,
+        [class*='col-'] {
+            width: 100%;
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+
+        // Hide the teaser image + close button in compact mode.
+        .navigation-flyout-teaser,
+        .navigation-flyout-close {
+            display: none;
+        }
+    }
+}
+
+// --------------------------------------------------
+// Account dropdown
+// The dropdown embeds account-menu.html.twig, which extends the off-canvas
+// template — so it ships an off-canvas header + "Close menu" button and an inner
+// `.card`. In a desktop dropdown the dropdown itself is the frame, so we hide the
+// vestigial off-canvas chrome and flatten the inner card.
+// --------------------------------------------------
+.account-menu-dropdown {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    min-width: 16rem;
+    margin-top: var(--space-2) !important; // Popper positions with inline margin
+    padding: 0;
+    overflow: hidden;
+
+    // Hide the off-canvas-only close button/header inside the desktop dropdown.
+    .offcanvas-header,
+    .offcanvas-close {
+        display: none;
+    }
+
+    .offcanvas-body,
+    .account-menu {
+        padding: 0;
+    }
+
+    // The inner card is redundant here — the dropdown provides the frame.
+    .account-menu-inner.card {
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background-color: transparent;
+    }
+
+    // Guest login block.
+    .account-menu-login {
+        padding: var(--space-4);
+        text-align: center;
+        border-bottom: 1px solid var(--color-border-subtle);
+
+        .account-menu-login-button {
+            display: block;
+            width: 100%;
+        }
+        .account-menu-register {
+            margin-top: var(--space-3);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+
+            a {
+                color: var(--color-text-primary);
+                font-weight: var(--font-weight-medium);
+            }
+        }
+    }
+
+    // "Your account" header row (logged-in).
+    .account-menu-header {
+        padding: var(--space-3) var(--space-4) var(--space-1);
+        color: var(--color-text-muted);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-medium);
+    }
+
+    // Menu items read like dropdown items, not a bordered list.
+    .account-aside-list-group {
+        padding: var(--space-1) var(--space-2);
+    }
+
+    .account-aside-footer.card-footer {
+        background-color: transparent;
+        border-top: 1px solid var(--color-border-subtle);
+        padding: var(--space-1) var(--space-2);
+    }
+}
+
+// --------------------------------------------------
+// Top / utility bar
+// --------------------------------------------------
+.top-bar {
+    background-color: var(--color-bg-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    font-size: var(--font-size-xs);
+
+    .top-bar-nav-btn.btn {
+        padding-block: var(--space-1);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-medium);
+        box-shadow: none;
+    }
+
+    .top-bar-nav a {
+        color: var(--color-text-secondary);
+        text-decoration: none;
+
+        &:hover { color: var(--color-text-primary); }
+    }
+}
+
+// Dark-mode toggle — a regular header action (inherits .header-actions-btn);
+// tilt the crescent when dark is active as a second, non-colour cue.
+.kmh-theme-toggle-icon {
+    @include kmh-motion-safe {
+        transition: transform var(--transition-base);
+    }
+}
+
+.kmh-theme-toggle[aria-pressed='true'] .kmh-theme-toggle-icon {
+    transform: rotate(-18deg);
+}

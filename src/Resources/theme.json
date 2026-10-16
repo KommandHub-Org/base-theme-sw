@@ -1,0 +1,243 @@
+{
+  "name": "KmhBaseTheme",
+  "author": "Kommandhub",
+  "description": {
+    "en-GB": "Modern, premium monochrome base theme for Shopware 6 — neutral UI, hue only for meaning. A reusable foundation for storefront projects.",
+    "de-DE": "Modernes, hochwertiges monochromes Basis-Theme für Shopware 6 — neutrale Oberfläche, Farbe nur mit Bedeutung. Eine wiederverwendbare Grundlage für Storefront-Projekte."
+  },
+  "previewMedia": "app/storefront/src/assets/preview.png",
+  "views": [
+     "@Storefront",
+     "@Plugins",
+     "@KmhBaseTheme"
+  ],
+  "style": [
+    "app/storefront/src/scss/overrides.scss",
+    "@Storefront",
+    "app/storefront/src/scss/base.scss"
+  ],
+  "script": [
+    "@Storefront"
+  ],
+  "asset": [
+    "@Storefront",
+    "app/storefront/src/assets"
+  ],
+  "config": {
+    "blocks": {
+      "themeColors":  { "label": { "en-GB": "Colours",        "de-DE": "Farben" } },
+      "statusColors": { "label": { "en-GB": "Status colours", "de-DE": "Statusfarben" } },
+      "typography":   { "label": { "en-GB": "Typography",     "de-DE": "Typografie" } },
+      "eCommerce":    { "label": { "en-GB": "Commerce",       "de-DE": "Commerce" } },
+      "media":        { "label": { "en-GB": "Media",          "de-DE": "Medien" } },
+      "kmhLayout":    { "label": { "en-GB": "Layout",         "de-DE": "Layout" } },
+      "kmhComponents":{ "label": { "en-GB": "Components",     "de-DE": "Komponenten" } }
+    },
+    "fields": {
+      "sw-color-brand-primary": {
+        "label": { "en-GB": "Primary (black)", "de-DE": "Primär (Schwarz)" },
+        "type": "color", "value": "#000000", "editable": true, "block": "themeColors", "order": 100
+      },
+      "sw-color-brand-secondary": {
+        "label": { "en-GB": "Secondary", "de-DE": "Sekundär" },
+        "type": "color", "value": "#5c5c5c", "editable": true, "block": "themeColors", "order": 200
+      },
+      "sw-border-color": {
+        "label": { "en-GB": "Border", "de-DE": "Rahmen" },
+        "type": "color", "value": "#d6d6d6", "editable": true, "block": "themeColors", "order": 300
+      },
+      "sw-background-color": {
+        "label": { "en-GB": "Background", "de-DE": "Hintergrund" },
+        "type": "color", "value": "#ffffff", "editable": true, "block": "themeColors", "order": 400
+      },
+
+      "sw-color-success": {
+        "label": { "en-GB": "Success tone", "de-DE": "Erfolg" },
+        "type": "color", "value": "#16a34a", "editable": true, "block": "statusColors", "order": 100
+      },
+      "sw-color-info": {
+        "label": { "en-GB": "Info tone", "de-DE": "Info" },
+        "type": "color", "value": "#2563eb", "editable": true, "block": "statusColors", "order": 200
+      },
+      "sw-color-warning": {
+        "label": { "en-GB": "Warning tone", "de-DE": "Warnung" },
+        "type": "color", "value": "#d97706", "editable": true, "block": "statusColors", "order": 300
+      },
+      "sw-color-danger": {
+        "label": { "en-GB": "Danger tone", "de-DE": "Gefahr" },
+        "type": "color", "value": "#dc2626", "editable": true, "block": "statusColors", "order": 400
+      },
+
+      "sw-font-family-base": {
+        "label": { "en-GB": "Base font", "de-DE": "Basisschrift" },
+        "type": "fontFamily",
+        "value": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        "editable": true, "block": "typography", "order": 100
+      },
+      "sw-text-color": {
+        "label": { "en-GB": "Text", "de-DE": "Text" },
+        "type": "color", "value": "#1a1a1a", "editable": true, "block": "typography", "order": 200
+      },
+      "sw-font-family-headline": {
+        "label": { "en-GB": "Headline font", "de-DE": "Überschriftenschrift" },
+        "type": "fontFamily",
+        "value": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        "editable": true, "block": "typography", "order": 300
+      },
+      "sw-headline-color": {
+        "label": { "en-GB": "Headline", "de-DE": "Überschrift" },
+        "type": "color", "value": "#1a1a1a", "editable": true, "block": "typography", "order": 400
+      },
+
+      "sw-color-price": {
+        "label": { "en-GB": "Price", "de-DE": "Preis" },
+        "type": "color", "value": "#1a1a1a", "editable": true, "block": "eCommerce", "order": 100
+      },
+      "sw-color-buy-button": {
+        "label": { "en-GB": "Buy button", "de-DE": "Kauf-Button" },
+        "type": "color", "value": "#000000", "editable": true, "block": "eCommerce", "order": 200
+      },
+      "sw-color-buy-button-text": {
+        "label": { "en-GB": "Buy button text", "de-DE": "Kauf-Button-Text" },
+        "type": "color", "value": "#ffffff", "editable": true, "block": "eCommerce", "order": 300
+      },
+      "kmh-rating-color": {
+        "label": { "en-GB": "Rating stars", "de-DE": "Bewertungssterne" },
+        "helpText": { "en-GB": "The theme's only hue. Keep 3:1 contrast against white and the dark surface.", "de-DE": "Der einzige Farbton des Themes. 3:1-Kontrast zu Weiß und zur dunklen Fläche einhalten." },
+        "type": "color", "value": "#d97706", "editable": true, "block": "eCommerce", "order": 400
+      },
+
+      "sw-logo-desktop": {
+        "label": { "en-GB": "Desktop logo", "de-DE": "Desktop-Logo" },
+        "type": "media", "value": "app/storefront/src/assets/logo/kommandhub-logo.png",
+        "editable": true, "block": "media", "order": 100, "fullWidth": true
+      },
+      "sw-logo-tablet": {
+        "label": { "en-GB": "Tablet logo", "de-DE": "Tablet-Logo" },
+        "type": "media", "value": "app/storefront/src/assets/logo/kommandhub-logo.png",
+        "editable": true, "block": "media", "order": 200, "fullWidth": true
+      },
+      "sw-logo-mobile": {
+        "label": { "en-GB": "Mobile logo", "de-DE": "Mobile-Logo" },
+        "type": "media", "value": "app/storefront/src/assets/logo/kommandhub-logo.png",
+        "editable": true, "block": "media", "order": 300, "fullWidth": true
+      },
+      "sw-logo-share": {
+        "label": { "en-GB": "Share logo", "de-DE": "Share-Logo" },
+        "type": "media", "value": "app/storefront/src/assets/logo/kommandhub-logo.png",
+        "editable": true, "block": "media", "order": 400
+      },
+      "sw-logo-favicon": {
+        "label": { "en-GB": "Favicon", "de-DE": "Favicon" },
+        "type": "media", "value": "app/storefront/src/assets/logo/favicon.png",
+        "editable": true, "block": "media", "order": 500
+      },
+      "kmh-logo-dark": {
+        "label": { "en-GB": "Dark mode logo (optional)", "de-DE": "Logo für Dark Mode (optional)" },
+        "helpText": { "en-GB": "Shown when the visitor switches to dark mode. Leave empty to invert the desktop logo instead — fine for a single-colour mark, wrong for a coloured one.", "de-DE": "Wird im Dark Mode angezeigt. Leer lassen, um stattdessen das Desktop-Logo zu invertieren — passend für einfarbige, nicht für farbige Logos." },
+        "type": "media", "value": "", "editable": true, "block": "media", "order": 600, "fullWidth": true
+      },
+
+      "kmh-container-type": {
+        "label": { "en-GB": "Container width", "de-DE": "Container-Breite" },
+        "helpText": { "en-GB": "Fixed max-width container or full-bleed fluid layout.", "de-DE": "Container mit fester Maximalbreite oder vollflächiges Fluid-Layout." },
+        "type": "text", "value": "container", "editable": true, "block": "kmhLayout", "order": 100,
+        "custom": { "componentName": "sw-single-select", "options": [
+          { "value": "container", "label": { "en-GB": "Fixed (container)", "de-DE": "Fest (container)" } },
+          { "value": "container-fluid", "label": { "en-GB": "Full width (fluid)", "de-DE": "Volle Breite (fluid)" } }
+        ] }
+      },
+      "kmh-content-max-width": {
+        "label": { "en-GB": "Content max-width (px)", "de-DE": "Inhalts-Maximalbreite (px)" },
+        "type": "number", "value": 1400, "editable": true, "block": "kmhLayout", "order": 200
+      },
+      "kmh-section-spacing": {
+        "label": { "en-GB": "Section spacing", "de-DE": "Abschnittsabstand" },
+        "type": "text", "value": "normal", "editable": true, "block": "kmhLayout", "order": 300,
+        "custom": { "componentName": "sw-single-select", "options": [
+          { "value": "compact",  "label": { "en-GB": "Compact",  "de-DE": "Kompakt" } },
+          { "value": "normal",   "label": { "en-GB": "Normal",   "de-DE": "Normal" } },
+          { "value": "spacious", "label": { "en-GB": "Spacious", "de-DE": "Großzügig" } }
+        ] }
+      },
+      "kmh-sticky-header": {
+        "label": { "en-GB": "Sticky header", "de-DE": "Sticky Header" },
+        "type": "checkbox", "value": true, "editable": true, "block": "kmhLayout", "order": 400
+      },
+      "kmh-show-topbar": {
+        "label": { "en-GB": "Show top bar", "de-DE": "Top-Leiste anzeigen" },
+        "type": "checkbox", "value": false, "editable": true, "block": "kmhLayout", "order": 500
+      },
+      "kmh-show-breadcrumb": {
+        "label": { "en-GB": "Show breadcrumb", "de-DE": "Breadcrumb anzeigen" },
+        "type": "checkbox", "value": true, "editable": true, "block": "kmhLayout", "order": 600
+      },
+      "kmh-nav-layout": {
+        "label": { "en-GB": "Navigation style", "de-DE": "Navigations-Stil" },
+        "type": "text", "value": "flyout", "editable": true, "block": "kmhLayout", "order": 700,
+        "custom": { "componentName": "sw-single-select", "options": [
+          { "value": "flyout",   "label": { "en-GB": "Mega flyout",  "de-DE": "Mega-Flyout" } },
+          { "value": "dropdown", "label": { "en-GB": "Dropdown",     "de-DE": "Dropdown" } }
+        ] }
+      },
+      "kmh-footer-columns": {
+        "label": { "en-GB": "Footer columns", "de-DE": "Footer-Spalten" },
+        "type": "number", "value": 4, "editable": true, "block": "kmhLayout", "order": 800
+      },
+
+      "kmh-border-radius": {
+        "label": { "en-GB": "Corner radius", "de-DE": "Eckenradius" },
+        "type": "text", "value": "rounded", "editable": true, "block": "kmhComponents", "order": 100,
+        "custom": { "componentName": "sw-single-select", "options": [
+          { "value": "none",    "label": { "en-GB": "Sharp (0)",    "de-DE": "Kantig (0)" } },
+          { "value": "subtle",  "label": { "en-GB": "Subtle (6px)", "de-DE": "Dezent (6px)" } },
+          { "value": "rounded", "label": { "en-GB": "Rounded (8px)", "de-DE": "Abgerundet (8px)" } },
+          { "value": "pill",    "label": { "en-GB": "Pill",         "de-DE": "Pille" } }
+        ] }
+      },
+      "kmh-button-variant": {
+        "label": { "en-GB": "Primary button style", "de-DE": "Primär-Button-Stil" },
+        "type": "text", "value": "solid", "editable": true, "block": "kmhComponents", "order": 200,
+        "custom": { "componentName": "sw-single-select", "options": [
+          { "value": "solid",   "label": { "en-GB": "Solid",   "de-DE": "Gefüllt" } },
+          { "value": "outline", "label": { "en-GB": "Outline", "de-DE": "Umriss" } }
+        ] }
+      },
+      "kmh-card-style": {
+        "label": { "en-GB": "Card style", "de-DE": "Karten-Stil" },
+        "type": "text", "value": "bordered", "editable": true, "block": "kmhComponents", "order": 300,
+        "custom": { "componentName": "sw-single-select", "options": [
+          { "value": "bordered", "label": { "en-GB": "Bordered", "de-DE": "Umrandet" } },
+          { "value": "elevated", "label": { "en-GB": "Elevated", "de-DE": "Erhöht" } },
+          { "value": "flat",     "label": { "en-GB": "Flat",     "de-DE": "Flach" } }
+        ] }
+      },
+      "kmh-product-image-ratio": {
+        "label": { "en-GB": "Product image ratio", "de-DE": "Produktbild-Verhältnis" },
+        "type": "text", "value": "portrait", "editable": true, "block": "kmhComponents", "order": 400,
+        "custom": { "componentName": "sw-single-select", "options": [
+          { "value": "square",    "label": { "en-GB": "Square (1:1)",     "de-DE": "Quadratisch (1:1)" } },
+          { "value": "portrait",  "label": { "en-GB": "Portrait (3:4)",   "de-DE": "Hochformat (3:4)" } },
+          { "value": "landscape", "label": { "en-GB": "Landscape (4:3)",  "de-DE": "Querformat (4:3)" } }
+        ] }
+      },
+      "kmh-grid-columns-desktop": {
+        "label": { "en-GB": "Grid columns — desktop", "de-DE": "Raster-Spalten — Desktop" },
+        "type": "number", "value": 4, "editable": true, "block": "kmhComponents", "order": 500
+      },
+      "kmh-grid-columns-tablet": {
+        "label": { "en-GB": "Grid columns — tablet", "de-DE": "Raster-Spalten — Tablet" },
+        "type": "number", "value": 3, "editable": true, "block": "kmhComponents", "order": 600
+      },
+      "kmh-grid-columns-mobile": {
+        "label": { "en-GB": "Grid columns — mobile", "de-DE": "Raster-Spalten — Mobil" },
+        "type": "number", "value": 2, "editable": true, "block": "kmhComponents", "order": 700
+      },
+      "kmh-dark-mode-toggle": {
+        "label": { "en-GB": "Dark mode toggle", "de-DE": "Dark-Mode-Umschalter" },
+        "helpText": { "en-GB": "Adds a dark/light toggle next to the account and cart icons. Preference is stored per visitor.", "de-DE": "Fügt neben Konto- und Warenkorb-Symbol einen Dark/Light-Umschalter ein. Auswahl wird pro Besucher gespeichert." },
+        "type": "checkbox", "value": true, "editable": true, "block": "kmhComponents", "order": 900
+      }
+    }
+  }
+}

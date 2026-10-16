@@ -1,0 +1,30 @@
+{% sw_extends '@Storefront/storefront/layout/header/header.html.twig' %}
+
+{#
+    Dark-mode toggle (config: kmh-dark-mode-toggle) as a header action, next to
+    account/cart, so it is visible at every breakpoint — the top bar is
+    desktop-only (core `d-none d-lg-block`). Wired by the inline script in
+    base.html.twig.
+#}
+{% block layout_header_actions_account %}
+    {% if theme_config('kmh-dark-mode-toggle') %}
+        {% block layout_header_actions_theme_toggle %}
+            <div class="col-auto">
+                <button type="button"
+                        class="btn header-actions-btn kmh-theme-toggle"
+                        data-kmh-theme-toggle
+                        aria-pressed="false"
+                        aria-label="{{ 'kmhBaseTheme.toggleDarkMode'|trans|striptags }}"
+                        title="{{ 'kmhBaseTheme.toggleDarkMode'|trans|striptags }}">
+                    <svg class="kmh-theme-toggle-icon" width="20" height="20" viewBox="0 0 24 24"
+                         fill="none" aria-hidden="true" focusable="false">
+                        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"
+                              fill="currentColor" stroke="currentColor" stroke-width="1.5"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        {% endblock %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,225 @@
+/*
+Buttons
+==================================================
+One button system, five intents, all token-driven:
+
+  primary      .btn-primary, .btn-buy        solid ink (black / white in dark)
+  secondary    .btn-secondary,               surface + hairline border + xs shadow
+               .btn-outline-secondary
+  outline      .btn-outline-primary          transparent + ink border, fills on hover
+  ghost        .btn-light, .btn-link         no chrome until hover
+  destructive  .btn-danger,                  status red
+               .btn-outline-danger
+
+States: hover (tone shift), active (pressed 1px), focus-visible (ring, from
+_focus.scss), disabled (muted tokens, not opacity), loading (core injects a
+`.loader` spinner — sized to the label and tinted with currentColor).
+
+Bootstrap's own `--bs-btn-*` variables are set per intent so Bootstrap's state
+selectors keep working; no per-state overrides fighting the cascade.
+
+@sw-package framework
+*/
+
+@import '../abstract/config';
+@import '../abstract/mixins';
+
+.btn {
+    --bs-btn-font-weight: var(--font-weight-medium);
+    --bs-btn-border-radius: var(--radius);
+    --bs-btn-focus-box-shadow: none; // ring comes from _focus.scss
+    // No `display` here: core hides many .btn instances with plain
+    // same-specificity `display: none` rules. Height comes from padding
+    // (8px + 15px × 1.5 + 2px border ≈ 40px).
+    letter-spacing: -0.003em;
+    @include kmh-motion-safe {
+        transition:
+            background-color var(--transition-fast),
+            border-color var(--transition-fast),
+            color var(--transition-fast),
+            box-shadow var(--transition-fast),
+            transform var(--transition-fast);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(1px);
+    }
+
+    .icon {
+        color: currentColor;
+    }
+
+    // Loading: core puts a spinner inside and disables the button.
+    .loader {
+        width: 1em;
+        height: 1em;
+        --bs-spinner-border-width: 2px;
+        color: currentColor !important; // core @extends .text-primary (!important)
+    }
+}
+
+.btn-sm {
+    --bs-btn-border-radius: var(--radius); // same shape as .btn (matters for 'pill')
+}
+
+// ---- Primary -------------------------------------------------------------
+.btn-primary,
+.btn-buy {
+    --bs-btn-color: var(--color-action-text);
+    --bs-btn-bg: var(--color-action);
+    --bs-btn-border-color: var(--color-action);
+    --bs-btn-hover-color: var(--color-action-text);
+    --bs-btn-hover-bg: var(--color-action-hover);
+    --bs-btn-hover-border-color: var(--color-action-hover);
+    --bs-btn-active-color: var(--color-action-text);
+    --bs-btn-active-bg: var(--color-action-active);
+    --bs-btn-active-border-color: var(--color-action-active);
+    box-shadow: var(--shadow-xs);
+}
+
+.btn-buy {
+    --bs-btn-font-weight: var(--font-weight-semibold);
+}
+
+// ---- Secondary -----------------------------------------------------------
+.btn-secondary,
+.btn-outline-secondary {
+    --bs-btn-color: var(--color-text-primary);
+    --bs-btn-bg: var(--color-surface);
+    --bs-btn-border-color: var(--color-border-strong);
+    --bs-btn-hover-color: var(--color-text-primary);
+    --bs-btn-hover-bg: var(--color-bg-subtle);
+    --bs-btn-hover-border-color: var(--color-border-strong);
+    --bs-btn-active-color: var(--color-text-primary);
+    --bs-btn-active-bg: var(--color-bg-muted);
+    --bs-btn-active-border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-xs);
+}
+
+// ---- Outline (ink) -------------------------------------------------------
+.btn-outline-primary {
+    --bs-btn-color: var(--color-text-primary);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: var(--color-action);
+    --bs-btn-hover-color: var(--color-action-text);
+    --bs-btn-hover-bg: var(--color-action);
+    --bs-btn-hover-border-color: var(--color-action);
+    --bs-btn-active-color: var(--color-action-text);
+    --bs-btn-active-bg: var(--color-action-active);
+    --bs-btn-active-border-color: var(--color-action-active);
+
+    &:hover .icon,
+    &:active .icon { color: currentColor; }
+}
+
+// Theme config `kmh-button-variant: outline` — primary/buy become outline.
+@if $kmh-button-variant == 'outline' {
+    .btn-primary,
+    .btn-buy {
+        --bs-btn-color: var(--color-text-primary);
+        --bs-btn-bg: transparent;
+        --bs-btn-hover-color: var(--color-action-text);
+        --bs-btn-hover-bg: var(--color-action);
+        box-shadow: none;
+    }
+}
+
+// ---- Ghost ---------------------------------------------------------------
+.btn-light,
+.btn-link {
+    --bs-btn-color: var(--color-text-primary);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: transparent;
+    --bs-btn-hover-color: var(--color-text-primary);
+    --bs-btn-hover-bg: var(--color-bg-muted);
+    --bs-btn-hover-border-color: transparent;
+    --bs-btn-active-color: var(--color-text-primary);
+    --bs-btn-active-bg: var(--color-bg-muted);
+    --bs-btn-active-border-color: transparent;
+    text-decoration: none;
+}
+
+// Shopware's "Details" / quiet CTAs use btn-light as a filled tertiary —
+// keep a visible resting fill there so it still reads as a button.
+.btn-light {
+    --bs-btn-bg: var(--color-bg-subtle);
+    --bs-btn-border-color: var(--color-border-subtle);
+}
+
+// `.btn-link` is a button that should LOOK like a link (Shopware uses it for
+// "Change password", "Change email", "Show all"): ink, medium, hairline
+// underline — same affordance as inline text links.
+.btn-link {
+    --bs-btn-hover-bg: transparent;
+    --bs-btn-active-bg: transparent;
+    font-weight: var(--font-weight-medium);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--color-border-strong);
+
+    &:hover { text-decoration-color: currentColor; }
+}
+
+// Inline text-button (e.g. "Prices incl. VAT") — not a box at all.
+.btn-link-inline {
+    padding: 0;
+    border: 0;
+    font-weight: inherit;
+    vertical-align: baseline;
+}
+
+// ---- Destructive ---------------------------------------------------------
+.btn-danger {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--color-danger);
+    --bs-btn-border-color: var(--color-danger);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--color-danger-text);
+    --bs-btn-hover-border-color: var(--color-danger-text);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--color-danger-text);
+    --bs-btn-active-border-color: var(--color-danger-text);
+}
+
+.btn-outline-danger {
+    --bs-btn-color: var(--color-danger-text);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: var(--color-danger-border);
+    --bs-btn-hover-color: var(--color-danger-text);
+    --bs-btn-hover-bg: var(--color-danger-bg);
+    --bs-btn-hover-border-color: var(--color-danger);
+    --bs-btn-active-color: var(--color-danger-text);
+    --bs-btn-active-bg: var(--color-danger-bg);
+    --bs-btn-active-border-color: var(--color-danger);
+}
+
+// ---- Disabled (all intents) ----------------------------------------------
+// Muted tokens rather than opacity: stays legible, still obviously inert.
+.btn:disabled,
+.btn.disabled,
+.btn[aria-disabled='true'] {
+    --bs-btn-disabled-color: var(--color-disabled-text);
+    --bs-btn-disabled-bg: var(--color-disabled-bg);
+    --bs-btn-disabled-border-color: var(--color-disabled-border);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.btn-light:disabled,
+.btn-link:disabled,
+.btn-outline-primary:disabled,
+.btn-outline-secondary:disabled,
+.btn-outline-danger:disabled {
+    --bs-btn-disabled-bg: transparent;
+}
+
+// A button that is disabled *because it's loading* keeps its normal look —
+// the spinner already explains the state.
+.btn:disabled:has(.loader) {
+    --bs-btn-disabled-color: var(--bs-btn-color);
+    --bs-btn-disabled-bg: var(--bs-btn-bg);
+    --bs-btn-disabled-border-color: var(--bs-btn-border-color);
+    cursor: progress;
+}

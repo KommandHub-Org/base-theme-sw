@@ -1,0 +1,45 @@
+/*
+KmhBaseTheme — base layer
+==================================================
+Loaded AFTER @Storefront (see theme.json `style`), so everything here refines or
+overrides the compiled Bootstrap/Shopware output. The monochrome design system
+lives in `abstract/`; base element styling follows the 7-1 pattern.
+
+Component- and page-level styling is added in later phases behind this same
+entry point.
+
+@sw-package framework
+*/
+
+// Abstracts (no CSS output except the token layer) --------------------------
+@import 'abstract/palette';
+@import 'abstract/config';
+@import 'abstract/mixins';
+@import 'abstract/tokens-css'; // :root custom properties (+ dark-ready block)
+
+// Base ----------------------------------------------------------------------
+@import 'base/reboot';
+@import 'base/focus';
+@import 'base/buttons';
+@import 'base/forms';
+@import 'base/core-colors';
+
+// Components ----------------------------------------------------------------
+@import 'component/product-card';
+@import 'component/listing';
+@import 'component/line-item';
+@import 'component/card';
+@import 'component/alert';
+@import 'component/modal';
+
+// Layout --------------------------------------------------------------------
+@import 'layout/container';
+@import 'layout/header';
+@import 'layout/offcanvas';
+@import 'layout/footer';
+@import 'layout/chrome';
+
+// Pages ---------------------------------------------------------------------
+@import 'page/product-detail';
+@import 'page/checkout';
+@import 'page/account';

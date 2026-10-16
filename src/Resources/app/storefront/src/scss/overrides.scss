@@ -1,0 +1,262 @@
+/*
+Override variable defaults
+==================================================
+Loaded BEFORE @Storefront (see theme.json `style`), so every Bootstrap and
+Shopware Storefront `!default` variable can be re-pointed at the monochrome
+token system here. Declarations only — no CSS rules (those belong in base.scss).
+
+https://getbootstrap.com/docs/5.3/customize/sass/#variable-defaults
+
+@sw-package framework
+*/
+
+@import 'abstract/palette';
+@import 'abstract/config';
+
+// --------------------------------------------------
+// Bootstrap core colours → monochrome
+// --------------------------------------------------
+$white:  $mono-0;
+$black:  $mono-1000;
+
+$gray-100: $mono-50;
+$gray-200: $mono-100;
+$gray-300: $mono-200;
+$gray-400: $mono-300;
+$gray-500: $mono-400;
+$gray-600: $mono-500;
+$gray-700: $mono-700;
+$gray-800: $mono-800;
+$gray-900: $mono-900;
+
+$primary:   $color-action;
+$secondary: $mono-600;
+$success:   $color-success;
+$info:      $color-info;
+$warning:   $color-warning;
+$danger:    $color-danger;
+$light:     $mono-50;
+$dark:      $mono-900;
+
+// Body / text
+$body-color:       $color-text-primary;
+$body-bg:          $color-bg-base;
+$text-muted:       $color-text-muted;
+$headings-color:   $color-text-primary;
+
+// Links — no default underline. Chrome links (nav, footer, cards) read by
+// position; inline links in running text get a quiet underline in
+// _reboot.scss (WCAG 1.4.1: same colour as text, so they need a non-colour cue).
+$link-color:                     $color-text-primary;
+$link-hover-color:               $mono-1000;
+$link-decoration:                none;
+$link-hover-decoration:          none;
+
+// --------------------------------------------------
+// Typography — Inter (self-hosted by core), one scale
+// --------------------------------------------------
+$font-size-base:        1rem;
+$font-size-sm:          0.875rem;
+$font-size-lg:          1.125rem;
+$h1-font-size:          2.125rem;
+$h2-font-size:          1.5rem;
+$h3-font-size:          1.25rem;
+$h4-font-size:          1.125rem;
+$h5-font-size:          1rem;
+$h6-font-size:          0.875rem;
+$headings-font-weight:  600;
+$headings-line-height:  1.2;
+$headings-margin-bottom: 0.75rem;
+$font-weight-bold:      600;
+$font-weight-semibold:  600;
+$line-height-base:      1.6;
+$small-font-size:       0.875rem;
+$lead-font-size:        1.125rem;
+$lead-font-weight:      400;
+
+// Borders & radius
+$border-color:        $color-border;
+$border-radius:       $radius-base;
+$border-radius-sm:    $radius-sm;
+$border-radius-lg:    $radius-lg;
+$border-radius-xl:    $radius-lg;
+$border-radius-pill:  999px;
+
+// Component active (selected) state
+$component-active-bg:    $color-selected;
+$component-active-color: $color-text-inverse;
+
+// Focus ring (Bootstrap 5.3)
+$focus-ring-width:   2px;
+$focus-ring-opacity: 1;
+$focus-ring-color:   $color-focus-ring;
+$focus-ring-blur:    0;
+
+// --------------------------------------------------
+// Buttons
+// --------------------------------------------------
+// 40px default (sm 32 / lg 46): 15px medium text, generous horizontal pad.
+$btn-padding-y:          0.5rem;
+$btn-padding-x:          1rem;
+$btn-font-size:          0.9375rem;
+$btn-line-height:        1.5;
+$btn-padding-y-sm:       0.3125rem;
+$btn-padding-x-sm:       0.75rem;
+$btn-font-size-sm:       0.8125rem;
+$btn-padding-y-lg:       0.6875rem;
+$btn-padding-x-lg:       1.25rem;
+$btn-font-size-lg:       1rem;
+$btn-border-radius:      $radius-base;
+$btn-border-radius-sm:   $radius-sm;
+$btn-border-radius-lg:   $radius-base;
+$btn-font-weight:        500;
+$btn-focus-width:        2px;
+$btn-disabled-opacity:   1; // we style disabled via tokens, not opacity
+
+// --------------------------------------------------
+// Forms
+// --------------------------------------------------
+$input-bg:                 $color-surface;
+$input-border-color:       $color-border-input;
+$input-color:              $color-text-primary;
+$input-placeholder-color:  $color-text-muted;
+$input-border-radius:      $radius-base;
+$input-border-radius-sm:   $radius-sm;
+$input-border-radius-lg:   $radius-base;
+$input-padding-y:          0.5rem;
+$input-padding-x:          0.75rem;
+$input-font-size:          1rem; // 16px: stops iOS zoom-on-focus
+$input-line-height:        1.5;
+$input-focus-border-color: $color-action;
+$input-focus-box-shadow:   0 0 0 2px rgba($mono-1000, 0.12);
+$input-disabled-bg:        $color-disabled-bg;
+$input-disabled-border-color: $color-disabled-border;
+
+$form-label-font-weight:   500;
+$form-label-font-size:     0.875rem;
+$form-label-margin-bottom: 0.375rem;
+$form-text-font-size:      0.8125rem;
+$form-feedback-font-size:  0.8125rem;
+$form-label-color:         $color-text-primary;
+
+// Form validation — status hues; valid stays quiet (no green noise)
+$form-feedback-valid-color:   $color-text-secondary;
+$form-feedback-invalid-color: $color-danger-text;
+$form-invalid-border-color:   $color-danger;
+$form-valid-border-color:     $color-border-input;
+
+// Selection controls
+$form-check-input-checked-bg-color:     $color-action;
+$form-check-input-checked-border-color: $color-action;
+$form-check-input-border:               1px solid $color-border-strong;
+
+// --------------------------------------------------
+// Surfaces / cards / dropdowns / modals
+// --------------------------------------------------
+$card-bg:               $color-surface;
+$card-border-color:     $color-border;
+$card-border-radius:    $radius-lg;
+$card-cap-bg:           transparent;
+$card-spacer-y:         1.25rem;
+$card-spacer-x:         1.25rem;
+$card-cap-padding-y:    0.875rem;
+$card-cap-padding-x:    1.25rem;
+$card-title-spacer-y:   0.75rem;
+
+$dropdown-bg:                 $color-surface;
+$dropdown-border-color:       $color-border;
+$dropdown-border-radius:      $radius-lg;
+$dropdown-padding-x:          0.375rem;
+$dropdown-padding-y:          0.375rem;
+$dropdown-item-padding-x:     0.625rem;
+$dropdown-item-padding-y:     0.5rem;
+$dropdown-font-size:          0.875rem;
+$dropdown-divider-margin-y:   0.375rem;
+$dropdown-link-color:         $color-text-primary;
+$dropdown-link-hover-color:   $color-text-primary;
+$dropdown-link-hover-bg:      $color-bg-subtle;
+$dropdown-link-active-color:  $color-text-inverse;
+$dropdown-link-active-bg:     $color-selected;
+
+$modal-content-bg:            $color-surface;
+$modal-content-border-color:  $color-border;
+$modal-content-border-radius: $radius-xl;
+$modal-inner-padding:         1.5rem;
+$modal-header-padding:        1.25rem 1.5rem;
+$modal-backdrop-bg:           $color-overlay;
+$modal-backdrop-opacity:      1;
+
+$offcanvas-bg-color:          $color-surface;
+$offcanvas-border-color:      $color-border;
+
+// Badges — compact, medium weight; status tints in component/_alert.scss
+$badge-font-size:      0.75rem;
+$badge-font-weight:    500;
+$badge-padding-y:      0.25em;
+$badge-padding-x:      0.55em;
+$badge-border-radius:  $radius-sm;
+
+// Tooltips — dark chip in both modes
+$tooltip-bg:            $mono-900;
+$tooltip-color:         $mono-0;
+$tooltip-border-radius: $radius-sm;
+$tooltip-font-size:     0.75rem;
+$tooltip-padding-y:     0.375rem;
+$tooltip-padding-x:     0.625rem;
+$tooltip-opacity:       1;
+
+// Alerts
+$alert-border-radius:  $radius-lg;
+$alert-padding-y:      0.875rem;
+$alert-padding-x:      1rem;
+
+// Tables
+$table-border-color:   $color-border-subtle;
+$table-striped-bg:     $color-bg-subtle;
+$table-hover-bg:       $color-bg-subtle;
+$table-cell-padding-y: 0.75rem;
+$table-cell-padding-x: 0.75rem;
+$table-th-font-weight: 600;
+
+// --------------------------------------------------
+// Shadows
+// --------------------------------------------------
+$box-shadow-sm: var(--shadow-sm);
+$box-shadow:    var(--shadow-md);
+$box-shadow-lg: var(--shadow-lg);
+$dropdown-box-shadow: var(--shadow-lg);
+$modal-content-box-shadow-xs: var(--shadow-lg);
+$modal-content-box-shadow-sm-up: var(--shadow-lg);
+
+// --------------------------------------------------
+// Layout / containers (from theme config)
+// --------------------------------------------------
+$container-max-widths: (
+    xxl: $content-max-width,
+);
+
+// --------------------------------------------------
+// Shopware Storefront variables
+// --------------------------------------------------
+$icon-base-color:        $color-text-secondary;
+$border-color-contrast:  $color-border-strong;
+
+// Star ratings & rating bars → the rating token (see _palette.scss). Core's
+// default yellow (#fedc70) is too light to see on white.
+$icon-review-color:      $color-rating;
+$progress-bar-review:    $color-rating;
+
+// --------------------------------------------------
+// Runtime-themeable colours (dark mode)
+// Core writes these straight into `color:` / `background-color:` with no
+// colour math, so they can point at the CSS token layer instead of a baked
+// hex — every consumer then follows [data-theme] without per-selector fixes.
+// Variables that Bootstrap runs through to-rgb()/mix()/shade-color() must stay
+// SCSS colours (body/link colours, $black/$white, greys).
+// --------------------------------------------------
+$headings-color:     var(--color-text-primary);
+$input-color:        var(--color-text-primary);
+$input-bg:           var(--color-surface);
+$input-disabled-bg:  var(--color-disabled-bg);
+$form-label-color:   var(--color-text-primary);
+$icon-base-color:    var(--color-text-secondary);

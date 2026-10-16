@@ -1,0 +1,184 @@
+/*
+Account pages
+==================================================
+Monochrome styling for the customer account area: sidebar navigation, overview,
+order history/detail and address book. Order status reads through a bordered
+label (+ tone).
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Layout
+// --------------------------------------------------
+.account-content {
+    padding-block: 0 var(--space-12);
+}
+
+// --------------------------------------------------
+// Sidebar navigation — settings-style vertical nav
+// No frame: a muted greeting label, inset rounded rows, the current page as a
+// tinted row in ink + semibold. Mirrors the main nav's hover idiom.
+// --------------------------------------------------
+.account-aside .account-menu-inner.card {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.account-aside-header {
+    margin: 0;
+    padding: 0 var(--space-3) var(--space-2);
+    background-color: transparent;
+    border: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+.account-aside-list-group {
+    gap: 2px;
+}
+
+.account-aside-item.list-group-item {
+    padding: 0.5rem var(--space-3);
+    border: 0;
+    border-radius: var(--radius-sm);
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+
+    &:hover {
+        background-color: var(--color-bg-muted);
+        color: var(--color-text-primary);
+    }
+
+    &.is-active {
+        background-color: var(--color-bg-muted);
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-semibold);
+    }
+}
+
+.account-aside-footer.card-footer {
+    margin: var(--space-2) 0 0;
+    padding: var(--space-2) 0 0;
+    background-color: transparent;
+    border-top: 1px solid var(--color-border-subtle);
+}
+
+.account-aside-btn.btn-link .icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.account-aside-btn.btn-link {
+    text-decoration: none; // a nav row, not an inline link
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: 0.5rem var(--space-3);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+
+    &:hover {
+        background-color: var(--color-bg-muted);
+        color: var(--color-text-primary);
+    }
+}
+
+// Core prints whitespace-only <p>s for an unset title/birthday (so :empty
+// never matches); tighten paragraph spacing so they don't open a gap.
+.account-overview-profile p {
+    margin-bottom: var(--space-1);
+}
+
+// --------------------------------------------------
+// Overview
+// --------------------------------------------------
+.account-welcome h1 {
+    color: var(--color-text-primary);
+}
+
+.account-overview-card .card,
+.account-overview-card {
+    height: 100%;
+}
+
+// --------------------------------------------------
+// Order history / detail — a card per order
+// (`li.order-table` is the order; core also puts `.order-item` on every
+// table cell, so never style that class as a box.)
+// --------------------------------------------------
+.account-orders-overview .order-table {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+    margin-bottom: var(--space-4);
+    overflow: hidden;
+    background-color: var(--color-surface);
+}
+
+.order-item-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding: var(--space-4) var(--space-5);
+}
+
+.order-table-header-heading {
+    font-size: var(--font-size-lg);
+}
+
+.order-item-total {
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-primary);
+}
+
+// Column labels above order values.
+.order-table-header-label,
+.order-table-header-order-table-header-cell,
+.order-detail-content-header {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+.order-detail-content-header {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.order-detail-content-row {
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+// Status chips are styled with the status system in component/_alert.scss.
+
+// --------------------------------------------------
+// Address book
+// --------------------------------------------------
+.address-card {
+    height: 100%;
+}
+
+// Default / selected address: ink ring (2px total via border + inset shadow).
+.address-card.is-default,
+.address-manager-address.is-selected {
+    border-color: var(--color-action);
+    box-shadow: inset 0 0 0 1px var(--color-action);
+}
+
+// --------------------------------------------------
+// Wishlist — page title aligned like every other page heading
+// --------------------------------------------------
+.wishlist-headline {
+    justify-content: flex-start; // core centres it as a flex row
+    margin-bottom: var(--space-6);
+}

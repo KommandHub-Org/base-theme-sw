@@ -1,0 +1,277 @@
+/*
+Product cards & listing grid
+==================================================
+Monochrome product cards and a fully config-driven listing grid. Grid columns,
+image ratio and card style all come from theme config at compile time — no Twig
+override needed. Cards read as one system across listings and sliders.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Listing grid — configurable columns per breakpoint.
+// Uses flex-basis via calc so any 1–6 column count works (no 12-divisibility
+// constraint). Targets the listing row only, so product sliders are untouched.
+// --------------------------------------------------
+.cms-listing-row {
+    // Consistent, generous gutters for a premium feel.
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 2rem;
+
+    > .cms-listing-col {
+        flex: 0 0 auto;
+        width: calc(100% / #{$kmh-grid-columns-mobile});
+        max-width: calc(100% / #{$kmh-grid-columns-mobile});
+
+        @media (min-width: $kmh-bp-md) {
+            width: calc(100% / #{$kmh-grid-columns-tablet});
+            max-width: calc(100% / #{$kmh-grid-columns-tablet});
+        }
+        @media (min-width: $kmh-bp-xl) {
+            width: calc(100% / #{$kmh-grid-columns-desktop});
+            max-width: calc(100% / #{$kmh-grid-columns-desktop});
+        }
+    }
+}
+
+// --------------------------------------------------
+// Card shell
+// --------------------------------------------------
+.product-box {
+    position: relative;
+    height: 100%;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    @include kmh-motion-safe {
+        transition:
+            border-color var(--transition-base),
+            box-shadow var(--transition-base),
+            transform var(--transition-base);
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        gap: var(--space-1);
+        padding: var(--space-4);
+    }
+
+    // Core sizes these with fixed heights/margins tuned for its own card; they
+    // fight the config-driven image ratio and clamp below. Reset to content
+    // height and pin the action to the bottom so cards in a row still align.
+    .product-rating,
+    .product-name,
+    .product-description,
+    .product-price-unit {
+        height: auto;
+        margin: 0;
+    }
+
+    .product-variant-characteristics { min-height: 0; }
+    // Core's truncate mixin gives the text a fixed 2-line height even when the
+    // product has no variant options (whitespace-only), leaving a gap.
+    .product-variant-characteristics-text { height: auto; max-height: 3em; }
+    .product-cheapest-price { margin-bottom: 0; }
+    .product-price-info { margin-top: 0.25rem; }
+    .product-action { margin-top: auto; padding-top: var(--space-4); }
+
+    .product-action .btn {
+        width: 100%;
+        font-size: var(--font-size-sm);
+    }
+
+    // Core sizes the name's stretched-link hit area to its 200px image; match
+    // our ratio-driven image instead so the whole image stays clickable.
+    &.box-standard .stretched-link::after,
+    &.box-minimal .stretched-link::after {
+        bottom: auto;
+        height: auto;
+        aspect-ratio: #{$image-ratio};
+    }
+}
+
+// Card-style variants (theme config `kmh-card-style`) --------------------
+@if $kmh-card-style == 'elevated' {
+    .product-box {
+        border: 0;
+        box-shadow: var(--shadow-sm);
+
+        &:hover,
+        &:focus-within {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+    }
+} @else if $kmh-card-style == 'flat' {
+    .product-box {
+        border: 0;
+
+        &:hover,
+        &:focus-within {
+            background-color: var(--color-bg-subtle);
+        }
+    }
+} @else {
+    // bordered (default)
+    .product-box {
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-xs);
+
+        &:hover,
+        &:focus-within {
+            border-color: var(--color-border-strong);
+            box-shadow: var(--shadow-md);
+        }
+    }
+}
+
+// --------------------------------------------------
+// Image — fixed aspect ratio from config, object-fit cover.
+// --------------------------------------------------
+.product-image-wrapper {
+    position: relative;
+    height: auto;
+    flex: 0 0 auto;
+    margin-bottom: 0;
+    aspect-ratio: #{$image-ratio};
+    background-color: var(--color-bg-subtle);
+    overflow: hidden;
+}
+
+.product-box .product-image {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+
+    &.is-contain {
+        object-fit: contain;
+    }
+    @include kmh-motion-safe {
+        transition: transform 0.5s var(--ease-standard);
+    }
+}
+
+.product-box:hover .product-image:not(.is-contain) {
+    transform: scale(1.04);
+}
+
+.product-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--color-text-muted);
+
+    .icon { color: var(--color-border-strong); }
+}
+
+// --------------------------------------------------
+// Text hierarchy — tone, not colour.
+// --------------------------------------------------
+.product-box {
+    .product-name {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-md);
+        font-weight: var(--font-weight-medium);
+        letter-spacing: -0.006em;
+        text-decoration: none;
+        line-height: 1.35;
+    }
+
+    .product-variant-characteristics,
+    .product-description {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-snug);
+    }
+
+    .product-name {
+        min-height: calc(2 * 1.35em); // reserve 2 lines so rows align
+    }
+
+    .product-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-price,
+    .product-price-info .price {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-semibold);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .product-price.with-list-price { color: var(--color-danger-text); }
+
+    .product-price-tax-link,
+    .product-cheapest-price {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-muted);
+    }
+
+    // Manufacturer / secondary meta.
+    .product-rating {
+        color: var(--color-text-secondary);
+    }
+}
+
+// --------------------------------------------------
+// Badges (sale / topseller / new) — status chips over the image.
+// --------------------------------------------------
+.product-badges {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    // Colour comes from the status system (component/_alert.scss): discount
+    // = danger tint, topseller = warning, new = success. Here: size + spacing.
+    .badge {
+        font-size: var(--font-size-2xs);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        height: auto;
+        line-height: 1.2;
+        padding: 0.3em 0.6em;
+        margin: 0;
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-xs);
+    }
+}
+
+// --------------------------------------------------
+// Wishlist heart on the card.
+// --------------------------------------------------
+.product-box .product-wishlist-action {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    z-index: 2;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+
+    &:hover {
+        border-color: var(--color-action);
+        background-color: var(--color-bg-base);
+    }
+}

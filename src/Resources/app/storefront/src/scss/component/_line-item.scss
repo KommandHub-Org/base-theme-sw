@@ -1,0 +1,105 @@
+/*
+Line items (shared: off-canvas cart, cart page, checkout)
+==================================================
+One monochrome line-item treatment reused everywhere a cart row appears.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+.line-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+
+    &.is-nested,
+    .line-item-children & {
+        border-bottom: 0;
+    }
+}
+
+.line-item-img-container {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background-color: var(--color-bg-subtle);
+}
+
+.line-item-img {
+    object-fit: cover;
+}
+
+.line-item-label {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+}
+
+.line-item-product-number,
+.line-item-details-characteristics,
+.line-item-delivery-date {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+}
+
+.line-item-price,
+.line-item-total-price {
+    color: var(--color-text-primary);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.line-item-reference-price {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+// Quantity control — reuse the bordered group pattern.
+.line-item-quantity-group.input-group {
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+
+    .form-control,
+    .form-select {
+        border: 0;
+        box-shadow: none;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+
+        &:focus { box-shadow: none; }
+    }
+    .btn {
+        border: 0;
+        background-color: var(--color-surface);
+        color: var(--color-text-primary);
+        border-radius: 0;
+
+        &:hover { background-color: var(--color-bg-subtle); }
+    }
+}
+
+// Remove — quiet until hover, then reads as the destructive-but-monochrome cue
+// (strongest tone + underline), never red.
+.line-item-remove-button {
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 0;
+
+    &:hover,
+    &:focus {
+        color: var(--color-text-primary);
+    }
+}
+
+// Collapse toggle for nested items.
+.line-item-collapse-button {
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: 0;
+
+    &:hover { color: var(--color-text-primary); }
+}

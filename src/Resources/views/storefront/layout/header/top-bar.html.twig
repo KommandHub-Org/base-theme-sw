@@ -1,0 +1,12 @@
+{% sw_extends '@Storefront/storefront/layout/header/top-bar.html.twig' %}
+
+{#
+    Override: gate the utility top bar behind `kmh-show-topbar`, while always
+    keeping it when a language/currency switcher needs a home. (The dark-mode
+    toggle lives in the header actions — see layout/header/header.html.twig.)
+#}
+{% block layout_header_top_bar %}
+    {% if theme_config('kmh-show-topbar') or header.languages.count > 1 or header.currencies.count > 1 %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,158 @@
+/*
+Overlays — dropdowns, modals, tooltips, popovers
+==================================================
+Every floating surface shares one recipe: surface fill, hairline border,
+large soft shadow, a radius one step above controls. Dropdown items are
+inset rounded rows (not full-bleed stripes) so menus feel like the nav.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Dropdowns (Bootstrap + Shopware sorting / top-bar / context menus)
+// --------------------------------------------------
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: var(--color-bg-muted);
+    --bs-dropdown-link-active-color: var(--color-text-primary);
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-lg);
+}
+
+.dropdown-item {
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    @include kmh-motion-safe {
+        transition: background-color var(--transition-fast);
+    }
+
+    &:hover,
+    &:focus {
+        background-color: var(--color-bg-muted);
+        color: var(--color-text-primary);
+    }
+
+    // Selected option: ink text + weight; no inverted slab.
+    &.active,
+    &:active {
+        background-color: var(--color-bg-muted);
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-medium);
+    }
+}
+
+.dropdown-header {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    padding-inline: var(--space-3);
+}
+
+.dropdown-divider {
+    border-color: var(--color-border-subtle);
+}
+
+// Top-bar currency/language lists.
+.top-bar-list-item {
+    border-radius: var(--radius-sm);
+
+    &:hover { background-color: var(--color-bg-muted); }
+}
+
+// --------------------------------------------------
+// Modals (Bootstrap + Shopware pseudo-modals, quickview, address manager)
+// --------------------------------------------------
+.modal-content,
+.pseudo-modal-template .modal-content {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--color-border-subtle);
+    align-items: center;
+}
+
+.modal-title {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-snug);
+}
+
+.modal-body {
+    color: var(--color-text-primary);
+}
+
+.modal-footer {
+    background-color: var(--color-bg-subtle);
+    border-top: 1px solid var(--color-border-subtle);
+    gap: var(--space-2);
+}
+
+.modal-backdrop {
+    background-color: var(--color-overlay);
+
+    &.show { opacity: 1; }
+}
+
+@supports (backdrop-filter: blur(1px)) {
+    .modal-backdrop.show,
+    .offcanvas-backdrop.show {
+        backdrop-filter: blur(2px);
+    }
+}
+
+// Close control — quiet ghost icon button.
+.modal .btn-close,
+.pseudo-modal .btn-close {
+    border-radius: var(--radius-sm);
+    opacity: 0.6;
+    @include kmh-motion-safe {
+        transition: opacity var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    &:hover {
+        opacity: 1;
+        background-color: var(--color-bg-muted);
+    }
+
+    &:focus-visible { @include kmh-focus-ring(); }
+}
+
+[data-theme='dark'] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.js-pseudo-modal-template-content-element,
+.pseudo-modal {
+    color: var(--color-text-primary);
+}
+
+// --------------------------------------------------
+// Tooltips & popovers
+// --------------------------------------------------
+.tooltip {
+    --bs-tooltip-bg: #{$mono-900};
+    --bs-tooltip-color: #{$mono-0};
+    font-weight: var(--font-weight-medium);
+}
+
+[data-theme='dark'] .tooltip {
+    --bs-tooltip-bg: #{$mono-100};
+    --bs-tooltip-color: #{$mono-1000};
+}
+
+.popover {
+    --bs-popover-bg: var(--color-surface);
+    --bs-popover-border-color: var(--color-border);
+    --bs-popover-border-radius: var(--radius-lg);
+    --bs-popover-box-shadow: var(--shadow-lg);
+    --bs-popover-header-bg: transparent;
+    --bs-popover-body-color: var(--color-text-secondary);
+    box-shadow: var(--shadow-lg);
+}

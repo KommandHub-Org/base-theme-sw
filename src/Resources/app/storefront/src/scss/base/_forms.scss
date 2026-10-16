@@ -1,0 +1,200 @@
+/*
+Form controls
+==================================================
+40px controls, 8px radius, 16px text (no iOS zoom). Borders keep 3:1 against
+the surface (WCAG 1.4.11) — the one place we don't use hairlines — and soften
+visually with an inset xs shadow. Focus = ink border + soft halo. Invalid =
+status red border + message. Labels are 14px medium, sitting 6px above.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+.form-control,
+.form-select {
+    min-height: var(--control-height);
+    background-color: var(--color-surface);
+    border-color: var(--color-border-input);
+    color: var(--color-text-primary);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-xs);
+    @include kmh-motion-safe {
+        transition:
+            border-color var(--transition-fast),
+            box-shadow var(--transition-fast),
+            background-color var(--transition-fast);
+    }
+
+    &::placeholder { color: var(--color-text-muted); opacity: 1; }
+
+    &:hover:not(:disabled):not(:focus) {
+        border-color: var(--color-text-muted);
+    }
+
+    &:focus {
+        border-color: var(--color-action);
+        box-shadow: var(--focus-halo);
+        outline: none;
+    }
+
+    &:disabled,
+    &[readonly] {
+        background-color: var(--color-disabled-bg);
+        border-color: var(--color-disabled-border);
+        color: var(--color-disabled-text);
+        box-shadow: none;
+    }
+}
+
+.form-control-sm,
+.form-select-sm {
+    min-height: var(--control-height-sm);
+}
+
+textarea.form-control {
+    min-height: calc(var(--control-height) * 2.5);
+    border-radius: var(--radius-lg); // a 999px 'pill' radius would warp a box
+}
+
+// --------------------------------------------------
+// Labels, help text
+// --------------------------------------------------
+.form-label,
+.col-form-label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: 0.375rem;
+}
+
+.form-text {
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+}
+
+// The "*" marker reads as metadata, not an alarm.
+.form-required-label {
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+}
+
+// --------------------------------------------------
+// Validation
+// --------------------------------------------------
+.form-control.is-invalid,
+.was-validated .form-control:invalid,
+.form-select.is-invalid,
+.was-validated .form-select:invalid {
+    border-color: var(--color-danger);
+
+    &:focus {
+        border-color: var(--color-danger);
+        box-shadow: 0 0 0 3px var(--color-danger-bg);
+    }
+}
+
+.invalid-feedback {
+    color: var(--color-danger-text);
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-medium);
+    margin-top: 0.375rem;
+}
+
+.form-control.is-valid,
+.was-validated .form-control:valid {
+    border-color: var(--color-border-input);
+}
+
+.valid-feedback {
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+}
+
+// --------------------------------------------------
+// Checkbox / radio / switch
+// --------------------------------------------------
+.form-check {
+    min-height: 1.5rem;
+}
+
+.form-check-input {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: 0.2rem;
+    border-color: var(--color-border-input);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-xs);
+
+    &[type='checkbox'] { border-radius: 0.3rem; }
+
+    &:checked,
+    &:indeterminate {
+        background-color: var(--color-action);
+        border-color: var(--color-action);
+    }
+
+    &:focus {
+        border-color: var(--color-action);
+        box-shadow: var(--focus-halo);
+    }
+}
+
+.form-check-label {
+    color: var(--color-text-primary);
+}
+
+// --------------------------------------------------
+// Input groups (search, promo code, quantity)
+// --------------------------------------------------
+.input-group > .form-control,
+.input-group > .form-select {
+    box-shadow: none;
+}
+
+.input-group-text {
+    background-color: var(--color-bg-subtle);
+    border-color: var(--color-border-input);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+// Hide native number spinners — the custom −/+ quantity groups replace them.
+input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        appearance: none;
+        margin: 0;
+    }
+}
+
+// --------------------------------------------------
+// Dark mode: Bootstrap bakes the valid/invalid glyphs, the select chevron and
+// the checkbox/radio marks into SVG data-URIs in light tones. Re-issue them in
+// dark-surface tones (checked controls fill white, so the mark goes black);
+// drop the validation glyphs — border + message carry the state.
+// --------------------------------------------------
+[data-theme='dark'] {
+    .form-control.is-invalid,
+    .form-control.is-valid,
+    .was-validated .form-control:invalid,
+    .was-validated .form-control:valid {
+        background-image: none;
+    }
+
+    .form-select {
+        --bs-form-select-bg-img: #{escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$mono-200}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>"))};
+        --bs-form-select-bg-icon: none;
+    }
+
+    .form-check-input:checked[type='checkbox'] {
+        --bs-form-check-bg-image: #{escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{$mono-1000}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>"))};
+    }
+
+    .form-check-input:checked[type='radio'] {
+        --bs-form-check-bg-image: #{escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#{$mono-1000}'/></svg>"))};
+    }
+}

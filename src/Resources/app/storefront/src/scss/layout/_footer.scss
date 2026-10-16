@@ -1,0 +1,123 @@
+/*
+Footer
+==================================================
+Monochrome footer with configurable column count (`kmh-footer-columns`, applied
+via flex-basis at md+ — no Twig override, same pattern as the listing grid).
+
+@sw-package framework
+*/
+
+@import '../abstract/config';
+@import '../abstract/mixins';
+
+.footer-main {
+    margin-top: var(--space-16);
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-6);
+    background-color: var(--color-bg-subtle);
+    border-top: 1px solid var(--color-border-subtle);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+// Configurable columns (md+). Mobile stays single-column (collapsible).
+.footer-columns {
+    @media (min-width: $kmh-bp-md) {
+        > .footer-column {
+            flex: 0 0 auto;
+            width: calc(100% / #{$kmh-footer-columns});
+            max-width: calc(100% / #{$kmh-footer-columns});
+        }
+    }
+}
+
+.footer-column-headline,
+.footer-headline {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    letter-spacing: -0.003em;
+    margin-bottom: var(--space-3);
+
+    a {
+        color: var(--color-text-primary);
+        text-decoration: none;
+    }
+}
+
+// Mobile collapse toggle (plus/minus icons handled by Shopware JS).
+.footer-column-toggle.btn {
+    color: var(--color-text-secondary);
+    padding: 0;
+
+    &:hover { color: var(--color-text-primary); }
+}
+
+.footer-link,
+.footer-service-menu-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    line-height: 2.1;
+    @include kmh-motion-safe {
+        transition: color var(--transition-fast);
+    }
+
+    &:hover {
+        color: var(--color-text-primary);
+    }
+}
+
+.footer-service-menu-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.footer-contact-hotline {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+}
+
+// Bottom bar — copyright, VAT note, payment logos.
+.footer-bottom {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-subtle);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+.footer-copyright,
+.footer-vat {
+    color: var(--color-text-muted);
+}
+
+.footer-copyright a {
+    color: var(--color-text-secondary);
+
+    &:hover { color: var(--color-text-primary); }
+}
+
+// Payment-method logos — desaturate for a coherent monochrome footer, restore
+// on hover for recognisability. (Purely presentational.)
+.footer-logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.footer-payment-image-thumbnails {
+    filter: grayscale(1);
+    opacity: 0.75;
+    @include kmh-motion-safe {
+        transition: filter var(--transition-fast), opacity var(--transition-fast);
+    }
+
+    &:hover {
+        filter: grayscale(1);
+        opacity: 1;
+    }
+}

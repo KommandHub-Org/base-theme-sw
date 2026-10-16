@@ -1,0 +1,158 @@
+/*
+Reboot & typography
+==================================================
+Loaded after @Storefront. Sets the page ground, the type scale and link
+treatment. Everything references the token layer (_tokens-css.scss).
+
+Type: Inter (self-hosted by Shopware core). Headings are semibold with tight
+tracking — confident without being heavy. Body copy is regular at 16px/1.6.
+
+@sw-package framework
+*/
+
+@import '../abstract/config';
+@import '../abstract/mixins';
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    // Inter: contextual alternates + the open-digit / straight-l variants that
+    // make it read like a product UI rather than a default web font.
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'cv05' 1, 'cv08' 1;
+}
+
+// --------------------------------------------------
+// Headings — one scale, tight tracking that relaxes as size drops
+// --------------------------------------------------
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--tracking-snug);
+    text-wrap: balance;
+}
+
+h1, .h1 {
+    font-size: var(--font-size-3xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.15;
+}
+h2, .h2 { font-size: var(--font-size-2xl); letter-spacing: var(--tracking-tight); }
+h3, .h3 { font-size: var(--font-size-xl); }
+h4, .h4 { font-size: var(--font-size-lg); }
+h5, .h5 { font-size: var(--font-size-base); }
+h6, .h6 { font-size: var(--font-size-sm); }
+
+p { color: inherit; text-wrap: pretty; }
+
+small, .small { font-size: var(--font-size-sm); }
+
+.lead {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+}
+
+strong, b { font-weight: var(--font-weight-semibold); }
+
+.text-muted { color: var(--color-text-muted) !important; } // beat BS utility
+
+// Numbers line up wherever money or counts are shown.
+.product-price,
+.product-detail-price,
+.summary-value,
+.line-item-total-price,
+.line-item-unit-price,
+.checkout-aside-summary-value,
+.header-cart-total {
+    font-variant-numeric: tabular-nums;
+}
+
+// --------------------------------------------------
+// Links
+// Chrome links (nav, footer, cards, breadcrumbs) carry no underline — their
+// position says "link". Links inside running text DO keep one: they share the
+// text colour, so the underline is the non-colour cue (WCAG 1.4.1). It's a
+// quiet hairline that firms up on hover.
+// --------------------------------------------------
+a {
+    color: inherit;
+    text-decoration: none;
+    @include kmh-motion-safe {
+        transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+    }
+}
+
+p a:not(.btn),
+li a:not(.btn):not([class]),
+.cms-element-text a:not(.btn),
+.product-detail-description-text a,
+.checkout-confirm-tos-label a,
+.checkout-confirm-revocation-label a,
+.cookie-permission-content a,
+.form-text a,
+.login-password-recover a,
+.footer-contact-form a,
+.product-price-tax-link,
+.btn-link-inline {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--color-border-strong);
+
+    &:hover {
+        text-decoration-color: currentColor;
+    }
+}
+
+// Footer / nav lists use bare <li><a> — opt them back out.
+.footer-link,
+.footer-service-menu-link,
+.navigation-flyout-link,
+.navigation-offcanvas-link,
+.category-navigation-link,
+.breadcrumb a,
+.dropdown-item,
+.nav-link,
+.footer-contact-hotline a:not(.btn) {
+    text-decoration: none;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    opacity: 1;
+}
+
+::selection {
+    background: var(--color-action);
+    color: var(--color-action-text);
+}
+
+img, svg, video {
+    max-width: 100%;
+    height: auto;
+}
+
+// Honour reduced-motion globally as a safety net.
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}

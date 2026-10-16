@@ -1,0 +1,263 @@
+/*
+Checkout — cart, confirm, finish, register/login
+==================================================
+Focused conversion path: one column of cards + a sticky summary. Selection
+states (payment / shipping method, address) read through an ink ring + the
+radio itself. Line items reuse component/_line-item.scss.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Layout — main column + sticky order summary aside
+// --------------------------------------------------
+.checkout-main {
+    padding-block: 0 var(--space-12);
+}
+
+.checkout-aside-container {
+    @media (min-width: $kmh-bp-md) {
+        position: sticky;
+        top: 1.5rem;
+    }
+}
+
+.checkout-aside-summary {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+    padding: var(--space-5);
+    font-size: var(--font-size-sm);
+}
+
+.checkout-aside-summary-header {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text-primary);
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+// Primary checkout CTA spans the summary.
+.checkout-btn {
+    width: 100%;
+}
+
+// --------------------------------------------------
+// Summary figures
+// --------------------------------------------------
+.checkout-aside-summary-list-container,
+.checkout-summary-list {
+    dt, .summary-label { color: var(--color-text-secondary); }
+    dd, .summary-value {
+        color: var(--color-text-primary);
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+    }
+
+    // Grand total gets weight + a top rule (the visual anchor).
+    .summary-total dt,
+    .summary-total dd {
+        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-base);
+        color: var(--color-text-primary);
+        border-top: 1px solid var(--color-border);
+        padding-top: var(--space-3);
+        margin-top: var(--space-2);
+    }
+}
+
+// --------------------------------------------------
+// Cart page
+// --------------------------------------------------
+// 6.7 renders `.cart-main-header` as the page <h1> with the item counter as
+// an inline sibling — style it as a heading, not a table-header label.
+.cart-main-header {
+    color: var(--color-text-primary);
+}
+
+.cart-main-header-item-counter,
+.confirm-main-header-item-counter {
+    color: var(--color-text-muted) !important; // beat core .text-dark-emphasis
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.checkout-product-table {
+    width: 100%;
+}
+
+// Promotion / voucher entry.
+.cart-add-promotion,
+.checkout-aside-add-code {
+    .checkout-aside-add-promotion-button,
+    .btn-link {
+        color: var(--color-text-secondary);
+        text-decoration: underline;
+
+        &:hover { color: var(--color-text-primary); }
+    }
+}
+
+.cart-shipping-costs-btn {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    background: transparent;
+    border: 0;
+
+    &:hover { color: var(--color-text-primary); }
+}
+
+// --------------------------------------------------
+// Confirm — cards
+// --------------------------------------------------
+// (Cards and their titles use the shared component/_card.scss treatment.)
+
+// Terms / revocation.
+.checkout-confirm-tos-information {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+.checkout-confirm-tos-label,
+.checkout-confirm-revocation-label {
+    color: var(--color-text-primary);
+}
+
+// --------------------------------------------------
+// Payment & shipping method selection — selectable cards
+// Selected = ink ring (border + 1px inset shadow → 2px, no layout shift).
+// --------------------------------------------------
+.payment-method,
+.shipping-method {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-2);
+    background-color: var(--color-surface);
+    @include kmh-motion-safe {
+        transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    &:hover {
+        border-color: var(--color-border-strong);
+        background-color: var(--color-bg-subtle);
+    }
+
+    &:has(.payment-method-input:checked),
+    &:has(.shipping-method-input:checked) {
+        border-color: var(--color-action);
+        box-shadow: inset 0 0 0 1px var(--color-action);
+        background-color: var(--color-surface);
+    }
+}
+
+.payment-method-label,
+.shipping-method-label {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+// Core nests the method NAME (<strong>) inside the description block; only
+// the trailing explanation should be muted/small.
+.payment-method-description,
+.shipping-method-description {
+    strong { color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
+
+    p, small {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-xs);
+        margin-top: 0.125rem;
+    }
+}
+
+.payment-form-group,
+.shipping-form-group {
+    margin-bottom: 0;
+}
+
+.payment-method-image,
+.shipping-method-image {
+    max-height: 1.75rem;
+    width: auto;
+}
+
+// --------------------------------------------------
+// Minimal checkout header (logo · support line · back to shop)
+// --------------------------------------------------
+.header-minimal {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.header-minimal-contact {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-snug);
+
+    strong, a {
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-medium);
+    }
+}
+
+.header-minimal-back-to-shop-button {
+    font-size: var(--font-size-sm);
+}
+
+// --------------------------------------------------
+// Register / login
+// --------------------------------------------------
+.account-register,
+.account-login {
+    .card {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+    }
+}
+
+.login-advantages {
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-sm);
+
+    .login-advantages-header {
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-semibold);
+    }
+}
+
+// --------------------------------------------------
+// Finish (order confirmation)
+// --------------------------------------------------
+.finish-header {
+    color: var(--color-text-primary);
+}
+.finish-ordernumber {
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+// Core spaces the finish teaser for a page without a card (96px below); inside
+// our card that's dead space.
+.checkout-card .finish-content,
+.checkout-card .finish-teaser {
+    margin-bottom: 0;
+}
+
+// Address + info cards on the finish page: equal heights across the row, and
+// the gap the teaser margin used to provide.
+.finish-info {
+    margin-top: 1.5rem;
+}
+
+.finish-info .card,
+.finish-address > .row {
+    height: 100%;
+}

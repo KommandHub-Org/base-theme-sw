@@ -1,0 +1,15 @@
+{% sw_extends '@Storefront/storefront/layout/header/logo.html.twig' %}
+
+{#
+    Optional dark-mode logo (config: kmh-logo-dark). Rendered before the
+    <picture> so CSS can swap them under [data-theme="dark"]; without it the
+    default logo is colour-inverted instead (fine for a monochrome mark).
+#}
+{% block layout_header_logo_image %}
+    {% if theme_config('kmh-dark-mode-toggle') and theme_config('kmh-logo-dark') %}
+        <img src="{{ theme_config('kmh-logo-dark')|sw_encode_url }}"
+             alt="{{ 'header.logoLink'|trans|striptags }}"
+             class="img-fluid header-logo-main-img header-logo-main-img-dark">
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

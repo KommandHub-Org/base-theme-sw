@@ -1,0 +1,119 @@
+/*
+Palette — neutral scale, semantic aliases, status hues
+==================================================
+Pure SCSS variables only (no CSS output). Safe to @import from both
+`overrides.scss` (before @Storefront, feeds Bootstrap !default vars) and
+`base.scss` (after @Storefront). CSS custom properties are emitted once, in
+`abstract/_tokens-css.scss`.
+
+The interface is monochrome — black, white and a systematic neutral scale carry
+all hierarchy and interaction. Hue is reserved for MEANING only: status
+(success / warning / danger / info) and ratings. That keeps the UI calm and
+lets the few coloured things mean something.
+
+@sw-package framework
+*/
+
+// --------------------------------------------------
+// Raw neutral scale (0 = white … 1000 = black)
+// Perceptually spaced; each step is a usable UI tone.
+// --------------------------------------------------
+$mono-0:    #ffffff !default;
+$mono-25:   #fbfbfb !default;
+$mono-50:   #f6f6f6 !default;
+$mono-100:  #ededed !default;
+$mono-150:  #e3e3e3 !default;
+$mono-200:  #d6d6d6 !default;
+$mono-250:  #c7c7c7 !default;
+$mono-300:  #b5b5b5 !default;
+$mono-400:  #969696 !default;
+$mono-500:  #757575 !default; // AA on white for large text; mid-point
+$mono-550:  #686868 !default; // AA (4.5:1) on white AND on subtle bg — muted text
+$mono-600:  #5c5c5c !default; // AA on white for body text
+$mono-700:  #444444 !default;
+$mono-800:  #2b2b2b !default;
+$mono-900:  #1a1a1a !default;
+$mono-950:  #0f0f0f !default;
+$mono-1000: #000000 !default;
+
+// --------------------------------------------------
+// Semantic SCSS aliases (compile-time; used to feed Bootstrap/Shopware
+// !default variables in overrides.scss). Runtime theming uses the CSS
+// custom properties of the same name — see _tokens-css.scss.
+// --------------------------------------------------
+
+// Text
+$color-text-primary:    $mono-900 !default;
+$color-text-secondary:  $mono-600 !default;
+$color-text-muted:      $mono-550 !default; // AA on white + subtle bg
+$color-text-inverse:    $mono-0   !default;
+
+// Backgrounds & surfaces
+$color-bg-base:         $mono-0   !default;
+$color-bg-subtle:       $mono-50  !default;
+$color-bg-muted:        $mono-100 !default;
+$color-surface:         $mono-0   !default;
+$color-surface-sunken:  $mono-50  !default;
+
+// Borders / dividers — hairline-light; structure comes from spacing + surface
+$color-border-subtle:   $mono-100 !default;
+$color-border:          $mono-150 !default;
+$color-border-strong:   $mono-250 !default;
+// Form-control boundary — meets WCAG 1.4.11 (3:1) against white for inputs.
+$color-border-input:    #8a8a8a  !default;
+
+// Interactive (primary action = black)
+$color-action:          $mono-1000 !default;
+$color-action-hover:    $mono-800  !default;
+$color-action-active:   $mono-950  !default;
+$color-action-text:     $mono-0    !default;
+
+// Disabled
+$color-disabled-bg:     $mono-100 !default;
+$color-disabled-border: $mono-200 !default;
+$color-disabled-text:   $mono-400 !default;
+
+// Focus
+$color-focus-ring:      $mono-1000 !default;
+
+// Selected / active state
+$color-selected:        $mono-1000 !default;
+$color-selected-bg:     $mono-50   !default;
+
+// Status hues — theme config `sw-color-*` (Shopware injects those first).
+// Base = icon/border/fill; `-text` = AA text on the `-bg` tint and on white.
+$sw-color-success: #16a34a !default;
+$sw-color-warning: #d97706 !default;
+$sw-color-danger:  #dc2626 !default;
+$sw-color-info:    #2563eb !default;
+
+$color-success:  $sw-color-success !default;
+$color-warning:  $sw-color-warning !default;
+$color-danger:   $sw-color-danger  !default;
+$color-info:     $sw-color-info    !default;
+
+$color-success-text: mix($mono-1000, $color-success, 25%) !default;
+$color-warning-text: mix($mono-1000, $color-warning, 35%) !default;
+$color-danger-text:  mix($mono-1000, $color-danger, 15%) !default;
+$color-info-text:    mix($mono-1000, $color-info, 15%) !default;
+
+$color-success-bg: mix($mono-0, $color-success, 92%) !default;
+$color-warning-bg: mix($mono-0, $color-warning, 92%) !default;
+$color-danger-bg:  mix($mono-0, $color-danger, 93%) !default;
+$color-info-bg:    mix($mono-0, $color-info, 93%) !default;
+
+$color-success-border: mix($mono-0, $color-success, 70%) !default;
+$color-warning-border: mix($mono-0, $color-warning, 70%) !default;
+$color-danger-border:  mix($mono-0, $color-danger, 72%) !default;
+$color-info-border:    mix($mono-0, $color-info, 72%) !default;
+
+// Overlay
+$color-overlay:  rgba($mono-1000, 0.4) !default;
+
+// Rating — stars read universally as amber/gold, and
+// a filled-vs-empty star pair needs more than tone to scan at a glance.
+// Theme config `kmh-rating-color`; default amber passes 3:1 (WCAG 1.4.11) on
+// both the white and the dark surfaces.
+$kmh-rating-color:     #d97706 !default;
+$color-rating:         $kmh-rating-color !default;
+$color-rating-empty:   $mono-400 !default; // ~3:1 on white; decorative (filled count + text carry the value)

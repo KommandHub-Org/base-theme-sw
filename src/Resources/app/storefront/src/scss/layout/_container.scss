@@ -1,0 +1,49 @@
+/*
+Container & section rhythm
+==================================================
+Applies the configurable content width and section spacing scale. The
+container-type switch (container vs container-fluid) is chosen in Twig via
+`theme_config('kmh-container-type')` in later phases; this file governs width
+and vertical rhythm.
+
+@sw-package framework
+*/
+
+@import '../abstract/config';
+
+// Cap the fixed container at the configured content width.
+.container,
+.container-xxl {
+    max-width: $content-max-width;
+}
+
+// Full-width mode (theme config `kmh-container-type`): let fixed containers run
+// edge-to-edge (keeping gutters). Layout-only; markup untouched.
+@if $kmh-container-type == 'container-fluid' {
+    .container,
+    .container-xxl {
+        max-width: 100%;
+    }
+}
+
+// CMS section vertical rhythm scales with the "Section spacing" setting.
+:root {
+    --kmh-section-spacer: #{$section-spacing-factor};
+}
+
+.cms-sections .cms-section {
+    padding-top: calc(2.5rem * var(--kmh-section-spacer));
+    padding-bottom: calc(2.5rem * var(--kmh-section-spacer));
+}
+
+// Page rhythm for non-CMS pages (account, checkout, login): breathing room
+// below the nav. CMS pages get theirs from the breadcrumb / first section.
+.container-main {
+    padding-top: var(--space-8);
+}
+
+.is-ctl-navigation .container-main,
+.is-ctl-product .container-main,
+.is-ctl-cms .container-main {
+    padding-top: 0;
+}

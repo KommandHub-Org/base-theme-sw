@@ -1,0 +1,73 @@
+/*
+Theme-config-derived SCSS variables
+==================================================
+Shopware injects every theme.json config field as a SCSS variable of the same
+name (dashes kept), e.g. `$kmh-border-radius`. This file resolves those raw
+config values into usable design-token values, with `!default` fallbacks so the
+SCSS still compiles outside the Shopware pipeline.
+
+@sw-package framework
+*/
+
+@import 'palette';
+
+// Raw config values (fallbacks mirror theme.json defaults) ----------------
+$kmh-border-radius:      'rounded' !default;
+$kmh-content-max-width:  1400      !default;
+$kmh-section-spacing:    'normal'  !default;
+$kmh-container-type:     'container' !default;
+$kmh-button-variant:     'solid'    !default;
+$kmh-footer-columns:     4          !default;
+$kmh-card-style:         'bordered' !default;
+$kmh-nav-layout:         'flyout'  !default;
+$kmh-product-image-ratio: 'portrait' !default;
+$kmh-grid-columns-mobile:  2 !default;
+$kmh-grid-columns-tablet:  3 !default;
+$kmh-grid-columns-desktop: 4 !default;
+
+// Local breakpoint mins (avoids depending on Bootstrap's mixins so partials
+// compile standalone; values match Shopware's grid breakpoints).
+$kmh-bp-md: 768px !default;
+$kmh-bp-xl: 1200px !default;
+
+// Product image aspect ratios.
+$kmh-image-ratio-map: (
+    'square':    '1 / 1',
+    'portrait':  '3 / 4',
+    'landscape': '4 / 3',
+) !default;
+$image-ratio: map-get($kmh-image-ratio-map, $kmh-product-image-ratio) !default;
+@if $image-ratio == null { $image-ratio: '3 / 4'; }
+
+// Border radius ------------------------------------------------------------
+// Base = controls (buttons, inputs). Cards/panels step up (lg), dialogs and
+// sheets again (xl); chips/menu items step down (sm). 'pill' rounds controls
+// fully but keeps surfaces at a sane 16px.
+$kmh-radius-map: (
+    'none':    0,
+    'subtle':  6px,
+    'rounded': 8px,
+    'pill':    999px,
+) !default;
+
+$radius-base: map-get($kmh-radius-map, $kmh-border-radius) !default;
+@if $radius-base == null { $radius-base: 8px; }
+
+// Surfaces derive from the base but are capped, so 'pill' controls don't turn
+// cards and dialogs into lozenges. Whole pixels only.
+$radius-sm: if($radius-base == 0, 0, round(min(6px, $radius-base * 0.75))) !default;
+$radius-lg: if($radius-base == 0, 0, round(min(16px, $radius-base * 1.5))) !default;
+$radius-xl: if($radius-base == 0, 0, round(min(20px, $radius-base * 2))) !default;
+
+// Container / content width ------------------------------------------------
+$content-max-width: $kmh-content-max-width * 1px !default;
+
+// Section spacing scale ----------------------------------------------------
+$kmh-section-spacing-map: (
+    'compact':  0.7,
+    'normal':   1,
+    'spacious': 1.5,
+) !default;
+
+$section-spacing-factor: map-get($kmh-section-spacing-map, $kmh-section-spacing) !default;
+@if $section-spacing-factor == null { $section-spacing-factor: 1; }

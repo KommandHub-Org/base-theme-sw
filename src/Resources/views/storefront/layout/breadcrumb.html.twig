@@ -1,0 +1,12 @@
+{% sw_extends '@Storefront/storefront/layout/breadcrumb.html.twig' %}
+
+{#
+    Override: gate the whole breadcrumb behind the `kmh-show-breadcrumb` setting.
+    Returning early (rather than hiding via CSS) keeps the DOM clean when off.
+    All original blocks/schema.org markup are preserved via parent().
+#}
+{% block layout_breadcrumb_inner %}
+    {% if theme_config('kmh-show-breadcrumb') %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

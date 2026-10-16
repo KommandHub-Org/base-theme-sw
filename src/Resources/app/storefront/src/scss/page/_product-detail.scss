@@ -1,0 +1,294 @@
+/*
+Product detail page (PDP)
+==================================================
+Token-driven styling for the CMS-driven detail page: buy box, price
+(incl. list/regulation & tiered table), configurator, quantity selector, tabs,
+gallery and cross-selling. Markup is untouched — the core blocks/classes are
+stable and rich; this is a token-driven skin.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Buy box
+// --------------------------------------------------
+.product-detail-buy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+}
+
+// Price
+.product-detail-price-container {
+    .product-detail-price {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: var(--tracking-tight);
+        line-height: 1.1;
+        color: var(--color-text-primary);
+        font-variant-numeric: tabular-nums;
+        margin-bottom: 0.25rem;
+    }
+}
+
+// List (was) price + discount: the % tag uses the danger tint (a saving is
+// "attention", not an error); the old price is struck through.
+.list-price-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.2rem;
+    height: 1.5rem;
+    padding: 0 0.4rem;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-xs);
+    color: var(--color-danger-text);
+    background-color: var(--color-danger-bg);
+    border: 1px solid var(--color-danger-border);
+    border-radius: var(--radius-sm);
+}
+
+.product-detail-list-price-wrapper {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+
+    .list-price-price,
+    .regulation-price {
+        text-decoration: line-through;
+    }
+
+    .list-price-percentage {
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+}
+
+// Tiered price table
+.product-block-prices-grid {
+    font-size: 0.9rem;
+
+    .product-block-prices-cell {
+        border-color: var(--color-border-subtle);
+        color: var(--color-text-secondary);
+    }
+    .product-block-prices-head .product-block-prices-cell {
+        color: var(--color-text-primary);
+        font-weight: 600;
+    }
+}
+
+// Tax / info link
+.product-detail-tax {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0;
+}
+.product-detail-tax-link.btn-link-inline {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    padding: 0;
+
+    &:hover { color: var(--color-text-primary); }
+}
+
+// Rating link
+.product-detail-reviews {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .product-detail-reviews-link {
+        color: var(--color-text-secondary);
+        text-decoration: underline;
+
+        &:hover { color: var(--color-text-primary); }
+    }
+}
+
+// Delivery / stock information
+.product-detail-delivery-information {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+// Order number
+.product-detail-ordernumber-container {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+// --------------------------------------------------
+// Configurator
+// --------------------------------------------------
+.product-detail-configurator-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.product-detail-configurator-group-title {
+    color: var(--color-text-primary);
+    margin-bottom: 0.35rem;
+}
+
+// --------------------------------------------------
+// Quantity selector (input-group with minus/plus)
+// --------------------------------------------------
+.quantity-selector-group.input-group {
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    flex-wrap: nowrap;
+
+    .btn-minus,
+    .btn-plus {
+        border: 0;
+        background-color: var(--color-surface);
+        color: var(--color-text-primary);
+        border-radius: 0;
+
+        &:hover {
+            background-color: var(--color-bg-subtle);
+        }
+    }
+
+    .quantity-selector-group-input.form-control {
+        border: 0;
+        text-align: center;
+        box-shadow: none;
+        font-variant-numeric: tabular-nums;
+
+        &:focus { box-shadow: none; }
+    }
+
+    .input-group-text {
+        border: 0;
+        background-color: var(--color-bg-subtle);
+        color: var(--color-text-secondary);
+    }
+}
+
+// --------------------------------------------------
+// Tabs (description / reviews / cross-selling) — underline style
+// --------------------------------------------------
+.product-detail-tabs.card-tabs,
+.card.card-tabs {
+    border: 0;
+    background-color: transparent;
+}
+
+.product-detail-tab-navigation {
+    background-color: transparent;
+    border-bottom: 1px solid var(--color-border);
+    padding: 0;
+}
+
+.product-detail-tab-navigation-list.nav-tabs {
+    border-bottom: 0;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+
+    .product-detail-tab-navigation-link.nav-link {
+        border: 0;
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
+        background-color: transparent;
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        padding: 0.75rem var(--space-1);
+        margin-right: var(--space-5);
+        margin-bottom: -1px;
+        @include kmh-motion-safe {
+            transition: color var(--transition-fast), border-color var(--transition-fast);
+        }
+
+        &:hover {
+            color: var(--color-text-primary);
+            border-bottom-color: var(--color-border-strong);
+        }
+
+        &.active {
+            color: var(--color-text-primary);
+            background-color: transparent;
+            border-bottom-color: var(--color-action);
+        }
+    }
+}
+
+.product-detail-tabs-content.card-body {
+    padding: 1.75rem 0;
+}
+
+.product-detail-description-title {
+    color: var(--color-text-primary);
+    font-weight: 650;
+    margin-bottom: 1rem;
+}
+
+.product-detail-description-text {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+
+    a { color: var(--color-text-primary); }
+}
+
+// --------------------------------------------------
+// Gallery
+// --------------------------------------------------
+.gallery-slider-item,
+.gallery-slider-single-image {
+    background-color: var(--color-bg-subtle);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.gallery-slider-thumbnails-item-inner {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    opacity: 0.7;
+    @include kmh-motion-safe {
+        transition: border-color var(--transition-fast), opacity var(--transition-fast);
+    }
+
+    &:hover { opacity: 1; }
+}
+
+// Active thumbnail — solid ring, no colour.
+.gallery-slider-thumbnails-item.tns-nav-active .gallery-slider-thumbnails-item-inner,
+.gallery-slider-thumbnails-item.active .gallery-slider-thumbnails-item-inner {
+    border-color: var(--color-action);
+    border-width: 2px;
+    opacity: 1;
+}
+
+// Slider controls — monochrome round buttons.
+.base-slider-controls-prev,
+.base-slider-controls-next,
+.gallery-slider-controls,
+.gallery-slider-thumbnails-controls {
+    color: var(--color-text-primary);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+
+    &:hover {
+        background-color: var(--color-bg-subtle);
+        border-color: var(--color-border-strong);
+    }
+}
+
+// --------------------------------------------------
+// Cross-selling
+// --------------------------------------------------
+.product-detail-cross-selling {
+    margin-top: 2rem;
+}

@@ -1,0 +1,25 @@
+{% sw_extends '@Storefront/storefront/layout/header.html.twig' %}
+
+{#
+    Override: wrap the header row + main navigation in a single sticky container
+    so they stick together as one unit (config: kmh-sticky-header). Sticky is
+    pure CSS (position: sticky) — no JS. The off-canvas navigation stays outside
+    the sticky wrapper. All original inner blocks/includes are preserved via
+    parent() so plugins keep every extension point.
+#}
+{% block header %}
+    {% set kmhSticky = theme_config('kmh-sticky-header') %}
+    <div class="header-sticky-wrapper{% if kmhSticky %} is-sticky{% endif %}">
+        {% block base_header %}
+            {{ parent() }}
+        {% endblock %}
+
+        {% block base_navigation %}
+            {{ parent() }}
+        {% endblock %}
+    </div>
+
+    {% block base_offcanvas_navigation %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

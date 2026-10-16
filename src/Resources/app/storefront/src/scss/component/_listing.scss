@@ -1,0 +1,308 @@
+/*
+Listing chrome — breadcrumb, actions, sorting, pagination, filters
+==================================================
+Monochrome styling for the category/search listing surface. Filter states
+(selected / active / disabled) read through tone, weight, borders and the
+checkbox marks.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Breadcrumb — small, muted trail; current page in ink
+// --------------------------------------------------
+.cms-breadcrumb {
+    padding-top: var(--space-6);
+    padding-bottom: 0;
+}
+
+.breadcrumb {
+    margin-bottom: 0;
+    font-size: var(--font-size-sm);
+    align-items: center;
+
+    .breadcrumb-link {
+        color: var(--color-text-muted);
+        text-decoration: none;
+        @include kmh-motion-safe {
+            transition: color var(--transition-fast);
+        }
+
+        &:hover { color: var(--color-text-primary); }
+
+        &.is-active {
+            color: var(--color-text-primary);
+            font-weight: var(--font-weight-medium);
+        }
+    }
+
+    .breadcrumb-placeholder .icon {
+        width: 0.875rem;
+        height: 0.875rem;
+        color: var(--color-border-strong);
+    }
+}
+
+// --------------------------------------------------
+// Sidebar category navigation — same idiom as the account nav
+// --------------------------------------------------
+.category-navigation {
+    font-size: var(--font-size-sm);
+
+    &.level-0 {
+        font-size: var(--font-size-sm);
+
+        > .category-navigation-entry { border-bottom: 0; }
+    }
+
+    &.level-1,
+    &.level-2 {
+        font-size: var(--font-size-sm);
+        padding-left: var(--space-3);
+        margin-left: var(--space-3);
+        border-left: 1px solid var(--color-border-subtle);
+    }
+}
+
+.category-navigation-entry + .category-navigation-entry {
+    margin-top: 2px;
+}
+
+.category-navigation-link {
+    padding: 0.4375rem var(--space-3);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-regular);
+    @include kmh-motion-safe {
+        transition: color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    &:hover {
+        background-color: var(--color-bg-muted);
+        color: var(--color-text-primary);
+    }
+
+    &.in-path {
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-medium);
+    }
+
+    &.is-active {
+        background-color: var(--color-bg-muted);
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-semibold);
+    }
+}
+
+// --------------------------------------------------
+// Listing actions bar (top pagination + sorting)
+// --------------------------------------------------
+.cms-element-product-listing-actions {
+    align-items: center;
+    padding-block: 0 var(--space-4);
+    border-bottom: 1px solid var(--color-border-subtle);
+    margin-bottom: var(--space-6);
+    gap: var(--space-3);
+}
+
+.sorting .form-select {
+    min-width: 12rem;
+    min-height: var(--control-height-sm);
+    padding-block: 0.3125rem;
+    font-size: var(--font-size-sm);
+}
+
+// --------------------------------------------------
+// Pagination — ghost squares, current page in ink
+// --------------------------------------------------
+.pagination {
+    gap: var(--space-1);
+
+    .page-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: var(--control-height-sm);
+        height: var(--control-height-sm);
+        padding: 0 var(--space-2);
+        color: var(--color-text-secondary);
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-radius: var(--radius-sm) !important; // beat BS first/last-child radii
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        font-variant-numeric: tabular-nums;
+        @include kmh-motion-safe {
+            transition: background-color var(--transition-fast), color var(--transition-fast);
+        }
+
+        &:hover {
+            background-color: var(--color-bg-muted);
+            color: var(--color-text-primary);
+        }
+    }
+
+    .page-item.active .page-link {
+        background-color: var(--color-action);
+        border-color: var(--color-action);
+        color: var(--color-action-text);
+    }
+
+    .page-item.disabled .page-link {
+        color: var(--color-disabled-text);
+        background-color: transparent;
+    }
+}
+
+// --------------------------------------------------
+// Filter panel
+// --------------------------------------------------
+.filter-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+
+    &.is--sidebar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+// Filter toggle button (each filter group) — secondary button, compact.
+.filter-panel-item-toggle.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.4375rem var(--space-3);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-xs);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+
+    &:hover,
+    &[aria-expanded='true'] {
+        background-color: var(--color-bg-subtle);
+        border-color: var(--color-border-strong);
+    }
+
+    .icon { color: var(--color-text-muted); }
+}
+
+// Count of applied options → inverted mono chip.
+.filter-multi-select-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-text-inverse);
+    background-color: var(--color-action);
+    border-radius: 999px;
+
+    // Core always renders the counter; empty = nothing selected.
+    &:empty { display: none; }
+}
+
+// Dropdown panel for a filter group.
+.filter-panel-item-dropdown,
+.filter-multi-select-dropdown,
+.filter-range-dropdown {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-2);
+}
+
+// Option rows.
+.filter-multi-select-list-item,
+.filter-property-select-list-item,
+.filter-rating-select-list-item {
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.4rem;
+
+    &:hover { background-color: var(--color-bg-subtle); }
+}
+
+.filter-multi-select-item-label,
+.filter-rating-select-item-label-text {
+    color: var(--color-text-primary);
+}
+
+// Property swatch preview — selected mark reads via a solid ring + checkmark,
+// not colour alone.
+.filter-property-select-preview {
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+}
+.filter-property-select-checkbox:checked ~ .filter-property-select-preview,
+.filter-property-select-list-item .is-active .filter-property-select-preview {
+    outline: 2px solid var(--color-action);
+    outline-offset: 1px;
+}
+.filter-property-select-preview-checkmark {
+    color: var(--color-text-inverse);
+}
+
+// Range inputs.
+.filter-range-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .filter-range-divider { color: var(--color-text-muted); }
+    .filter-range-unit { color: var(--color-text-secondary); }
+}
+
+// --------------------------------------------------
+// Active-filter chips
+// --------------------------------------------------
+.filter-panel-active-container {
+    margin-top: 1rem;
+}
+
+.filter-active {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.25rem 0.625rem;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+
+    &:hover {
+        border-color: var(--color-action);
+        background-color: var(--color-bg-muted);
+    }
+}
+
+// Reset-all button rendered by the filter plugin.
+.reset-all-filter-button,
+.filter-reset-all {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    background: transparent;
+    border: 0;
+
+    &:hover { color: var(--color-text-primary); }
+}
+
+// Off-canvas filter header (mobile).
+.filter-panel-offcanvas-title {
+    color: var(--color-text-primary);
+    font-weight: 650;
+    margin-bottom: 0;
+}

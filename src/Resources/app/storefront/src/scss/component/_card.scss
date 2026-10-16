@@ -1,0 +1,126 @@
+/*
+Cards, list groups & tables
+==================================================
+Panels: surface, hairline border, 12px radius, xs shadow, 20px padding.
+Headers are typographic (no grey slab) and separated by a hairline.
+Lists are inset rounded rows — the same idiom as dropdown items and the nav.
+Tables: small uppercase-free headers in muted medium weight, hairline rows,
+hover tint, numbers right-aligned by their own markup.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+.card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+    color: var(--color-text-primary);
+}
+
+// Shopware's skin zeroes `.card-body` padding (and re-adds it per component),
+// which leaves generic cards — login, register, account, CMS — with content
+// flush against the border. Restore the baseline here. Product cards keep 0
+// via the more specific `.product-box .card-body` rule.
+.card-body {
+    padding: var(--space-5);
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--color-border-subtle);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.card-footer {
+    background-color: var(--color-bg-subtle);
+    border-top: 1px solid var(--color-border-subtle);
+}
+
+// Card titles: core renders them as an h2 + hairline rule. Size them as a
+// panel title, and make the rule a quiet divider.
+.card-title {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-snug);
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.card-subtitle,
+.card-text .text-muted {
+    color: var(--color-text-secondary);
+}
+
+// --------------------------------------------------
+// List groups — inset rounded rows
+// --------------------------------------------------
+.list-group-item {
+    background-color: var(--color-surface);
+    border-color: var(--color-border-subtle);
+    color: var(--color-text-primary);
+}
+
+.list-group-item-action {
+    color: var(--color-text-primary);
+    @include kmh-motion-safe {
+        transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    &:hover,
+    &:focus {
+        background-color: var(--color-bg-muted);
+        color: var(--color-text-primary);
+    }
+}
+
+// Selected item: tinted row + ink text + weight (Bootstrap's `.active` and
+// Shopware's `.is-active`). Calmer than an inverted slab; still unmistakable.
+.list-group-item.active,
+.list-group-item.is-active {
+    background-color: var(--color-bg-muted);
+    border-color: var(--color-border-subtle);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+// --------------------------------------------------
+// Tables
+// --------------------------------------------------
+.table {
+    --bs-table-color: var(--color-text-primary);
+    --bs-table-bg: transparent;
+    --bs-table-border-color: var(--color-border-subtle);
+    --bs-table-hover-bg: var(--color-bg-subtle);
+    --bs-table-striped-bg: var(--color-bg-subtle);
+    font-size: var(--font-size-sm);
+    font-variant-numeric: tabular-nums;
+
+    > thead th,
+    > thead td {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-medium);
+        border-bottom-color: var(--color-border);
+        white-space: nowrap;
+    }
+
+    > tbody > tr:last-child > * {
+        border-bottom: 0;
+    }
+}
+
+// Shopware "properties" table on the PDP and similar key/value tables.
+.product-detail-properties-table,
+.product-detail-properties .table {
+    th, .properties-label {
+        color: var(--color-text-secondary);
+        font-weight: var(--font-weight-medium);
+        width: 40%;
+    }
+}

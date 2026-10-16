@@ -1,0 +1,167 @@
+/*
+Alerts & badges — status system
+==================================================
+Status is the one place hue carries meaning: success (green), warning (amber),
+danger (red), info (blue). Each has a tint, a border and an AA text shade
+(tokens `--color-<status>-bg / -border / -text`). The icon Shopware renders
+per type is a second, non-colour cue. Neutral/primary keep the grey ramp.
+
+@sw-package framework
+*/
+
+@import '../abstract/mixins';
+
+// --------------------------------------------------
+// Alerts — tinted panel, coloured icon, text stays readable ink
+// --------------------------------------------------
+.alert {
+    --kmh-alert-bg: var(--color-bg-subtle);
+    --kmh-alert-border: var(--color-border);
+    --kmh-alert-accent: var(--color-text-secondary);
+    --kmh-alert-text: var(--color-text-primary);
+    gap: var(--space-3);
+    color: var(--kmh-alert-text);
+    background-color: var(--kmh-alert-bg);
+    border: 1px solid var(--kmh-alert-border);
+    font-size: var(--font-size-sm);
+
+    .icon {
+        flex: 0 0 auto;
+        color: var(--kmh-alert-accent);
+    }
+
+    .alert-content-container { flex: 1 1 auto; }
+
+    .alert-heading {
+        color: inherit;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        margin-bottom: var(--space-1);
+    }
+
+    .alert-list {
+        margin-bottom: 0;
+        padding-left: 1.1rem;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+    }
+}
+
+.alert-success {
+    --kmh-alert-bg: var(--color-success-bg);
+    --kmh-alert-border: var(--color-success-border);
+    --kmh-alert-accent: var(--color-success);
+    --kmh-alert-text: var(--color-success-text);
+}
+
+.alert-warning {
+    --kmh-alert-bg: var(--color-warning-bg);
+    --kmh-alert-border: var(--color-warning-border);
+    --kmh-alert-accent: var(--color-warning);
+    --kmh-alert-text: var(--color-warning-text);
+}
+
+.alert-danger {
+    --kmh-alert-bg: var(--color-danger-bg);
+    --kmh-alert-border: var(--color-danger-border);
+    --kmh-alert-accent: var(--color-danger);
+    --kmh-alert-text: var(--color-danger-text);
+}
+
+.alert-info {
+    --kmh-alert-bg: var(--color-info-bg);
+    --kmh-alert-border: var(--color-info-border);
+    --kmh-alert-accent: var(--color-info);
+    --kmh-alert-text: var(--color-info-text);
+}
+
+// --------------------------------------------------
+// Badges — soft tinted chips; solid ink for "primary"
+// --------------------------------------------------
+.badge {
+    --kmh-badge-bg: var(--color-bg-muted);
+    --kmh-badge-text: var(--color-text-secondary);
+    --kmh-badge-border: var(--color-border);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    border: 1px solid var(--kmh-badge-border);
+    background-color: var(--kmh-badge-bg) !important; // beat .bg-* utilities
+    color: var(--kmh-badge-text) !important;          // beat .text-* utilities
+    letter-spacing: 0;
+    line-height: 1.2;
+}
+
+.badge.bg-primary,
+.badge.bg-dark {
+    --kmh-badge-bg: var(--color-action);
+    --kmh-badge-text: var(--color-action-text);
+    --kmh-badge-border: var(--color-action);
+}
+
+.badge.bg-success {
+    --kmh-badge-bg: var(--color-success-bg);
+    --kmh-badge-text: var(--color-success-text);
+    --kmh-badge-border: var(--color-success-border);
+}
+
+.badge.bg-warning {
+    --kmh-badge-bg: var(--color-warning-bg);
+    --kmh-badge-text: var(--color-warning-text);
+    --kmh-badge-border: var(--color-warning-border);
+}
+
+.badge.bg-danger {
+    --kmh-badge-bg: var(--color-danger-bg);
+    --kmh-badge-text: var(--color-danger-text);
+    --kmh-badge-border: var(--color-danger-border);
+}
+
+.badge.bg-info {
+    --kmh-badge-bg: var(--color-info-bg);
+    --kmh-badge-text: var(--color-info-text);
+    --kmh-badge-border: var(--color-info-border);
+}
+
+// --------------------------------------------------
+// Order status chips (account → orders). Core colours them with greys;
+// map Shopware's states onto the status system.
+// --------------------------------------------------
+.order-item-status-badge {
+    --kmh-badge-bg: var(--color-bg-muted);
+    --kmh-badge-text: var(--color-text-secondary);
+    --kmh-badge-border: var(--color-border);
+    background-color: var(--kmh-badge-bg) !important;
+    color: var(--kmh-badge-text) !important;
+    border: 1px solid var(--kmh-badge-border);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 0.2em 0.65em;
+
+    &.order-item-status-badge-open,
+    &.order-item-status-badge-in_progress {
+        --kmh-badge-bg: var(--color-info-bg);
+        --kmh-badge-text: var(--color-info-text);
+        --kmh-badge-border: var(--color-info-border);
+    }
+
+    &.order-item-status-badge-completed {
+        --kmh-badge-bg: var(--color-success-bg);
+        --kmh-badge-text: var(--color-success-text);
+        --kmh-badge-border: var(--color-success-border);
+    }
+
+    &.order-item-status-badge-cancelled,
+    &.order-item-status-badge-failed {
+        --kmh-badge-bg: var(--color-danger-bg);
+        --kmh-badge-text: var(--color-danger-text);
+        --kmh-badge-border: var(--color-danger-border);
+    }
+}

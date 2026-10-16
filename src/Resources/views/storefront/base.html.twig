@@ -1,0 +1,57 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{#
+    Dark mode (opt-in via `kmh-dark-mode-toggle`). Implemented inline — no
+    webpack build required:
+      1. A no-flash script in <head> applies the stored [data-theme] before the
+         stylesheet paints (only an explicit user choice; default stays light).
+      2. A wiring script at end of <body> toggles + persists the choice for any
+         `[data-kmh-theme-toggle]` control (the top-bar button).
+    Both are gated on the setting, so a theme with dark mode off ships no extra
+    markup or script.
+#}
+
+{% block base_head %}
+    {% if theme_config('kmh-dark-mode-toggle') %}
+        <script>
+            (function () {
+                try {
+                    var t = localStorage.getItem('kmh-theme');
+                    if (t === 'dark' || t === 'light') {
+                        document.documentElement.setAttribute('data-theme', t);
+                    }
+                } catch (e) {}
+            })();
+        </script>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block base_body_script %}
+    {{ parent() }}
+    {% if theme_config('kmh-dark-mode-toggle') %}
+        <script>
+            (function () {
+                var root = document.documentElement;
+                var btns = document.querySelectorAll('[data-kmh-theme-toggle]');
+                if (!btns.length) return;
+                function current() { return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+                function sync() {
+                    var dark = current() === 'dark';
+                    btns.forEach(function (b) { b.setAttribute('aria-pressed', String(dark)); });
+                }
+                function set(v) {
+                    root.setAttribute('data-theme', v);
+                    try { localStorage.setItem('kmh-theme', v); } catch (e) {}
+                    sync();
+                }
+                btns.forEach(function (b) {
+                    b.addEventListener('click', function () {
+                        set(current() === 'dark' ? 'light' : 'dark');
+                    });
+                });
+                sync();
+            })();
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Composer
+/vendor/
+/composer.lock
+
+# Build output (the theme ships SCSS only; no JS bundle)
+/src/Resources/app/storefront/dist/
+
+# Superseded files kept locally only — safe to delete:
+#  - main.js: empty entry; the theme registers no JS bundle
+#  - _fonts.scss: self-hosted font toggle replaced by core's Inter
+/src/Resources/app/storefront/src/main.js
+/src/Resources/app/storefront/src/scss/base/_fonts.scss
+#  - assets/fonts/: only held the removed self-hosted font
+/src/Resources/app/storefront/src/assets/fonts/
