@@ -1,0 +1,10 @@
+{% sw_extends '@Storefront/storefront/component/review/review-widget.html.twig' %}
+
+{# Prominent average score next to the stars. aria-hidden: the stars already
+   carry the average as alt text (see rating.html.twig). #}
+{% block component_review_overview %}
+    {% if totalReviewCount > 0 %}
+        <p class="kmh-review-score" aria-hidden="true">{{ productAvgRating|format_number({ fraction_digit: 1 }) }}</p>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

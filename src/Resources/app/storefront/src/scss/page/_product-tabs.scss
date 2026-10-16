@@ -1,0 +1,352 @@
+/*
+Product detail — tab content
+==================================================
+Description: readable measure, hairline property list.
+Reviews: summary panel (big score, distribution bars, write-a-review CTA)
+beside a list of review rows (stars + date, title, body, shop reply).
+Markup is core's; the only template change is the score number
+(component/review/review-widget.html.twig).
+
+@sw-package storefront
+*/
+
+.product-detail-tabs-content.card-body {
+    padding: var(--space-8) 0;
+}
+
+// --------------------------------------------------
+// Description
+// --------------------------------------------------
+.product-detail-description-title {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-snug);
+    line-height: var(--line-height-snug);
+    margin-bottom: var(--space-4);
+}
+
+.product-detail-description-text {
+    max-width: 70ch;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+
+    > :last-child { margin-bottom: 0; }
+
+    a { color: var(--color-text-primary); }
+}
+
+.product-detail-properties {
+    margin-top: var(--space-8);
+}
+
+// Key/value list: hairline rows, muted labels — no zebra stripes.
+.product-detail-properties-table.table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: transparent;
+    --bs-table-color: var(--color-text-primary);
+    --bs-table-striped-color: var(--color-text-primary);
+    margin-bottom: 0;
+    font-size: var(--font-size-sm);
+    border-top: 1px solid var(--color-border);
+
+    .properties-row > * {
+        padding: var(--space-3) 0;
+        border-bottom: 1px solid var(--color-border);
+        vertical-align: top;
+    }
+
+    .properties-label {
+        width: 40%;
+        padding-right: var(--space-4);
+        color: var(--color-text-muted);
+        font-weight: var(--font-weight-medium);
+    }
+
+    .properties-value {
+        color: var(--color-text-primary);
+    }
+}
+
+// --------------------------------------------------
+// Reviews — summary panel
+// --------------------------------------------------
+.product-detail-review-content {
+    row-gap: var(--space-8);
+}
+
+.product-detail-review-widget {
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    z-index: 1;
+
+    // Core sticks it at top 0, under our sticky header (~155px with the top
+    // bar). Stacked layouts (phones) don't need it sticky at all.
+    @media (min-width: $kmh-bp-md) {
+        top: calc(9.75rem + var(--space-4));
+    }
+
+    @media (max-width: #{$kmh-bp-md - 0.02px}) {
+        position: static;
+    }
+
+    hr {
+        margin: var(--space-5) 0;
+        border-color: var(--color-border);
+        opacity: 1;
+    }
+}
+
+.product-detail-review-info:has(.kmh-review-score) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-4);
+    align-items: center;
+}
+
+.kmh-review-score {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: 2.75rem;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.product-detail-review-rating {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+
+    // "4.5 out of 5 stars" repeats the score (aria-hidden in core).
+    .h6 { display: none; }
+}
+
+.product-detail-review-title.h5 {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: 0;
+}
+
+// Distribution: label · bar · share. One grid for the whole form (rows are
+// `display: contents`) so every bar starts and ends on the same line.
+.review-filter-form {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+}
+
+.product-detail-review-filter.row {
+    display: contents;
+
+    > * {
+        width: auto;
+        max-width: none;
+        padding: 0;
+    }
+
+    .form-check {
+        margin: 0;
+        min-height: 0;
+    }
+
+    .form-check-label,
+    .custom-control-label {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+
+        small { font-size: inherit; }
+    }
+
+    .form-check-input:disabled ~ .custom-control-label { opacity: 0.6; }
+}
+
+// Core hides the bars below lg (`d-none d-lg-block`, utilities are
+// !important); the summary is narrow at every size, so show them always.
+.product-detail-review-progressbar-col.d-none {
+    display: block !important;
+}
+
+.product-detail-review-progressbar-container.progress {
+    height: 0.375rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-bg-muted);
+}
+
+.product-detail-review-share {
+    text-align: right;
+
+    p {
+        margin: 0;
+        color: var(--color-text-muted);
+        font-size: var(--font-size-xs);
+        font-variant-numeric: tabular-nums;
+
+        small { font-size: inherit; }
+    }
+}
+
+// Write-a-review CTA.
+.product-detail-review-teaser {
+    .h4 {
+        margin-bottom: var(--space-1);
+        color: var(--color-text-primary);
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: var(--tracking-snug);
+    }
+
+    p:not(.h4) {
+        margin-bottom: var(--space-4);
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+    }
+}
+
+.product-detail-review-teaser-btn.btn {
+    width: 100%;
+}
+
+// Form / login panel (toggled by the CTA). Core zeroes the login card's top
+// padding because its card is borderless; ours has a border.
+.product-detail-review-login .login-card .card-body {
+    padding-top: var(--space-5);
+}
+
+// --------------------------------------------------
+// Reviews — list
+// --------------------------------------------------
+.product-detail-review-actions {
+    row-gap: var(--space-3);
+
+    label,
+    small {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+    }
+
+    .form-check { margin: 0; }
+}
+
+.product-detail-review-sortby-form {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+
+    .form-label { margin: 0; white-space: nowrap; }
+}
+
+.product-detail-review-list hr {
+    margin: var(--space-4) 0 0;
+    border-color: var(--color-border);
+    opacity: 1;
+}
+
+.product-detail-review-counter {
+    margin: var(--space-3) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+}
+
+.product-detail-review-item {
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child { border-bottom: 0; }
+}
+
+// Row 1: stars · verified · date (right). Row 2: title.
+.product-detail-review-item-info.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--space-2);
+    margin: 0 0 var(--space-2);
+
+    > * {
+        width: auto;
+        flex: 0 0 auto;
+        padding: 0;
+    }
+
+    p { margin: 0; }
+}
+
+.product-detail-review-item-points { order: 1; }
+
+.product-detail-review-item-verify {
+    order: 2;
+
+    &:empty { display: none; }
+}
+
+.product-detail-review-item-date {
+    order: 3;
+    margin-left: auto;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-variant-numeric: tabular-nums;
+
+    small { font-size: inherit; }
+}
+
+.product-detail-review-item-title {
+    order: 4;
+    flex-basis: 100% !important; // beat core's col-md-auto (flex: 0 0 auto)
+    margin-top: var(--space-2);
+
+    .h5 {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: var(--tracking-snug);
+        line-height: var(--line-height-snug);
+    }
+}
+
+.product-detail-review-item-content {
+    max-width: 70ch;
+    margin-bottom: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-base);
+}
+
+// Shop reply: quiet inset panel, not an italic quote.
+.product-detail-review-item-comment {
+    max-width: 70ch;
+    margin-top: var(--space-4);
+
+    .blockquote {
+        margin: 0;
+        padding: var(--space-3) var(--space-4);
+        border-left: 2px solid var(--color-border-strong);
+        border-radius: 0 var(--radius) var(--radius) 0;
+        background-color: var(--color-bg-subtle);
+        font-size: inherit;
+
+        &::before { content: none; } // core's decorative quote mark
+    }
+
+    .blockquote-footer {
+        margin: 0;
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-sm);
+        font-style: normal;
+        line-height: var(--line-height-base);
+
+        &::before { content: none; }
+    }
+}

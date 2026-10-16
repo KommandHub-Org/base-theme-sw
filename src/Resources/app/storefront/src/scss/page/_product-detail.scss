@@ -181,6 +181,7 @@ stable and rich; this is a token-driven skin.
 .product-detail-tabs.card-tabs,
 .card.card-tabs {
     border: 0;
+    box-shadow: none;
     background-color: transparent;
 }
 
@@ -223,22 +224,7 @@ stable and rich; this is a token-driven skin.
     }
 }
 
-.product-detail-tabs-content.card-body {
-    padding: 1.75rem 0;
-}
-
-.product-detail-description-title {
-    color: var(--color-text-primary);
-    font-weight: 650;
-    margin-bottom: 1rem;
-}
-
-.product-detail-description-text {
-    color: var(--color-text-secondary);
-    line-height: 1.7;
-
-    a { color: var(--color-text-primary); }
-}
+// Tab content (description, reviews): see page/_product-tabs.scss
 
 // --------------------------------------------------
 // Gallery
