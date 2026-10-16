@@ -9,6 +9,8 @@ per type is a second, non-colour cue. Neutral/primary keep the grey ramp.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- links inside core alerts have no class */
+
 @import '../abstract/mixins';
 
 // --------------------------------------------------
@@ -90,8 +92,10 @@ per type is a second, non-colour cue. Neutral/primary keep the grey ramp.
     align-items: center;
     gap: var(--space-1);
     border: 1px solid var(--kmh-badge-border);
-    background-color: var(--kmh-badge-bg) !important; // beat .bg-* utilities
-    color: var(--kmh-badge-text) !important;          // beat .text-* utilities
+    // stylelint-disable-next-line declaration-no-important -- beat .bg-* utilities
+    background-color: var(--kmh-badge-bg) !important;
+    // stylelint-disable-next-line declaration-no-important -- beat .text-* utilities
+    color: var(--kmh-badge-text) !important;
     letter-spacing: 0;
     line-height: 1.2;
 }
@@ -135,7 +139,9 @@ per type is a second, non-colour cue. Neutral/primary keep the grey ramp.
     --kmh-badge-bg: var(--color-bg-muted);
     --kmh-badge-text: var(--color-text-secondary);
     --kmh-badge-border: var(--color-border);
+    // stylelint-disable-next-line declaration-no-important -- core colours the chip with .bg-* utilities (!important)
     background-color: var(--kmh-badge-bg) !important;
+    // stylelint-disable-next-line declaration-no-important -- core colours the chip with .text-* utilities (!important)
     color: var(--kmh-badge-text) !important;
     border: 1px solid var(--kmh-badge-border);
     border-radius: var(--radius-full);

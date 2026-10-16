@@ -1,4 +1,4 @@
-import { test, expect, paths, isMobile, authFile } from './support';
+import { test, expect, paths, isMobile, authFile, addToCart } from './support';
 
 test.describe('Checkout — guest', () => {
     test('add to cart opens the cart drawer with a success notice', async ({ page, product }) => {
@@ -16,8 +16,7 @@ test.describe('Checkout — guest', () => {
 
     test('cart page: title with muted item counter, summary and checkout CTA', async ({ page, product }) => {
         await page.goto(product.path);
-        await page.locator('.btn-buy').first().click();
-        await expect(page.locator('.offcanvas.show')).toBeVisible();
+        await addToCart(page);
 
         await page.goto('/checkout/cart');
         const title = page.locator('.cart-main-header');
@@ -31,8 +30,7 @@ test.describe('Checkout — guest', () => {
 
     test('checkout register form flags missing fields', async ({ page, product }) => {
         await page.goto(product.path);
-        await page.locator('.btn-buy').first().click();
-        await expect(page.locator('.offcanvas.show')).toBeVisible();
+        await addToCart(page);
 
         await page.goto('/checkout/register');
         const form = page.locator('form.register-form');
@@ -51,8 +49,7 @@ test.describe('Checkout — customer places an order', () => {
         test.skip(isMobile(testInfo), 'places a real order — run once per suite');
 
         await page.goto(product.path);
-        await page.locator('.btn-buy').first().click();
-        await expect(page.locator('.offcanvas.show')).toBeVisible();
+        await addToCart(page);
 
         await page.goto('/checkout/confirm');
         await expect(page.locator('.confirm-main-header')).toBeVisible();

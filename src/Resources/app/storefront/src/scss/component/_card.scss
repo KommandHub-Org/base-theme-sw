@@ -10,6 +10,8 @@ hover tint, numbers right-aligned by their own markup.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- table cells (th/td) inside cards have no classes in core markup */
+
 @import '../abstract/mixins';
 
 .card {

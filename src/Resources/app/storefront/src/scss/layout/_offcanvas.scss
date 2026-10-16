@@ -14,9 +14,9 @@ token overlay. No JS changes — Shopware's OffcanvasMenu/Cart plugins stay inta
 // Shell
 // --------------------------------------------------
 .offcanvas {
+    --bs-offcanvas-border-color: var(--color-border);
     background-color: var(--color-surface);
     color: var(--color-text-primary);
-    border-color: var(--color-border) !important;
     box-shadow: var(--shadow-lg);
 }
 

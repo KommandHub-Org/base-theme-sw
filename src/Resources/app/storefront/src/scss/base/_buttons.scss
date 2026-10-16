@@ -54,7 +54,8 @@ selectors keep working; no per-state overrides fighting the cascade.
         width: 1em;
         height: 1em;
         --bs-spinner-border-width: 2px;
-        color: currentColor !important; // core @extends .text-primary (!important)
+        // stylelint-disable-next-line declaration-no-important -- core @extends .text-primary (!important)
+        color: currentColor !important;
     }
 }
 

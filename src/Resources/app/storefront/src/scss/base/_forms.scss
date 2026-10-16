@@ -9,6 +9,8 @@ status red border + message. Labels are 14px medium, sitting 6px above.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- core renders <select>/<textarea>/number inputs with only the shared .form-control class */
+
 @import '../abstract/mixins';
 
 .form-control,

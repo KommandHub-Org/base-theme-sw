@@ -9,6 +9,8 @@ indicator.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- core's icons, top-bar and flyout links are bare svg/a elements */
+
 @import '../abstract/mixins';
 
 // --------------------------------------------------
@@ -74,16 +76,19 @@ indicator.
             flex: 1 1 0;
             width: auto;
             min-width: 0;
+            // stylelint-disable-next-line declaration-no-important -- core's my-3 / m-lg-0 utilities (!important)
             margin: 0 !important;
             padding-inline: 0.5rem;
         }
 
         // Core gives the <picture> min-width 200px and centres it; let the logo
         // shrink to its column and sit beside the menu button.
+        // stylelint-disable-next-line declaration-no-important -- core's .text-center utility (!important)
         .header-logo-main { text-align: left !important; }
         .header-logo-main-link,
         .header-logo-picture { max-width: 100%; min-width: 0; }
-        .header-logo-picture { margin: 0 !important; } // beat core .m-auto
+        // stylelint-disable-next-line declaration-no-important -- beat core .m-auto
+        .header-logo-picture { margin: 0 !important; }
         .header-logo-main-img { max-height: 2rem; }
 
         // Five 36px icon targets leave the logo room (still ≥ 24px WCAG 2.5.8).
@@ -121,6 +126,7 @@ indicator.
 
 [data-theme='dark'] {
     .header-logo-main-img-dark { display: inline-block; }
+    // stylelint-disable-next-line declaration-no-important -- core's .d-block utility (!important)
     .header-logo-main-img-dark + .header-logo-picture { display: none !important; }
 }
 
@@ -205,7 +211,9 @@ indicator.
     font-size: 0.7rem;
     font-weight: 700;
     line-height: 1;
-    background-color: var(--color-action) !important; // beat .bg-primary + .badge
+    // stylelint-disable-next-line declaration-no-important -- beat .bg-primary + .badge
+    background-color: var(--color-action) !important;
+    // stylelint-disable-next-line declaration-no-important -- core's .text-white / text-bg-* utilities (!important)
     color: var(--color-action-text) !important;
     border-radius: 999px;
     border: 2px solid var(--color-bg-base);
@@ -396,7 +404,8 @@ indicator.
     // Core draws its own border-bottom underline on the text span; we use the
     // indicator above instead.
     .main-navigation-link-text {
-        border-bottom: 0 !important; // core sets it with !important
+        // stylelint-disable-next-line declaration-no-important -- core sets it with !important
+        border-bottom: 0 !important;
         padding-bottom: 0;
     }
 
@@ -421,7 +430,8 @@ indicator.
 // --------------------------------------------------
 .main-navigation-menu .dropdown-menu {
     margin-top: 1px;
-    padding: var(--space-6) !important; // core sets .p-4
+    // stylelint-disable-next-line declaration-no-important -- core sets .p-4
+    padding: var(--space-6) !important;
     border: 1px solid var(--color-border);
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     box-shadow: var(--shadow-lg);
@@ -484,7 +494,8 @@ indicator.
         max-width: 22rem;
         max-height: 70vh;
         overflow-y: auto;
-        padding: var(--space-2) !important; // core sets .p-4
+        // stylelint-disable-next-line declaration-no-important -- core sets .p-4
+        padding: var(--space-2) !important;
         border-radius: var(--radius-lg);
 
         .navigation-flyout-categories,
@@ -519,7 +530,8 @@ indicator.
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     min-width: 16rem;
-    margin-top: var(--space-2) !important; // Popper positions with inline margin
+    // stylelint-disable-next-line declaration-no-important -- Popper positions with inline margin
+    margin-top: var(--space-2) !important;
     padding: 0;
     overflow: hidden;
 
@@ -644,13 +656,13 @@ indicator.
 
 // Dark-mode toggle — a regular header action (inherits .header-actions-btn).
 // Outline moon like the other line icons; it fills in while dark mode is on.
-.kmh-theme-toggle-icon path {
-    fill: transparent;
+.kmh-theme-toggle-icon {
+    fill: transparent; // inherited by the path (the svg's fill="none" is only a presentation hint)
     @include kmh-motion-safe {
         transition: fill var(--transition-base);
     }
 }
 
-.kmh-theme-toggle[aria-pressed='true'] .kmh-theme-toggle-icon path {
+.kmh-theme-toggle[aria-pressed='true'] .kmh-theme-toggle-icon {
     fill: currentColor;
 }

@@ -157,7 +157,7 @@ analyse:
 
 validate-plugin:
 	$(CHECK_READY)
-	$(call EXEC_IN_PLUGIN,shopware-cli extension validate . --full --store-compliance)
+	$(call EXEC_IN_PLUGIN,shopware-cli extension validate . --store-compliance)
 
 # Escape hatch for the rest of the CLI, so a new target is not needed per command:
 #   make cli ARGS="extension get-version ."

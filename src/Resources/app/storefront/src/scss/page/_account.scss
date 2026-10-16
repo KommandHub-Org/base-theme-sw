@@ -8,6 +8,8 @@ label (+ tone).
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- core's profile text and address-manager modal headings have no classes */
+
 @import '../abstract/mixins';
 
 // --------------------------------------------------
@@ -184,7 +186,8 @@ label (+ tone).
 // Core's markup is utility-built (`p-3 border`, `text-bg-info`, `bg-white`,
 // `fs-6 px-4 py-1`); utilities are !important, hence the overrides below.
 .address-manager-select-address {
-    border-color: var(--color-border) !important; // `.border` utility
+    // stylelint-disable-next-line declaration-no-important -- `.border` utility
+    border-color: var(--color-border) !important;
     border-radius: var(--radius-lg);
     background-color: var(--color-surface);
     color: var(--color-text-primary);
@@ -193,10 +196,12 @@ label (+ tone).
         transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     }
 
+    // stylelint-disable-next-line declaration-no-important -- `.border` utility (!important)
     &:hover { border-color: var(--color-border-strong) !important; }
 
     // Selected in the checkout modal: same ink ring as the address cards.
     &:has(.form-check-input:checked) {
+        // stylelint-disable-next-line declaration-no-important -- `.border` utility (!important)
         border-color: var(--color-action) !important;
         box-shadow: inset 0 0 0 1px var(--color-action);
     }
@@ -204,7 +209,7 @@ label (+ tone).
     .form-check-input { margin-top: 0.2em; }
 
     // Kebab menu trigger: quiet icon button.
-    .dropdown > button {
+    .dropdown > [data-bs-toggle='dropdown'] {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -216,7 +221,8 @@ label (+ tone).
 
         &:hover,
         &[aria-expanded='true'] {
-            background-color: var(--color-bg-muted) !important; // `.bg-transparent`
+            // stylelint-disable-next-line declaration-no-important -- `.bg-transparent`
+            background-color: var(--color-bg-muted) !important;
             color: var(--color-text-primary);
         }
 
@@ -226,11 +232,16 @@ label (+ tone).
 
 // "Default", "Default shipping address" … — neutral chip, not bright info blue.
 .address-item-default-badge {
+    // stylelint-disable-next-line declaration-no-important -- core's px-4 py-1 utilities (!important)
     padding: var(--space-1) var(--space-3) !important;
     border: 1px solid var(--color-border);
+    // stylelint-disable-next-line declaration-no-important -- core's text-bg-info utility (!important)
     background-color: var(--color-bg-subtle) !important;
+    // stylelint-disable-next-line declaration-no-important -- core's text-bg-info utility (!important)
     color: var(--color-text-primary) !important;
+    // stylelint-disable-next-line declaration-no-important -- core's fs-6 utility (!important)
     font-size: var(--font-size-xs) !important;
+    // stylelint-disable-next-line declaration-no-important -- core's fw-semibold utility (!important)
     font-weight: var(--font-weight-medium) !important;
 }
 
@@ -241,7 +252,7 @@ label (+ tone).
     min-width: 0;
 }
 
-div:has(> .address-manager-list-search) {
+.d-flex:has(> .address-manager-list-search) {
     flex-wrap: wrap;
 
     @media (max-width: #{$kmh-bp-md - 0.02px}) {
@@ -258,7 +269,9 @@ div:has(> .address-manager-list-search) {
 .address-manager-modal {
     // Core renders a bare <h1> as the modal title.
     .modal-header {
-        padding-bottom: var(--space-4) !important; // `.pb-0`
+        // stylelint-disable-next-line declaration-no-important -- `.pb-0`
+        padding-bottom: var(--space-4) !important;
+        // stylelint-disable-next-line declaration-no-important -- core's align-items-start utility (!important)
         align-items: center !important;
 
         h1 {
@@ -286,13 +299,15 @@ div:has(> .address-manager-list-search) {
     gap: 3px;
     padding: 3px;
     border-radius: var(--radius);
-    background-color: var(--color-bg-muted) !important; // `.bg-white`
+    // stylelint-disable-next-line declaration-no-important -- `.bg-white`
+    background-color: var(--color-bg-muted) !important;
     z-index: 2;
 
     > .btn {
         margin: 0;
         border: 0;
-        border-radius: var(--radius-sm) !important; // btn-group joins corners
+        // stylelint-disable-next-line declaration-no-important -- btn-group joins corners
+        border-radius: var(--radius-sm) !important;
         background-color: transparent;
         color: var(--color-text-secondary);
         font-size: var(--font-size-sm);

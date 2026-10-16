@@ -34,6 +34,8 @@ markup and its extension blocks stay untouched.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- core page titles, intros and CMS text headings are bare h1/p elements */
+
 @import '../abstract/config';
 @import '../abstract/mixins';
 
@@ -63,9 +65,12 @@ markup and its extension blocks stay untouched.
 // optically aligned with the title's x-height rather than its baseline.
 @mixin kmh-page-title-meta {
     margin: 0 0 0 var(--space-2);
-    color: var(--color-text-muted) !important; // beat core .text-dark-emphasis
-    font-size: var(--font-size-lg) !important;  // beat core .fs-3
-    font-weight: var(--font-weight-regular) !important; // beat core .fw-bold
+    // stylelint-disable-next-line declaration-no-important -- beat core .text-dark-emphasis
+    color: var(--color-text-muted) !important;
+    // stylelint-disable-next-line declaration-no-important -- beat core .fs-3
+    font-size: var(--font-size-lg) !important;
+    // stylelint-disable-next-line declaration-no-important -- beat core .fw-bold
+    font-weight: var(--font-weight-regular) !important;
     letter-spacing: 0;
     vertical-align: baseline;
 }
@@ -287,7 +292,8 @@ h1.account-welcome {
 .cart-main-header-item-counter,
 .confirm-main-header-item-counter {
     @include kmh-page-title-meta;
-    margin-bottom: var(--space-8) !important; // core .mb-4
+    // stylelint-disable-next-line declaration-no-important -- core .mb-4
+    margin-bottom: var(--space-8) !important;
 }
 
 // Search results and wishlist: core centres them; align with every other page.
@@ -295,7 +301,8 @@ h1.account-welcome {
 .wishlist-headline {
     @include kmh-page-title;
     display: block;
-    margin-bottom: var(--space-8) !important; // core .mb-4
+    // stylelint-disable-next-line declaration-no-important -- core .mb-4
+    margin-bottom: var(--space-8) !important;
 }
 
 // 404: keep it centred (a dead end, not a page in the hierarchy).
@@ -340,7 +347,8 @@ h1.account-welcome {
 }
 
 .cms-block-image-text:not(:has(.cms-element-image img)) { // (:has can't nest)
-    .cms-block-container { padding-block: 0 !important; } // inline style from the CMS
+    // stylelint-disable-next-line declaration-no-important -- inline style from the CMS
+    .cms-block-container { padding-block: 0 !important; }
     .col-md-6:has(.cms-element-image) { display: none; }
     .col-md-6:has(.cms-element-text) { flex: 1 1 100%; max-width: 100%; }
 

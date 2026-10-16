@@ -7,6 +7,8 @@ via flex-basis at md+ — no Twig override, same pattern as the listing grid).
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- core's footer links are bare <a> elements */
+
 @import '../abstract/config';
 @import '../abstract/mixins';
 

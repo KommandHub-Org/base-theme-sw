@@ -11,6 +11,8 @@ overrides below use one extra class of specificity to win without !important.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- the plugin's pickup labels are bare <label> elements */
+
 @import '../abstract/mixins';
 
 // --------------------------------------------------
@@ -28,7 +30,8 @@ overrides below use one extra class of specificity to win without !important.
     }
 
     label.mt-2 {
-        margin-top: var(--space-3) !important; // beat .mt-2 utility for even rhythm
+        // stylelint-disable-next-line declaration-no-important -- beat .mt-2 utility for even rhythm
+        margin-top: var(--space-3) !important;
     }
 
     [data-pickup-location-geolocation] {

@@ -21,6 +21,8 @@ Core blocks and elements on the design system. Two rules:
 @sw-package storefront
 */
 
+/* stylelint-disable selector-max-type -- CMS rich text (headings, paragraphs, links) and core's consent card come without classes */
+
 // --------------------------------------------------
 // Text
 // --------------------------------------------------
@@ -134,7 +136,8 @@ Core blocks and elements on the design system. Two rules:
         width: min(100%, 16rem);
         height: auto;
         aspect-ratio: 1;
-        min-height: 0 !important; // inline min-height from the element config
+        // stylelint-disable-next-line declaration-no-important -- inline min-height from the element config
+        min-height: 0 !important;
         border-radius: 50%;
 
         .cms-image { height: 100%; object-fit: cover; }
@@ -245,16 +248,19 @@ Core blocks and elements on the design system. Two rules:
             line-height: var(--line-height-base);
 
             .btn { margin-top: var(--space-3); }
-
-            // A 16:9 frame on a phone is ~200px tall: compact card.
-            @media (max-width: #{$kmh-bp-md - 0.02px}) {
-                padding: var(--space-3);
-                font-size: var(--font-size-xs);
-                line-height: var(--line-height-snug);
-
-                .btn { margin-top: var(--space-2); }
-            }
         }
+    }
+}
+
+// A 16:9 frame on a phone is ~200px tall: compact consent card.
+@media (max-width: #{$kmh-bp-md - 0.02px}) {
+    .cms-element-youtube-video__backdrop > div,
+    .cms-element-vimeo-video__backdrop > div {
+        padding: var(--space-3);
+        font-size: var(--font-size-xs);
+        line-height: var(--line-height-snug);
+
+        .btn { margin-top: var(--space-2); }
     }
 }
 

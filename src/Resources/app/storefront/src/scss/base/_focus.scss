@@ -8,6 +8,8 @@ neutral UI where focus can't lean on an accent colour.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- the focus ring targets native interactive elements (a, button, input, select, textarea, summary) */
+
 @import '../abstract/mixins';
 
 // Global keyboard-focus ring for native interactive elements.

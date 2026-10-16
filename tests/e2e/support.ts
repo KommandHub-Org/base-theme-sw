@@ -1,4 +1,5 @@
 import { test as base, expect, type Page } from '@playwright/test';
+import { randomBytes } from 'node:crypto';
 
 /**
  * Storefront pages the suite visits. Defaults match the KmhDemoDataSW catalogue
@@ -207,5 +208,34 @@ export async function fillRegistration(
 
 /** Logged-in session saved by auth.setup.ts (git-ignored). */
 export const authFile = 'tests/e2e/.auth/customer.json';
+
+/**
+ * Clicks "Add to cart" on the current product page and waits until the cart
+ * drawer lists the item. The drawer opens with a loader before the request
+ * finishes, so waiting only for `.offcanvas.show` and then navigating can
+ * cancel the add and leave an empty cart.
+ */
+export async function addToCart(page: Page): Promise<void> {
+    await page.locator('.btn-buy').first().click();
+    await expect(page.locator('.offcanvas.show .line-item').first()).toBeVisible();
+}
+
+/**
+ * Registers and logs in a throwaway customer in this page's context. For
+ * tests that need a cart of their own: the shared `authFile` customer's cart
+ * is emptied whenever checkout.spec.ts places its order in another worker.
+ */
+export async function registerCustomer(page: Page): Promise<void> {
+    const id = `${Date.now()}-${randomBytes(3).toString('hex')}`;
+    await page.goto('/account/register');
+    await page.evaluate(() => document.querySelector('.cookie-permission-container')?.remove());
+    const form = page.locator('form.register-form');
+    await fillRegistration(form, {
+        email: `kmh-e2e-${id}@example.com`,
+        password: `E2e-${randomBytes(9).toString('base64url')}`,
+    });
+    await form.locator('button[type=submit]').click();
+    await expect(page).toHaveURL(/\/account/);
+}
 
 export const isMobile = (testInfo: { project: { name: string } }) => testInfo.project.name === 'mobile';

@@ -89,6 +89,7 @@ checkbox marks.
 // Pagination — ghost squares, current page in ink
 // --------------------------------------------------
 .pagination {
+    --bs-pagination-border-radius: var(--radius-sm); // first/last-child corners
     gap: var(--space-1);
 
     .page-link {
@@ -101,7 +102,7 @@ checkbox marks.
         color: var(--color-text-secondary);
         background-color: transparent;
         border: 1px solid transparent;
-        border-radius: var(--radius-sm) !important; // beat BS first/last-child radii
+        border-radius: var(--radius-sm);
         font-size: var(--font-size-sm);
         font-weight: var(--font-weight-medium);
         font-variant-numeric: tabular-nums;
@@ -153,7 +154,8 @@ checkbox marks.
     margin-top: var(--space-6);
 
     + .cms-block-product-listing .cms-block-container {
-        padding-top: var(--space-4) !important; // CMS inline padding
+        // stylelint-disable-next-line declaration-no-important -- CMS inline padding
+        padding-top: var(--space-4) !important;
     }
 }
 

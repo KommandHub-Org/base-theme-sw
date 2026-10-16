@@ -10,6 +10,8 @@ tracking — confident without being heavy. Body copy is regular at 16px/1.6.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- a reboot styles native elements (html, body, headings, text, links, media) by design */
+
 @import '../abstract/config';
 @import '../abstract/mixins';
 
@@ -65,7 +67,8 @@ small, .small { font-size: var(--font-size-sm); }
 
 strong, b { font-weight: var(--font-weight-semibold); }
 
-.text-muted { color: var(--color-text-muted) !important; } // beat BS utility
+// stylelint-disable-next-line declaration-no-important -- beat BS utility
+.text-muted { color: var(--color-text-muted) !important; }
 
 // Numbers line up wherever money or counts are shown.
 .product-price,
@@ -150,9 +153,11 @@ img, svg, video {
     *,
     *::before,
     *::after {
+        // stylelint-disable declaration-no-important -- reduced motion must beat every animation and transition, inline ones included
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
         scroll-behavior: auto !important;
+        // stylelint-enable declaration-no-important
     }
 }

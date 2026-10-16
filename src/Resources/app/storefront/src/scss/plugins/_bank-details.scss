@@ -7,6 +7,8 @@ structure, so one skin serves either or both.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- the plugin renders label/value pairs as bare p/strong/br */
+
 // Label / value pairs ("<p><strong>Bank Name:</strong><br>value</p>") as the
 // theme's quiet-label-over-value pattern.
 .bank-details-content {

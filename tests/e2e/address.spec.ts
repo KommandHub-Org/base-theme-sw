@@ -1,4 +1,4 @@
-import { test, expect, paths, isMobile, authFile, setTheme, freezeMotion, contrastIssues } from './support';
+import { test, expect, paths, isMobile, authFile, setTheme, freezeMotion, contrastIssues, registerCustomer, addToCart } from './support';
 
 /**
  * Address manager (Shopware 6.7): the account address book and the checkout
@@ -32,13 +32,16 @@ test.describe('Address manager', () => {
         ]);
         expect(card!.y - (title!.y + title!.height)).toBeGreaterThanOrEqual(16);
     });
+});
 
+// Its own customer, outside the shared-session block.
+test.describe('Address manager — checkout', () => {
     test('checkout modal: compact title, segmented tabs, themed in light and dark', async ({ page, product }, testInfo) => {
-        test.skip(isMobile(testInfo), 'cart is per customer — desktop only');
+        test.skip(isMobile(testInfo), 'one viewport is enough for the modal');
 
+        await registerCustomer(page); // own cart: checkout.spec.ts empties the shared one
         await page.goto(product.path);
-        await page.locator('.btn-buy').first().click();
-        await expect(page.locator('.offcanvas.show')).toBeVisible();
+        await addToCart(page);
 
         for (const theme of ['light', 'dark'] as const) {
             await page.goto(paths.home);

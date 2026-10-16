@@ -8,6 +8,8 @@ tokens. Light-mode output is unchanged — the tokens resolve to the same values
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- re-points core elements that have no class of their own (links, table heads) */
+
 .icon {
     color: var(--color-text-secondary);
 }

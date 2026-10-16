@@ -7,6 +7,8 @@ pages. All core markup/JS hooks preserved.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- core's minimal-header links are bare <a> elements */
+
 @import '../abstract/mixins';
 
 // --------------------------------------------------

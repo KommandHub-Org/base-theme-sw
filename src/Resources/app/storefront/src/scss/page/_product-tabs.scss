@@ -10,6 +10,8 @@ Markup is core's; the only template change is the score number
 @sw-package storefront
 */
 
+/* stylelint-disable selector-max-type -- core's review markup (p, small, hr, label) has no classes */
+
 .product-detail-tabs-content.card-body {
     padding: var(--space-8) 0;
 }
@@ -176,6 +178,7 @@ Markup is core's; the only template change is the score number
 // Core hides the bars below lg (`d-none d-lg-block`, utilities are
 // !important); the summary is narrow at every size, so show them always.
 .product-detail-review-progressbar-col.d-none {
+    // stylelint-disable-next-line declaration-no-important -- core hides the bars with the .d-none utility (!important)
     display: block !important;
 }
 
@@ -302,9 +305,9 @@ Markup is core's; the only template change is the score number
     small { font-size: inherit; }
 }
 
-.product-detail-review-item-title {
+.product-detail-review-item-info .product-detail-review-item-title {
     order: 4;
-    flex-basis: 100% !important; // beat core's col-md-auto (flex: 0 0 auto)
+    flex-basis: 100%; // over core's col-md-auto (flex: 0 0 auto)
     margin-top: var(--space-2);
 
     .h5 {

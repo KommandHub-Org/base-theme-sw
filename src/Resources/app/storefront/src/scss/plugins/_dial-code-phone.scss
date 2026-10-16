@@ -12,6 +12,8 @@ Optional: matches only the plugin's own markup.
 .kmh-dial-code-phone > .kmh-dial-code-phone__national {
     // Bootstrap's `.input-group:not(.has-validation) > :not(:last-child):not(…)`
     // chain is six selectors deep; !important rather than an arms race.
+    // stylelint-disable-next-line declaration-no-important -- the plugin's radius rule is six selectors deep
     border-top-right-radius: var(--radius) !important;
+    // stylelint-disable-next-line declaration-no-important -- the plugin's radius rule is six selectors deep
     border-bottom-right-radius: var(--radius) !important;
 }

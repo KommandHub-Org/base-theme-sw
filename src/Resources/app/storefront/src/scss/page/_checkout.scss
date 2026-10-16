@@ -8,6 +8,8 @@ radio itself. Line items reuse component/_line-item.scss.
 @sw-package framework
 */
 
+/* stylelint-disable selector-max-type -- core's summary (dt/dd) and address/method text (strong, p, small, a) have no classes */
+
 @import '../abstract/mixins';
 
 // --------------------------------------------------

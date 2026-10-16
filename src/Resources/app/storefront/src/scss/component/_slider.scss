@@ -13,6 +13,8 @@ lift/shadow is clipped. All three are corrected here.
 @sw-package storefront
 */
 
+/* stylelint-disable selector-max-type -- core's icon markup is a bare <svg> inside .icon */
+
 $kmh-slider-control: 2.5rem; // 40px — the theme's control height
 
 // --------------------------------------------------
@@ -103,7 +105,7 @@ $kmh-slider-control: 2.5rem; // 40px — the theme's control height
     margin: var(--space-3) 0;
 
     .base-slider-dot,
-    button {
+    [data-nav] { // tiny-slider's nav buttons
         width: 0.5rem;
         height: 0.5rem;
         margin: 0;
